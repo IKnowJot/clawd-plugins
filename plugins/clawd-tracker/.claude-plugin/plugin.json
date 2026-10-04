@@ -1,0 +1,8 @@
+{
+  "name": "clawd-tracker",
+  "version": "0.1.0",
+  "description": "A Domino's-style order tracker above the prompt: Reading, Prepping, Cooking, Taste test, Delivered. Clawd acts out every step (reading, searching, cooking, testing, juggling subagents...) next to live ETA, tokens, context and cost.",
+  "types": "./types/index.d.ts",
+  "license": "MIT",
+  "keywords": ["mod", "progress", "statusline", "clawd"]
+}

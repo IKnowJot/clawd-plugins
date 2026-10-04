@@ -1,0 +1,14 @@
+{
+  "name": "clawd-plugins",
+  "owner": { "name": "clawd-plugins" },
+  "metadata": { "description": "Claude Code mods and skills: a Domino's-style order tracker for Claude, starring Clawd." },
+  "plugins": [
+    {
+      "name": "clawd-tracker",
+      "source": "./plugins/clawd-tracker",
+      "description": "Mod: a pizza-tracker progress bar above the prompt. Clawd acts out what Claude is doing, with ETA, tokens, context and cost.",
+      "version": "0.1.0",
+      "category": "mod"
+    }
+  ]
+}
