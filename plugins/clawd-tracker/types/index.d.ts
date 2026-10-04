@@ -55,6 +55,18 @@ export type Run = {
   lastStage: number
   /** When Clawd last celebrated a stage up. */
   cheerAt?: number
+  /** Files edited or written this run, for the receipt. */
+  files: string[]
+  /** Lines written and replaced, counted from the edits. */
+  added: number
+  removed: number
+  /** How the last test, build or lint command went. */
+  lastTest?: 'pass' | 'fail'
+  /** When Claude started waiting on you (a question or a permission prompt). */
+  waitingSince?: number
+  waitingFor?: string
+  /** Subagents at work, by id, with what each is doing. */
+  agents: Record<string, Activity>
 }
 
 /** A delivered run, kept across sessions to estimate how long work takes. */
@@ -64,6 +76,9 @@ export type Past = {
   tasks: number
   /** When it was delivered; counts today's orders. */
   when?: number
+  tokens?: number
+  /** The directory it ran in; the ETA prefers a project's own history. */
+  project?: string
 }
 
 /** A plan usage window: `five_hour`, `seven_day`, or a gateway's `spend_limit`. */

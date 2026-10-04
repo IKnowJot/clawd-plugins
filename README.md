@@ -2,11 +2,11 @@
 
 Claude Code mods, starring Clawd.
 
-![Clawd cooking up an edit while the tracker shows the order's progress](docs/working.svg)
+![Clawd tracking a whole order, from ticket to delivery](docs/demo.svg)
 
 | Plugin | Type | What it does |
 | --- | --- | --- |
-| [clawd-tracker](plugins/clawd-tracker) | mod | A Domino's-style order tracker above the prompt. Clawd acts out whatever Claude is doing (reading, cooking up edits, taste-testing, juggling subagents) next to an honest progress bar, a learned ETA, tokens, context, cost and your plan usage. |
+| [clawd-tracker](plugins/clawd-tracker) | mod | A Domino's-style order tracker above the prompt. Clawd acts out whatever Claude is doing (reading, cooking up edits, taste-testing, juggling subagents) next to an honest progress bar, a learned ETA, a delivery receipt and ding, helper Clawds for subagents, plan usage and four themes. |
 
 ## Setup
 
@@ -60,8 +60,10 @@ plugins/<name>/
   hooks/hooks.json                points at the hooks module
   hooks/register.tsx              the mod itself
   types/index.d.ts                its state contract
+  sounds/                         the delivery ding (synthesized, rights-free)
   tests/*.test.ts                 run with `claude plugin test`
 docs/                             preview images
+CHANGELOG.md                      what changed in each version
 ```
 
 Check before publishing:

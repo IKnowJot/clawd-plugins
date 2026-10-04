@@ -1,0 +1,491 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="848" height="94" viewBox="0 0 848 94"><style>.bgc{fill:#ffffff;stroke:#e5e5e2}@media (prefers-color-scheme: dark){.bgc{fill:#1f1f1e;stroke:#30302e}}</style><rect class="bgc" x="0.5" y="0.5" width="847" height="93" rx="12"/><g transform="translate(14,14)"><style>.fr0{visibility:hidden;animation:v0 14200ms steps(1) infinite}@keyframes v0{0%{visibility:hidden}0.000%{visibility:visible}11.268%{visibility:hidden}}.fr1{visibility:hidden;animation:v1 14200ms steps(1) infinite}@keyframes v1{0%{visibility:hidden}11.268%{visibility:visible}23.944%{visibility:hidden}}.fr2{visibility:hidden;animation:v2 14200ms steps(1) infinite}@keyframes v2{0%{visibility:hidden}23.944%{visibility:visible}36.620%{visibility:hidden}}.fr3{visibility:hidden;animation:v3 14200ms steps(1) infinite}@keyframes v3{0%{visibility:hidden}36.620%{visibility:visible}52.113%{visibility:hidden}}.fr4{visibility:hidden;animation:v4 14200ms steps(1) infinite}@keyframes v4{0%{visibility:hidden}52.113%{visibility:visible}64.789%{visibility:hidden}}.fr5{visibility:hidden;animation:v5 14200ms steps(1) infinite}@keyframes v5{0%{visibility:hidden}64.789%{visibility:visible}77.465%{visibility:hidden}}.fr6{visibility:hidden;animation:v6 14200ms steps(1) infinite}@keyframes v6{0%{visibility:hidden}77.465%{visibility:visible}100.000%{visibility:hidden}}@media (prefers-reduced-motion: reduce){.fr0,.fr1,.fr2,.fr3,.fr4,.fr5,.fr6{animation:none}.fr6{visibility:visible}}</style><g class="fr0"><style>
+.t{fill:#1f1f1f}.s{fill:#6b6b68}.m{fill:#9a9a96}.k{fill:#e7e5e0}
+@media (prefers-color-scheme: dark){.t{fill:#ececec}.s{fill:#a8a8a4}.m{fill:#7d7d79}.k{fill:#30302e}}
+.now{animation:pulse 1s ease-in-out infinite}@keyframes pulse{50%{opacity:.45}}
+@media (prefers-reduced-motion: reduce){.now{animation:none}}
+</style><style>.cf0{transform-origin:72px 0;transform:scaleX(0.00000)}@keyframes fill0{from{transform:scaleX(0.00000)}to{transform:scaleX(0.00000)}}@media (prefers-reduced-motion: reduce){.cf0{animation:none}}</style><style>
+.run,.run g{transform-box:fill-box}
+.run .la{animation:st .5s steps(1) infinite}.run .lb{animation:st .5s steps(1) infinite -.25s}
+.run .bd{animation:bob .5s steps(1) infinite -.125s}
+@keyframes st{50%{transform:translateY(-1px)}}@keyframes bob{50%{transform:translateY(1px)}}
+@keyframes blink{50%{opacity:.15}}
+.a-order.run .it{animation:bob .5s steps(1) infinite}
+.a-read.run .la,.a-read.run .lb,.a-read.run .bd{animation:none}
+.a-read.run .pg{transform-origin:0 50%;animation:page 1s ease-in-out infinite}
+@keyframes page{0%,30%{transform:scaleX(1)}60%,100%{transform:scaleX(-1)}}
+.a-search.run .it{animation:scan 1s steps(1) infinite}.a-search.run .gl{animation:blink 1s steps(1) infinite -.5s}
+@keyframes scan{25%{transform:translate(-1px,1px)}50%{transform:translate(-2px,2px)}75%{transform:translate(-1px,1px)}}
+.a-explore.run .it{transform-origin:0 100%;animation:sweep 1s ease-in-out infinite}
+@keyframes sweep{50%{transform:rotate(-14deg)}}
+.a-web.run{transform-origin:50% 100%;animation:sway 1s ease-in-out infinite}
+.a-web.run .la,.a-web.run .lb,.a-web.run .bd{animation:none}
+.a-web.run .wv{animation:wave 1s steps(2) infinite}
+@keyframes sway{25%{transform:rotate(-3deg)}75%{transform:rotate(3deg)}}@keyframes wave{50%{transform:translateX(-2px)}}
+.a-plan.run .it{animation:scribble .5s steps(1) infinite}
+@keyframes scribble{25%{transform:translate(-1px,1px)}50%{transform:translate(1px,0)}75%{transform:translate(0,1px)}}
+.a-think.run .la,.a-think.run .lb{animation:none}
+.a-think.run .d1{animation:blink 1s steps(1) infinite}.a-think.run .d2{animation:blink 1s steps(1) infinite -.66s}.a-think.run .d3{animation:blink 1s steps(1) infinite -.33s}
+.a-cook.run .pan{transform-origin:0 50%;animation:tilt 1s ease-in-out infinite}
+.a-cook.run .egg{animation:flip 1s ease-in-out infinite}
+@keyframes tilt{20%,40%{transform:rotate(-12deg)}}@keyframes flip{30%{transform:translateY(-5px) scaleY(-1)}60%{transform:translateY(0)}}
+.a-build.run .it{transform-origin:50% 100%;animation:hammer .5s ease-in infinite}
+@keyframes hammer{50%{transform:rotate(-35deg)}}
+.a-paint.run .it,.a-paint.run .tip{transform-origin:50% 100%;animation:brush .5s ease-in-out infinite}
+.a-paint.run .tip rect{animation:hue 1s steps(1) infinite}
+@keyframes brush{50%{transform:rotate(18deg)}}@keyframes hue{0%{fill:#7F77DD}33%{fill:#D0453F}66%{fill:#1D9E75}}
+.a-quill.run .it{transform-origin:0 100%;animation:write .5s ease-in-out infinite}
+@keyframes write{50%{transform:rotate(10deg) translateX(1px)}}
+.a-tinker.run .it{transform-origin:100% 100%;animation:twist .5s ease-in-out infinite}
+.a-tinker.run .gr{transform-origin:50% 50%;animation:spin 1s linear infinite}
+@keyframes twist{50%{transform:rotate(-35deg)}}@keyframes spin{to{transform:rotate(90deg)}}
+.a-test.run .it{transform-origin:50% 100%;animation:swirl .5s ease-in-out infinite}
+.a-test.run .b1{animation:rise 1s linear infinite}.a-test.run .b2{animation:rise 1s linear infinite -.5s}
+@keyframes swirl{25%{transform:rotate(-8deg)}75%{transform:rotate(8deg)}}@keyframes rise{0%{transform:translateY(2px);opacity:1}100%{transform:translateY(-3px);opacity:0}}
+.a-terminal.run .la,.a-terminal.run .lb,.a-terminal.run .bd{animation:none}
+.a-terminal.run .ta{animation:st .25s steps(1) infinite}.a-terminal.run .tb{animation:st .25s steps(1) infinite -.125s}
+.a-terminal.run .cur{animation:blink .5s steps(1) infinite}
+.a-install.run .la{animation-duration:.25s}.a-install.run .lb{animation-duration:.25s;animation-delay:-.125s}
+.a-install.run .bx{animation:bob .25s steps(1) infinite}
+.a-git.run .it{animation:bob .5s steps(1) infinite}
+.a-juggle.run .la,.a-juggle.run .lb{animation:none}
+.a-juggle.run .ta{animation:st .5s steps(1) infinite}.a-juggle.run .tb{animation:st .5s steps(1) infinite -.25s}
+.a-juggle.run .j1{animation:hop 1s ease-in-out infinite}.a-juggle.run .j2{animation:hop 1s ease-in-out infinite -.33s}.a-juggle.run .j3{animation:hop 1s ease-in-out infinite -.66s}
+@keyframes hop{50%{transform:translateY(-4px)}}
+.a-wait.run .la,.a-wait.run .lb{animation:none}
+.a-wait.run .sg{transform-origin:50% 100%;animation:sway 1s ease-in-out infinite}
+.a-deliver.run .la{animation-duration:.25s}.a-deliver.run .lb{animation-duration:.25s;animation-delay:-.125s}
+.a-deliver.run .c1,.a-deliver.run .c2,.a-deliver.run .c3,.a-deliver.run .c4{animation:fall 1s linear infinite}
+.a-deliver.run .c2{animation-delay:-.25s}.a-deliver.run .c3{animation-delay:-.5s}.a-deliver.run .c4{animation-delay:-.75s}
+@keyframes fall{0%{transform:translateY(0);opacity:1}100%{transform:translateY(8px);opacity:0}}
+.a-oops.run .la,.a-oops.run .lb,.a-oops.run .bd{animation:none}
+.a-oops.run .dr{animation:fall 1s linear infinite}
+@media (prefers-reduced-motion: reduce){.run,.run g,.run rect{animation:none!important}}
+</style>
+<g transform="translate(0,5) scale(2)" shape-rendering="crispEdges"><g class="a-order run"><g class="bd"><rect x="7" y="10" width="16" height="12" fill="#D97757"/><rect x="3" y="14" width="4" height="4" fill="#D97757"/><rect x="9" y="12" width="2" height="2" fill="#1F1E1D"/><rect x="19" y="12" width="2" height="2" fill="#1F1E1D"/><g class="it"><rect x="23" y="10" width="4" height="4" fill="#D97757"/><rect x="23" y="2" width="6" height="8" fill="#F4F3EE"/><rect x="24" y="4" width="4" height="1" fill="#9A9A96"/><rect x="24" y="6" width="3" height="1" fill="#9A9A96"/><rect x="24" y="8" width="4" height="1" fill="#D97757"/></g></g><g class="la"><rect x="7" y="22" width="2" height="4" fill="#D97757"/><rect x="17" y="22" width="2" height="4" fill="#D97757"/></g><g class="lb"><rect x="11" y="22" width="2" height="4" fill="#D97757"/><rect x="21" y="22" width="2" height="4" fill="#D97757"/></g></g></g>
+<text class="t" x="72" y="15" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="13" font-weight="600">Swap the old logo for the new one everywhere</text>
+
+<text x="816" y="15" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="12" fill="#D97757" font-weight="500">Small job · sizing up…</text>
+<clipPath id="fc0"><rect class="cf0" x="72" y="20" width="744" height="15"/></clipPath><rect class="k now" x="72" y="24" width="144.8" height="7" rx="3.5"/><rect class="k" x="221.8" y="24" width="144.8" height="7" rx="3.5"/><rect class="k" x="371.6" y="24" width="144.8" height="7" rx="3.5"/><rect class="k" x="521.4000000000001" y="24" width="144.8" height="7" rx="3.5"/><rect class="k" x="671.2" y="24" width="144.8" height="7" rx="3.5"/><g clip-path="url(#fc0)"><rect class="now" x="72" y="24" width="144.8" height="7" rx="3.5" fill="#D97757"/><rect class="" x="221.8" y="24" width="144.8" height="7" rx="3.5" fill="#D97757"/><rect class="" x="371.6" y="24" width="144.8" height="7" rx="3.5" fill="#D97757"/><rect class="" x="521.4000000000001" y="24" width="144.8" height="7" rx="3.5" fill="#D97757"/><rect class="" x="671.2" y="24" width="144.8" height="7" rx="3.5" fill="#D97757"/></g><text class="t" x="72" y="44" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="10.5" font-weight="600">Reading</text><text class="m" x="221.8" y="44" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="10.5">Prepping</text><text class="m" x="371.6" y="44" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="10.5">Cooking</text><text class="m" x="521.4000000000001" y="44" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="10.5">Taste test</text><text class="m" x="671.2" y="44" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="10.5">Delivered</text>
+<text class="t" x="72" y="61" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="12">Order received</text>
+<text class="m" x="816" y="61" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="11.5" font-variant-numeric="tabular-nums">0:01 · 0 tok · ≈$0.00 · 5h 42% · wk 18%</text>
+</g><g class="fr1"><style>
+.t{fill:#1f1f1f}.s{fill:#6b6b68}.m{fill:#9a9a96}.k{fill:#e7e5e0}
+@media (prefers-color-scheme: dark){.t{fill:#ececec}.s{fill:#a8a8a4}.m{fill:#7d7d79}.k{fill:#30302e}}
+.now{animation:pulse 1s ease-in-out infinite}@keyframes pulse{50%{opacity:.45}}
+@media (prefers-reduced-motion: reduce){.now{animation:none}}
+</style><style>.cf1{transform-origin:72px 0;transform:scaleX(0.20134)}@keyframes fill1{from{transform:scaleX(0.20134)}to{transform:scaleX(0.20134)}}@media (prefers-reduced-motion: reduce){.cf1{animation:none}}</style><style>
+.run,.run g{transform-box:fill-box}
+.run .la{animation:st .5s steps(1) infinite}.run .lb{animation:st .5s steps(1) infinite -.25s}
+.run .bd{animation:bob .5s steps(1) infinite -.125s}
+@keyframes st{50%{transform:translateY(-1px)}}@keyframes bob{50%{transform:translateY(1px)}}
+@keyframes blink{50%{opacity:.15}}
+.a-order.run .it{animation:bob .5s steps(1) infinite}
+.a-read.run .la,.a-read.run .lb,.a-read.run .bd{animation:none}
+.a-read.run .pg{transform-origin:0 50%;animation:page 1s ease-in-out infinite}
+@keyframes page{0%,30%{transform:scaleX(1)}60%,100%{transform:scaleX(-1)}}
+.a-search.run .it{animation:scan 1s steps(1) infinite}.a-search.run .gl{animation:blink 1s steps(1) infinite -.5s}
+@keyframes scan{25%{transform:translate(-1px,1px)}50%{transform:translate(-2px,2px)}75%{transform:translate(-1px,1px)}}
+.a-explore.run .it{transform-origin:0 100%;animation:sweep 1s ease-in-out infinite}
+@keyframes sweep{50%{transform:rotate(-14deg)}}
+.a-web.run{transform-origin:50% 100%;animation:sway 1s ease-in-out infinite}
+.a-web.run .la,.a-web.run .lb,.a-web.run .bd{animation:none}
+.a-web.run .wv{animation:wave 1s steps(2) infinite}
+@keyframes sway{25%{transform:rotate(-3deg)}75%{transform:rotate(3deg)}}@keyframes wave{50%{transform:translateX(-2px)}}
+.a-plan.run .it{animation:scribble .5s steps(1) infinite}
+@keyframes scribble{25%{transform:translate(-1px,1px)}50%{transform:translate(1px,0)}75%{transform:translate(0,1px)}}
+.a-think.run .la,.a-think.run .lb{animation:none}
+.a-think.run .d1{animation:blink 1s steps(1) infinite}.a-think.run .d2{animation:blink 1s steps(1) infinite -.66s}.a-think.run .d3{animation:blink 1s steps(1) infinite -.33s}
+.a-cook.run .pan{transform-origin:0 50%;animation:tilt 1s ease-in-out infinite}
+.a-cook.run .egg{animation:flip 1s ease-in-out infinite}
+@keyframes tilt{20%,40%{transform:rotate(-12deg)}}@keyframes flip{30%{transform:translateY(-5px) scaleY(-1)}60%{transform:translateY(0)}}
+.a-build.run .it{transform-origin:50% 100%;animation:hammer .5s ease-in infinite}
+@keyframes hammer{50%{transform:rotate(-35deg)}}
+.a-paint.run .it,.a-paint.run .tip{transform-origin:50% 100%;animation:brush .5s ease-in-out infinite}
+.a-paint.run .tip rect{animation:hue 1s steps(1) infinite}
+@keyframes brush{50%{transform:rotate(18deg)}}@keyframes hue{0%{fill:#7F77DD}33%{fill:#D0453F}66%{fill:#1D9E75}}
+.a-quill.run .it{transform-origin:0 100%;animation:write .5s ease-in-out infinite}
+@keyframes write{50%{transform:rotate(10deg) translateX(1px)}}
+.a-tinker.run .it{transform-origin:100% 100%;animation:twist .5s ease-in-out infinite}
+.a-tinker.run .gr{transform-origin:50% 50%;animation:spin 1s linear infinite}
+@keyframes twist{50%{transform:rotate(-35deg)}}@keyframes spin{to{transform:rotate(90deg)}}
+.a-test.run .it{transform-origin:50% 100%;animation:swirl .5s ease-in-out infinite}
+.a-test.run .b1{animation:rise 1s linear infinite}.a-test.run .b2{animation:rise 1s linear infinite -.5s}
+@keyframes swirl{25%{transform:rotate(-8deg)}75%{transform:rotate(8deg)}}@keyframes rise{0%{transform:translateY(2px);opacity:1}100%{transform:translateY(-3px);opacity:0}}
+.a-terminal.run .la,.a-terminal.run .lb,.a-terminal.run .bd{animation:none}
+.a-terminal.run .ta{animation:st .25s steps(1) infinite}.a-terminal.run .tb{animation:st .25s steps(1) infinite -.125s}
+.a-terminal.run .cur{animation:blink .5s steps(1) infinite}
+.a-install.run .la{animation-duration:.25s}.a-install.run .lb{animation-duration:.25s;animation-delay:-.125s}
+.a-install.run .bx{animation:bob .25s steps(1) infinite}
+.a-git.run .it{animation:bob .5s steps(1) infinite}
+.a-juggle.run .la,.a-juggle.run .lb{animation:none}
+.a-juggle.run .ta{animation:st .5s steps(1) infinite}.a-juggle.run .tb{animation:st .5s steps(1) infinite -.25s}
+.a-juggle.run .j1{animation:hop 1s ease-in-out infinite}.a-juggle.run .j2{animation:hop 1s ease-in-out infinite -.33s}.a-juggle.run .j3{animation:hop 1s ease-in-out infinite -.66s}
+@keyframes hop{50%{transform:translateY(-4px)}}
+.a-wait.run .la,.a-wait.run .lb{animation:none}
+.a-wait.run .sg{transform-origin:50% 100%;animation:sway 1s ease-in-out infinite}
+.a-deliver.run .la{animation-duration:.25s}.a-deliver.run .lb{animation-duration:.25s;animation-delay:-.125s}
+.a-deliver.run .c1,.a-deliver.run .c2,.a-deliver.run .c3,.a-deliver.run .c4{animation:fall 1s linear infinite}
+.a-deliver.run .c2{animation-delay:-.25s}.a-deliver.run .c3{animation-delay:-.5s}.a-deliver.run .c4{animation-delay:-.75s}
+@keyframes fall{0%{transform:translateY(0);opacity:1}100%{transform:translateY(8px);opacity:0}}
+.a-oops.run .la,.a-oops.run .lb,.a-oops.run .bd{animation:none}
+.a-oops.run .dr{animation:fall 1s linear infinite}
+@media (prefers-reduced-motion: reduce){.run,.run g,.run rect{animation:none!important}}
+</style>
+<g transform="translate(0,5) scale(2)" shape-rendering="crispEdges"><g class="a-read run"><g class="bd"><rect x="7" y="10" width="16" height="12" fill="#D97757"/><rect x="3" y="14" width="4" height="4" fill="#D97757"/><rect x="23" y="14" width="4" height="4" fill="#D97757"/><rect x="9" y="12" width="2" height="2" fill="#1F1E1D"/><rect x="19" y="12" width="2" height="2" fill="#1F1E1D"/><rect x="8" y="11" width="4" height="1" fill="#1F1E1D"/><rect x="8" y="14" width="4" height="1" fill="#1F1E1D"/><rect x="8" y="11" width="1" height="4" fill="#1F1E1D"/><rect x="11" y="11" width="1" height="4" fill="#1F1E1D"/><rect x="18" y="11" width="4" height="1" fill="#1F1E1D"/><rect x="18" y="14" width="4" height="1" fill="#1F1E1D"/><rect x="18" y="11" width="1" height="4" fill="#1F1E1D"/><rect x="21" y="11" width="1" height="4" fill="#1F1E1D"/><rect x="12" y="12" width="6" height="1" fill="#1F1E1D"/><rect x="8" y="17" width="15" height="5" fill="#7A4A26"/><rect x="9" y="17" width="6" height="4" fill="#F4F3EE"/><rect x="16" y="17" width="6" height="4" fill="#F4F3EE"/><rect x="15" y="17" width="1" height="5" fill="#5A3519"/><rect x="10" y="18" width="4" height="1" fill="#C9C7BE"/><rect x="10" y="20" width="3" height="1" fill="#C9C7BE"/><rect x="17" y="18" width="4" height="1" fill="#C9C7BE"/><rect x="17" y="20" width="3" height="1" fill="#C9C7BE"/><g class="pg"><rect x="16" y="17" width="6" height="4" fill="#FFFFFF"/></g></g><g class="la"><rect x="7" y="22" width="2" height="4" fill="#D97757"/><rect x="17" y="22" width="2" height="4" fill="#D97757"/></g><g class="lb"><rect x="11" y="22" width="2" height="4" fill="#D97757"/><rect x="21" y="22" width="2" height="4" fill="#D97757"/></g></g></g>
+<text class="t" x="72" y="15" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="13" font-weight="600">Swap the old logo for the new one everywhere</text>
+
+<text x="816" y="15" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="12" fill="#D97757" font-weight="500">Small job · sizing up…</text>
+<clipPath id="fc1"><rect class="cf1" x="72" y="20" width="744" height="15"/></clipPath><rect class="k now" x="72" y="24" width="144.8" height="7" rx="3.5"/><rect class="k" x="221.8" y="24" width="144.8" height="7" rx="3.5"/><rect class="k" x="371.6" y="24" width="144.8" height="7" rx="3.5"/><rect class="k" x="521.4000000000001" y="24" width="144.8" height="7" rx="3.5"/><rect class="k" x="671.2" y="24" width="144.8" height="7" rx="3.5"/><g clip-path="url(#fc1)"><rect class="now" x="72" y="24" width="144.8" height="7" rx="3.5" fill="#D97757"/><rect class="" x="221.8" y="24" width="144.8" height="7" rx="3.5" fill="#D97757"/><rect class="" x="371.6" y="24" width="144.8" height="7" rx="3.5" fill="#D97757"/><rect class="" x="521.4000000000001" y="24" width="144.8" height="7" rx="3.5" fill="#D97757"/><rect class="" x="671.2" y="24" width="144.8" height="7" rx="3.5" fill="#D97757"/></g><text class="t" x="72" y="44" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="10.5" font-weight="600">Reading</text><text class="m" x="221.8" y="44" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="10.5">Prepping</text><text class="m" x="371.6" y="44" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="10.5">Cooking</text><text class="m" x="521.4000000000001" y="44" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="10.5">Taste test</text><text class="m" x="671.2" y="44" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="10.5">Delivered</text>
+<text class="t" x="72" y="61" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="12">Studying Header.tsx</text>
+<text class="m" x="816" y="61" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="11.5" font-variant-numeric="tabular-nums">0:09 · 21k tok · ctx 4% · ≈$0.05 · 5h 42% · wk 18%</text>
+</g><g class="fr2"><style>
+.t{fill:#1f1f1f}.s{fill:#6b6b68}.m{fill:#9a9a96}.k{fill:#e7e5e0}
+@media (prefers-color-scheme: dark){.t{fill:#ececec}.s{fill:#a8a8a4}.m{fill:#7d7d79}.k{fill:#30302e}}
+.now{animation:pulse 1s ease-in-out infinite}@keyframes pulse{50%{opacity:.45}}
+@media (prefers-reduced-motion: reduce){.now{animation:none}}
+</style><style>.cf2{transform-origin:72px 0;transform:scaleX(0.20134)}@keyframes fill2{from{transform:scaleX(0.20134)}to{transform:scaleX(0.20134)}}@media (prefers-reduced-motion: reduce){.cf2{animation:none}}</style><style>
+.run,.run g{transform-box:fill-box}
+.run .la{animation:st .5s steps(1) infinite}.run .lb{animation:st .5s steps(1) infinite -.25s}
+.run .bd{animation:bob .5s steps(1) infinite -.125s}
+@keyframes st{50%{transform:translateY(-1px)}}@keyframes bob{50%{transform:translateY(1px)}}
+@keyframes blink{50%{opacity:.15}}
+.a-order.run .it{animation:bob .5s steps(1) infinite}
+.a-read.run .la,.a-read.run .lb,.a-read.run .bd{animation:none}
+.a-read.run .pg{transform-origin:0 50%;animation:page 1s ease-in-out infinite}
+@keyframes page{0%,30%{transform:scaleX(1)}60%,100%{transform:scaleX(-1)}}
+.a-search.run .it{animation:scan 1s steps(1) infinite}.a-search.run .gl{animation:blink 1s steps(1) infinite -.5s}
+@keyframes scan{25%{transform:translate(-1px,1px)}50%{transform:translate(-2px,2px)}75%{transform:translate(-1px,1px)}}
+.a-explore.run .it{transform-origin:0 100%;animation:sweep 1s ease-in-out infinite}
+@keyframes sweep{50%{transform:rotate(-14deg)}}
+.a-web.run{transform-origin:50% 100%;animation:sway 1s ease-in-out infinite}
+.a-web.run .la,.a-web.run .lb,.a-web.run .bd{animation:none}
+.a-web.run .wv{animation:wave 1s steps(2) infinite}
+@keyframes sway{25%{transform:rotate(-3deg)}75%{transform:rotate(3deg)}}@keyframes wave{50%{transform:translateX(-2px)}}
+.a-plan.run .it{animation:scribble .5s steps(1) infinite}
+@keyframes scribble{25%{transform:translate(-1px,1px)}50%{transform:translate(1px,0)}75%{transform:translate(0,1px)}}
+.a-think.run .la,.a-think.run .lb{animation:none}
+.a-think.run .d1{animation:blink 1s steps(1) infinite}.a-think.run .d2{animation:blink 1s steps(1) infinite -.66s}.a-think.run .d3{animation:blink 1s steps(1) infinite -.33s}
+.a-cook.run .pan{transform-origin:0 50%;animation:tilt 1s ease-in-out infinite}
+.a-cook.run .egg{animation:flip 1s ease-in-out infinite}
+@keyframes tilt{20%,40%{transform:rotate(-12deg)}}@keyframes flip{30%{transform:translateY(-5px) scaleY(-1)}60%{transform:translateY(0)}}
+.a-build.run .it{transform-origin:50% 100%;animation:hammer .5s ease-in infinite}
+@keyframes hammer{50%{transform:rotate(-35deg)}}
+.a-paint.run .it,.a-paint.run .tip{transform-origin:50% 100%;animation:brush .5s ease-in-out infinite}
+.a-paint.run .tip rect{animation:hue 1s steps(1) infinite}
+@keyframes brush{50%{transform:rotate(18deg)}}@keyframes hue{0%{fill:#7F77DD}33%{fill:#D0453F}66%{fill:#1D9E75}}
+.a-quill.run .it{transform-origin:0 100%;animation:write .5s ease-in-out infinite}
+@keyframes write{50%{transform:rotate(10deg) translateX(1px)}}
+.a-tinker.run .it{transform-origin:100% 100%;animation:twist .5s ease-in-out infinite}
+.a-tinker.run .gr{transform-origin:50% 50%;animation:spin 1s linear infinite}
+@keyframes twist{50%{transform:rotate(-35deg)}}@keyframes spin{to{transform:rotate(90deg)}}
+.a-test.run .it{transform-origin:50% 100%;animation:swirl .5s ease-in-out infinite}
+.a-test.run .b1{animation:rise 1s linear infinite}.a-test.run .b2{animation:rise 1s linear infinite -.5s}
+@keyframes swirl{25%{transform:rotate(-8deg)}75%{transform:rotate(8deg)}}@keyframes rise{0%{transform:translateY(2px);opacity:1}100%{transform:translateY(-3px);opacity:0}}
+.a-terminal.run .la,.a-terminal.run .lb,.a-terminal.run .bd{animation:none}
+.a-terminal.run .ta{animation:st .25s steps(1) infinite}.a-terminal.run .tb{animation:st .25s steps(1) infinite -.125s}
+.a-terminal.run .cur{animation:blink .5s steps(1) infinite}
+.a-install.run .la{animation-duration:.25s}.a-install.run .lb{animation-duration:.25s;animation-delay:-.125s}
+.a-install.run .bx{animation:bob .25s steps(1) infinite}
+.a-git.run .it{animation:bob .5s steps(1) infinite}
+.a-juggle.run .la,.a-juggle.run .lb{animation:none}
+.a-juggle.run .ta{animation:st .5s steps(1) infinite}.a-juggle.run .tb{animation:st .5s steps(1) infinite -.25s}
+.a-juggle.run .j1{animation:hop 1s ease-in-out infinite}.a-juggle.run .j2{animation:hop 1s ease-in-out infinite -.33s}.a-juggle.run .j3{animation:hop 1s ease-in-out infinite -.66s}
+@keyframes hop{50%{transform:translateY(-4px)}}
+.a-wait.run .la,.a-wait.run .lb{animation:none}
+.a-wait.run .sg{transform-origin:50% 100%;animation:sway 1s ease-in-out infinite}
+.a-deliver.run .la{animation-duration:.25s}.a-deliver.run .lb{animation-duration:.25s;animation-delay:-.125s}
+.a-deliver.run .c1,.a-deliver.run .c2,.a-deliver.run .c3,.a-deliver.run .c4{animation:fall 1s linear infinite}
+.a-deliver.run .c2{animation-delay:-.25s}.a-deliver.run .c3{animation-delay:-.5s}.a-deliver.run .c4{animation-delay:-.75s}
+@keyframes fall{0%{transform:translateY(0);opacity:1}100%{transform:translateY(8px);opacity:0}}
+.a-oops.run .la,.a-oops.run .lb,.a-oops.run .bd{animation:none}
+.a-oops.run .dr{animation:fall 1s linear infinite}
+@media (prefers-reduced-motion: reduce){.run,.run g,.run rect{animation:none!important}}
+</style>
+<g transform="translate(0,5) scale(2)" shape-rendering="crispEdges"><g class="a-plan run"><g class="bd"><rect x="7" y="10" width="16" height="12" fill="#D97757"/><rect x="3" y="14" width="4" height="4" fill="#D97757"/><rect x="9" y="12" width="2" height="2" fill="#1F1E1D"/><rect x="19" y="12" width="2" height="2" fill="#1F1E1D"/><rect x="0" y="9" width="7" height="10" fill="#B08D57"/><rect x="1" y="11" width="5" height="7" fill="#F4F3EE"/><rect x="2" y="9" width="3" height="2" fill="#8E929A"/><rect x="2" y="12" width="3" height="1" fill="#9A9A96"/><rect x="2" y="14" width="3" height="1" fill="#9A9A96"/><rect x="2" y="16" width="1" height="1" fill="#3B9C5F"/><rect x="4" y="16" width="1" height="1" fill="#9A9A96"/><g class="it"><rect x="23" y="11" width="4" height="4" fill="#D97757"/><rect x="25" y="4" width="1" height="6" fill="#F5C542"/><rect x="25" y="10" width="1" height="1" fill="#F4C7A1"/><rect x="25" y="3" width="1" height="1" fill="#E58FA0"/></g></g><g class="la"><rect x="7" y="22" width="2" height="4" fill="#D97757"/><rect x="17" y="22" width="2" height="4" fill="#D97757"/></g><g class="lb"><rect x="11" y="22" width="2" height="4" fill="#D97757"/><rect x="21" y="22" width="2" height="4" fill="#D97757"/></g></g></g>
+<text class="t" x="72" y="15" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="13" font-weight="600">Swap the old logo for the new one everywhere</text>
+
+<text x="816" y="15" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="12" fill="#D97757" font-weight="500">Medium job · about 2 min left</text>
+<clipPath id="fc2"><rect class="cf2" x="72" y="20" width="744" height="15"/></clipPath><rect class="k" x="72" y="24" width="144.8" height="7" rx="3.5"/><rect class="k now" x="221.8" y="24" width="144.8" height="7" rx="3.5"/><rect class="k" x="371.6" y="24" width="144.8" height="7" rx="3.5"/><rect class="k" x="521.4000000000001" y="24" width="144.8" height="7" rx="3.5"/><rect class="k" x="671.2" y="24" width="144.8" height="7" rx="3.5"/><g clip-path="url(#fc2)"><rect class="" x="72" y="24" width="144.8" height="7" rx="3.5" fill="#D97757"/><rect class="now" x="221.8" y="24" width="144.8" height="7" rx="3.5" fill="#D97757"/><rect class="" x="371.6" y="24" width="144.8" height="7" rx="3.5" fill="#D97757"/><rect class="" x="521.4000000000001" y="24" width="144.8" height="7" rx="3.5" fill="#D97757"/><rect class="" x="671.2" y="24" width="144.8" height="7" rx="3.5" fill="#D97757"/></g><text class="s" x="72" y="44" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="10.5">Reading</text><text class="t" x="221.8" y="44" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="10.5" font-weight="600">Prepping</text><text class="m" x="371.6" y="44" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="10.5">Cooking</text><text class="m" x="521.4000000000001" y="44" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="10.5">Taste test</text><text class="m" x="671.2" y="44" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="10.5">Delivered</text>
+<text class="t" x="72" y="61" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="12">Swapping the logo</text>
+<text class="m" x="816" y="61" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="11.5" font-variant-numeric="tabular-nums">1/4 tasks · 0:30 · 42k tok · ctx 4% · ≈$0.09 · 5h 42% · wk 18%</text>
+</g><g class="fr3"><style>
+.t{fill:#1f1f1f}.s{fill:#6b6b68}.m{fill:#9a9a96}.k{fill:#e7e5e0}
+@media (prefers-color-scheme: dark){.t{fill:#ececec}.s{fill:#a8a8a4}.m{fill:#7d7d79}.k{fill:#30302e}}
+.now{animation:pulse 1s ease-in-out infinite}@keyframes pulse{50%{opacity:.45}}
+@media (prefers-reduced-motion: reduce){.now{animation:none}}
+</style><style>.cf3{transform-origin:72px 0;transform:scaleX(0.40269)}@keyframes fill3{from{transform:scaleX(0.40269)}to{transform:scaleX(0.40269)}}@media (prefers-reduced-motion: reduce){.cf3{animation:none}}</style><style>
+.run,.run g{transform-box:fill-box}
+.run .la{animation:st .5s steps(1) infinite}.run .lb{animation:st .5s steps(1) infinite -.25s}
+.run .bd{animation:bob .5s steps(1) infinite -.125s}
+@keyframes st{50%{transform:translateY(-1px)}}@keyframes bob{50%{transform:translateY(1px)}}
+@keyframes blink{50%{opacity:.15}}
+.a-order.run .it{animation:bob .5s steps(1) infinite}
+.a-read.run .la,.a-read.run .lb,.a-read.run .bd{animation:none}
+.a-read.run .pg{transform-origin:0 50%;animation:page 1s ease-in-out infinite}
+@keyframes page{0%,30%{transform:scaleX(1)}60%,100%{transform:scaleX(-1)}}
+.a-search.run .it{animation:scan 1s steps(1) infinite}.a-search.run .gl{animation:blink 1s steps(1) infinite -.5s}
+@keyframes scan{25%{transform:translate(-1px,1px)}50%{transform:translate(-2px,2px)}75%{transform:translate(-1px,1px)}}
+.a-explore.run .it{transform-origin:0 100%;animation:sweep 1s ease-in-out infinite}
+@keyframes sweep{50%{transform:rotate(-14deg)}}
+.a-web.run{transform-origin:50% 100%;animation:sway 1s ease-in-out infinite}
+.a-web.run .la,.a-web.run .lb,.a-web.run .bd{animation:none}
+.a-web.run .wv{animation:wave 1s steps(2) infinite}
+@keyframes sway{25%{transform:rotate(-3deg)}75%{transform:rotate(3deg)}}@keyframes wave{50%{transform:translateX(-2px)}}
+.a-plan.run .it{animation:scribble .5s steps(1) infinite}
+@keyframes scribble{25%{transform:translate(-1px,1px)}50%{transform:translate(1px,0)}75%{transform:translate(0,1px)}}
+.a-think.run .la,.a-think.run .lb{animation:none}
+.a-think.run .d1{animation:blink 1s steps(1) infinite}.a-think.run .d2{animation:blink 1s steps(1) infinite -.66s}.a-think.run .d3{animation:blink 1s steps(1) infinite -.33s}
+.a-cook.run .pan{transform-origin:0 50%;animation:tilt 1s ease-in-out infinite}
+.a-cook.run .egg{animation:flip 1s ease-in-out infinite}
+@keyframes tilt{20%,40%{transform:rotate(-12deg)}}@keyframes flip{30%{transform:translateY(-5px) scaleY(-1)}60%{transform:translateY(0)}}
+.a-build.run .it{transform-origin:50% 100%;animation:hammer .5s ease-in infinite}
+@keyframes hammer{50%{transform:rotate(-35deg)}}
+.a-paint.run .it,.a-paint.run .tip{transform-origin:50% 100%;animation:brush .5s ease-in-out infinite}
+.a-paint.run .tip rect{animation:hue 1s steps(1) infinite}
+@keyframes brush{50%{transform:rotate(18deg)}}@keyframes hue{0%{fill:#7F77DD}33%{fill:#D0453F}66%{fill:#1D9E75}}
+.a-quill.run .it{transform-origin:0 100%;animation:write .5s ease-in-out infinite}
+@keyframes write{50%{transform:rotate(10deg) translateX(1px)}}
+.a-tinker.run .it{transform-origin:100% 100%;animation:twist .5s ease-in-out infinite}
+.a-tinker.run .gr{transform-origin:50% 50%;animation:spin 1s linear infinite}
+@keyframes twist{50%{transform:rotate(-35deg)}}@keyframes spin{to{transform:rotate(90deg)}}
+.a-test.run .it{transform-origin:50% 100%;animation:swirl .5s ease-in-out infinite}
+.a-test.run .b1{animation:rise 1s linear infinite}.a-test.run .b2{animation:rise 1s linear infinite -.5s}
+@keyframes swirl{25%{transform:rotate(-8deg)}75%{transform:rotate(8deg)}}@keyframes rise{0%{transform:translateY(2px);opacity:1}100%{transform:translateY(-3px);opacity:0}}
+.a-terminal.run .la,.a-terminal.run .lb,.a-terminal.run .bd{animation:none}
+.a-terminal.run .ta{animation:st .25s steps(1) infinite}.a-terminal.run .tb{animation:st .25s steps(1) infinite -.125s}
+.a-terminal.run .cur{animation:blink .5s steps(1) infinite}
+.a-install.run .la{animation-duration:.25s}.a-install.run .lb{animation-duration:.25s;animation-delay:-.125s}
+.a-install.run .bx{animation:bob .25s steps(1) infinite}
+.a-git.run .it{animation:bob .5s steps(1) infinite}
+.a-juggle.run .la,.a-juggle.run .lb{animation:none}
+.a-juggle.run .ta{animation:st .5s steps(1) infinite}.a-juggle.run .tb{animation:st .5s steps(1) infinite -.25s}
+.a-juggle.run .j1{animation:hop 1s ease-in-out infinite}.a-juggle.run .j2{animation:hop 1s ease-in-out infinite -.33s}.a-juggle.run .j3{animation:hop 1s ease-in-out infinite -.66s}
+@keyframes hop{50%{transform:translateY(-4px)}}
+.a-wait.run .la,.a-wait.run .lb{animation:none}
+.a-wait.run .sg{transform-origin:50% 100%;animation:sway 1s ease-in-out infinite}
+.a-deliver.run .la{animation-duration:.25s}.a-deliver.run .lb{animation-duration:.25s;animation-delay:-.125s}
+.a-deliver.run .c1,.a-deliver.run .c2,.a-deliver.run .c3,.a-deliver.run .c4{animation:fall 1s linear infinite}
+.a-deliver.run .c2{animation-delay:-.25s}.a-deliver.run .c3{animation-delay:-.5s}.a-deliver.run .c4{animation-delay:-.75s}
+@keyframes fall{0%{transform:translateY(0);opacity:1}100%{transform:translateY(8px);opacity:0}}
+.a-oops.run .la,.a-oops.run .lb,.a-oops.run .bd{animation:none}
+.a-oops.run .dr{animation:fall 1s linear infinite}
+@media (prefers-reduced-motion: reduce){.run,.run g,.run rect{animation:none!important}}
+</style>
+<g transform="translate(0,5) scale(2)" shape-rendering="crispEdges"><g class="a-cook run"><g class="bd"><rect x="7" y="10" width="16" height="12" fill="#D97757"/><rect x="3" y="14" width="4" height="4" fill="#D97757"/><rect x="9" y="12" width="2" height="2" fill="#1F1E1D"/><rect x="19" y="12" width="2" height="2" fill="#1F1E1D"/><rect x="14" y="1" width="1" height="1" fill="#F7F6F2"/><rect x="15" y="1" width="1" height="1" fill="#F7F6F2"/><rect x="16" y="1" width="1" height="1" fill="#F7F6F2"/><rect x="13" y="2" width="1" height="1" fill="#F7F6F2"/><rect x="14" y="2" width="1" height="1" fill="#F7F6F2"/><rect x="15" y="2" width="1" height="1" fill="#F7F6F2"/><rect x="16" y="2" width="1" height="1" fill="#F7F6F2"/><rect x="17" y="2" width="1" height="1" fill="#F7F6F2"/><rect x="7" y="3" width="1" height="1" fill="#F4F3EE"/><rect x="8" y="3" width="1" height="1" fill="#F4F3EE"/><rect x="9" y="3" width="1" height="1" fill="#F4F3EE"/><rect x="10" y="3" width="1" height="1" fill="#F4F3EE"/><rect x="11" y="3" width="1" height="1" fill="#D2D1C8"/><rect x="12" y="3" width="1" height="1" fill="#F4F3EE"/><rect x="13" y="3" width="1" height="1" fill="#F4F3EE"/><rect x="14" y="3" width="1" height="1" fill="#F4F3EE"/><rect x="15" y="3" width="1" height="1" fill="#F4F3EE"/><rect x="16" y="3" width="1" height="1" fill="#F4F3EE"/><rect x="17" y="3" width="1" height="1" fill="#F4F3EE"/><rect x="18" y="3" width="1" height="1" fill="#D2D1C8"/><rect x="19" y="3" width="1" height="1" fill="#F4F3EE"/><rect x="20" y="3" width="1" height="1" fill="#F4F3EE"/><rect x="21" y="3" width="1" height="1" fill="#F4F3EE"/><rect x="22" y="3" width="1" height="1" fill="#F4F3EE"/><rect x="23" y="3" width="1" height="1" fill="#F4F3EE"/><rect x="6" y="4" width="1" height="1" fill="#F4F3EE"/><rect x="7" y="4" width="1" height="1" fill="#F4F3EE"/><rect x="8" y="4" width="1" height="1" fill="#F4F3EE"/><rect x="9" y="4" width="1" height="1" fill="#F4F3EE"/><rect x="10" y="4" width="1" height="1" fill="#F4F3EE"/><rect x="11" y="4" width="1" height="1" fill="#F4F3EE"/><rect x="12" y="4" width="1" height="1" fill="#F4F3EE"/><rect x="13" y="4" width="1" height="1" fill="#F4F3EE"/><rect x="14" y="4" width="1" height="1" fill="#F4F3EE"/><rect x="15" y="4" width="1" height="1" fill="#F4F3EE"/><rect x="16" y="4" width="1" height="1" fill="#F4F3EE"/><rect x="17" y="4" width="1" height="1" fill="#F4F3EE"/><rect x="18" y="4" width="1" height="1" fill="#F4F3EE"/><rect x="19" y="4" width="1" height="1" fill="#F4F3EE"/><rect x="20" y="4" width="1" height="1" fill="#F4F3EE"/><rect x="21" y="4" width="1" height="1" fill="#F4F3EE"/><rect x="22" y="4" width="1" height="1" fill="#F4F3EE"/><rect x="23" y="4" width="1" height="1" fill="#F4F3EE"/><rect x="6" y="5" width="1" height="1" fill="#F4F3EE"/><rect x="7" y="5" width="1" height="1" fill="#F4F3EE"/><rect x="8" y="5" width="1" height="1" fill="#F4F3EE"/><rect x="9" y="5" width="1" height="1" fill="#F4F3EE"/><rect x="10" y="5" width="1" height="1" fill="#F4F3EE"/><rect x="11" y="5" width="1" height="1" fill="#F4F3EE"/><rect x="12" y="5" width="1" height="1" fill="#F4F3EE"/><rect x="13" y="5" width="1" height="1" fill="#F4F3EE"/><rect x="14" y="5" width="1" height="1" fill="#F4F3EE"/><rect x="15" y="5" width="1" height="1" fill="#F4F3EE"/><rect x="16" y="5" width="1" height="1" fill="#F4F3EE"/><rect x="17" y="5" width="1" height="1" fill="#F4F3EE"/><rect x="18" y="5" width="1" height="1" fill="#F4F3EE"/><rect x="19" y="5" width="1" height="1" fill="#F4F3EE"/><rect x="20" y="5" width="1" height="1" fill="#F4F3EE"/><rect x="21" y="5" width="1" height="1" fill="#F4F3EE"/><rect x="22" y="5" width="1" height="1" fill="#F4F3EE"/><rect x="23" y="5" width="1" height="1" fill="#F4F3EE"/><rect x="6" y="6" width="1" height="1" fill="#F4F3EE"/><rect x="7" y="6" width="1" height="1" fill="#F4F3EE"/><rect x="8" y="6" width="1" height="1" fill="#F4F3EE"/><rect x="9" y="6" width="1" height="1" fill="#F4F3EE"/><rect x="10" y="6" width="1" height="1" fill="#F4F3EE"/><rect x="11" y="6" width="1" height="1" fill="#D2D1C8"/><rect x="12" y="6" width="1" height="1" fill="#F4F3EE"/><rect x="13" y="6" width="1" height="1" fill="#F4F3EE"/><rect x="14" y="6" width="1" height="1" fill="#F4F3EE"/><rect x="15" y="6" width="1" height="1" fill="#F4F3EE"/><rect x="16" y="6" width="1" height="1" fill="#F4F3EE"/><rect x="17" y="6" width="1" height="1" fill="#D2D1C8"/><rect x="18" y="6" width="1" height="1" fill="#D2D1C8"/><rect x="19" y="6" width="1" height="1" fill="#F4F3EE"/><rect x="20" y="6" width="1" height="1" fill="#F4F3EE"/><rect x="21" y="6" width="1" height="1" fill="#F4F3EE"/><rect x="22" y="6" width="1" height="1" fill="#F4F3EE"/><rect x="23" y="6" width="1" height="1" fill="#F4F3EE"/><rect x="7" y="7" width="1" height="1" fill="#F4F3EE"/><rect x="8" y="7" width="1" height="1" fill="#F4F3EE"/><rect x="9" y="7" width="1" height="1" fill="#F4F3EE"/><rect x="10" y="7" width="1" height="1" fill="#F4F3EE"/><rect x="11" y="7" width="1" height="1" fill="#D2D1C8"/><rect x="12" y="7" width="1" height="1" fill="#F4F3EE"/><rect x="13" y="7" width="1" height="1" fill="#F4F3EE"/><rect x="14" y="7" width="1" height="1" fill="#F4F3EE"/><rect x="15" y="7" width="1" height="1" fill="#F4F3EE"/><rect x="16" y="7" width="1" height="1" fill="#F4F3EE"/><rect x="17" y="7" width="1" height="1" fill="#D2D1C8"/><rect x="18" y="7" width="1" height="1" fill="#D2D1C8"/><rect x="19" y="7" width="1" height="1" fill="#F4F3EE"/><rect x="20" y="7" width="1" height="1" fill="#F4F3EE"/><rect x="21" y="7" width="1" height="1" fill="#F4F3EE"/><rect x="22" y="7" width="1" height="1" fill="#F4F3EE"/><rect x="23" y="7" width="1" height="1" fill="#F4F3EE"/><rect x="7" y="8" width="1" height="1" fill="#C9C7BE"/><rect x="8" y="8" width="1" height="1" fill="#C9C7BE"/><rect x="9" y="8" width="1" height="1" fill="#C9C7BE"/><rect x="10" y="8" width="1" height="1" fill="#E4E2DA"/><rect x="11" y="8" width="1" height="1" fill="#E4E2DA"/><rect x="12" y="8" width="1" height="1" fill="#E4E2DA"/><rect x="13" y="8" width="1" height="1" fill="#E4E2DA"/><rect x="14" y="8" width="1" height="1" fill="#E4E2DA"/><rect x="15" y="8" width="1" height="1" fill="#E4E2DA"/><rect x="16" y="8" width="1" height="1" fill="#E4E2DA"/><rect x="17" y="8" width="1" height="1" fill="#E4E2DA"/><rect x="18" y="8" width="1" height="1" fill="#E4E2DA"/><rect x="19" y="8" width="1" height="1" fill="#E4E2DA"/><rect x="20" y="8" width="1" height="1" fill="#E4E2DA"/><rect x="21" y="8" width="1" height="1" fill="#E4E2DA"/><rect x="22" y="8" width="1" height="1" fill="#E4E2DA"/><rect x="7" y="9" width="1" height="1" fill="#C9C7BE"/><rect x="8" y="9" width="1" height="1" fill="#C9C7BE"/><rect x="9" y="9" width="1" height="1" fill="#C9C7BE"/><rect x="10" y="9" width="1" height="1" fill="#E4E2DA"/><rect x="11" y="9" width="1" height="1" fill="#E4E2DA"/><rect x="12" y="9" width="1" height="1" fill="#E4E2DA"/><rect x="13" y="9" width="1" height="1" fill="#E4E2DA"/><rect x="14" y="9" width="1" height="1" fill="#E4E2DA"/><rect x="15" y="9" width="1" height="1" fill="#E4E2DA"/><rect x="16" y="9" width="1" height="1" fill="#E4E2DA"/><rect x="17" y="9" width="1" height="1" fill="#E4E2DA"/><rect x="18" y="9" width="1" height="1" fill="#E4E2DA"/><rect x="19" y="9" width="1" height="1" fill="#E4E2DA"/><rect x="20" y="9" width="1" height="1" fill="#E4E2DA"/><rect x="21" y="9" width="1" height="1" fill="#E4E2DA"/><rect x="22" y="9" width="1" height="1" fill="#E4E2DA"/><g class="pan"><rect x="23" y="10" width="4" height="4" fill="#D97757"/><rect x="22" y="8" width="7" height="2" fill="#4A4A48"/><rect x="28" y="10" width="1" height="1" fill="#4A4A48"/></g><g class="egg"><rect x="24" y="7" width="3" height="1" fill="#F5B731"/><rect x="23" y="7" width="1" height="1" fill="#FFFFFF"/></g></g><g class="la"><rect x="7" y="22" width="2" height="4" fill="#D97757"/><rect x="17" y="22" width="2" height="4" fill="#D97757"/></g><g class="lb"><rect x="11" y="22" width="2" height="4" fill="#D97757"/><rect x="21" y="22" width="2" height="4" fill="#D97757"/></g></g></g>
+<text class="t" x="72" y="15" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="13" font-weight="600">Swap the old logo for the new one everywhere</text>
+<g transform="translate(597.44,1) scale(0.45)" shape-rendering="crispEdges"><g class="a-search run"><g class="bd"><rect x="7" y="10" width="16" height="12" fill="#D97757"/><rect x="3" y="14" width="4" height="4" fill="#D97757"/><rect x="9" y="12" width="2" height="2" fill="#1F1E1D"/><rect x="19" y="12" width="2" height="2" fill="#1F1E1D"/><g class="it"><rect x="23" y="10" width="4" height="4" fill="#D97757"/><rect x="24" y="1" width="1" height="1" fill="#3A3A3C"/><rect x="25" y="1" width="1" height="1" fill="#3A3A3C"/><rect x="26" y="1" width="1" height="1" fill="#3A3A3C"/><rect x="23" y="2" width="1" height="1" fill="#3A3A3C"/><rect x="27" y="2" width="1" height="1" fill="#3A3A3C"/><rect x="23" y="3" width="1" height="1" fill="#3A3A3C"/><rect x="27" y="3" width="1" height="1" fill="#3A3A3C"/><rect x="23" y="4" width="1" height="1" fill="#3A3A3C"/><rect x="27" y="4" width="1" height="1" fill="#3A3A3C"/><rect x="24" y="5" width="1" height="1" fill="#3A3A3C"/><rect x="25" y="5" width="1" height="1" fill="#3A3A3C"/><rect x="26" y="5" width="1" height="1" fill="#3A3A3C"/><rect x="24" y="2" width="3" height="3" fill="rgba(169,214,245,.7)"/><rect x="25" y="6" width="1" height="4" fill="#7A4A26"/></g><g class="gl"><rect x="24" y="2" width="1" height="1" fill="#FFFFFF"/></g></g><g class="la"><rect x="7" y="22" width="2" height="4" fill="#D97757"/><rect x="17" y="22" width="2" height="4" fill="#D97757"/></g><g class="lb"><rect x="11" y="22" width="2" height="4" fill="#D97757"/><rect x="21" y="22" width="2" height="4" fill="#D97757"/></g></g></g><g transform="translate(614.44,1) scale(0.45)" shape-rendering="crispEdges"><g class="a-read run"><g class="bd"><rect x="7" y="10" width="16" height="12" fill="#D97757"/><rect x="3" y="14" width="4" height="4" fill="#D97757"/><rect x="23" y="14" width="4" height="4" fill="#D97757"/><rect x="9" y="12" width="2" height="2" fill="#1F1E1D"/><rect x="19" y="12" width="2" height="2" fill="#1F1E1D"/><rect x="8" y="11" width="4" height="1" fill="#1F1E1D"/><rect x="8" y="14" width="4" height="1" fill="#1F1E1D"/><rect x="8" y="11" width="1" height="4" fill="#1F1E1D"/><rect x="11" y="11" width="1" height="4" fill="#1F1E1D"/><rect x="18" y="11" width="4" height="1" fill="#1F1E1D"/><rect x="18" y="14" width="4" height="1" fill="#1F1E1D"/><rect x="18" y="11" width="1" height="4" fill="#1F1E1D"/><rect x="21" y="11" width="1" height="4" fill="#1F1E1D"/><rect x="12" y="12" width="6" height="1" fill="#1F1E1D"/><rect x="8" y="17" width="15" height="5" fill="#7A4A26"/><rect x="9" y="17" width="6" height="4" fill="#F4F3EE"/><rect x="16" y="17" width="6" height="4" fill="#F4F3EE"/><rect x="15" y="17" width="1" height="5" fill="#5A3519"/><rect x="10" y="18" width="4" height="1" fill="#C9C7BE"/><rect x="10" y="20" width="3" height="1" fill="#C9C7BE"/><rect x="17" y="18" width="4" height="1" fill="#C9C7BE"/><rect x="17" y="20" width="3" height="1" fill="#C9C7BE"/><g class="pg"><rect x="16" y="17" width="6" height="4" fill="#FFFFFF"/></g></g><g class="la"><rect x="7" y="22" width="2" height="4" fill="#D97757"/><rect x="17" y="22" width="2" height="4" fill="#D97757"/></g><g class="lb"><rect x="11" y="22" width="2" height="4" fill="#D97757"/><rect x="21" y="22" width="2" height="4" fill="#D97757"/></g></g></g>
+<text x="816" y="15" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="12" fill="#D97757" font-weight="500">Medium job · about 2 min left</text>
+<clipPath id="fc3"><rect class="cf3" x="72" y="20" width="744" height="15"/></clipPath><rect class="k" x="72" y="24" width="144.8" height="7" rx="3.5"/><rect class="k" x="221.8" y="24" width="144.8" height="7" rx="3.5"/><rect class="k now" x="371.6" y="24" width="144.8" height="7" rx="3.5"/><rect class="k" x="521.4000000000001" y="24" width="144.8" height="7" rx="3.5"/><rect class="k" x="671.2" y="24" width="144.8" height="7" rx="3.5"/><g clip-path="url(#fc3)"><rect class="" x="72" y="24" width="144.8" height="7" rx="3.5" fill="#D97757"/><rect class="" x="221.8" y="24" width="144.8" height="7" rx="3.5" fill="#D97757"/><rect class="now" x="371.6" y="24" width="144.8" height="7" rx="3.5" fill="#D97757"/><rect class="" x="521.4000000000001" y="24" width="144.8" height="7" rx="3.5" fill="#D97757"/><rect class="" x="671.2" y="24" width="144.8" height="7" rx="3.5" fill="#D97757"/></g><text class="s" x="72" y="44" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="10.5">Reading</text><text class="s" x="221.8" y="44" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="10.5">Prepping</text><text class="t" x="371.6" y="44" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="10.5" font-weight="600">Cooking</text><text class="m" x="521.4000000000001" y="44" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="10.5">Taste test</text><text class="m" x="671.2" y="44" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="10.5">Delivered</text>
+<text class="t" x="72" y="61" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="12">Swapping the logo</text>
+<text class="m" x="816" y="61" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="11.5" font-variant-numeric="tabular-nums">2/4 tasks · 1:35 · 131k tok · ctx 6% · ≈$0.28 · 5h 42% · wk 18%</text>
+</g><g class="fr4"><style>
+.t{fill:#1f1f1f}.s{fill:#6b6b68}.m{fill:#9a9a96}.k{fill:#e7e5e0}
+@media (prefers-color-scheme: dark){.t{fill:#ececec}.s{fill:#a8a8a4}.m{fill:#7d7d79}.k{fill:#30302e}}
+.now{animation:pulse 1s ease-in-out infinite}@keyframes pulse{50%{opacity:.45}}
+@media (prefers-reduced-motion: reduce){.now{animation:none}}
+</style><style>.cf4{transform-origin:72px 0;transform:scaleX(0.00000)}@keyframes fill4{from{transform:scaleX(0.00000)}to{transform:scaleX(0.00000)}}@media (prefers-reduced-motion: reduce){.cf4{animation:none}}</style><style>
+.run,.run g{transform-box:fill-box}
+.run .la{animation:st .5s steps(1) infinite}.run .lb{animation:st .5s steps(1) infinite -.25s}
+.run .bd{animation:bob .5s steps(1) infinite -.125s}
+@keyframes st{50%{transform:translateY(-1px)}}@keyframes bob{50%{transform:translateY(1px)}}
+@keyframes blink{50%{opacity:.15}}
+.a-order.run .it{animation:bob .5s steps(1) infinite}
+.a-read.run .la,.a-read.run .lb,.a-read.run .bd{animation:none}
+.a-read.run .pg{transform-origin:0 50%;animation:page 1s ease-in-out infinite}
+@keyframes page{0%,30%{transform:scaleX(1)}60%,100%{transform:scaleX(-1)}}
+.a-search.run .it{animation:scan 1s steps(1) infinite}.a-search.run .gl{animation:blink 1s steps(1) infinite -.5s}
+@keyframes scan{25%{transform:translate(-1px,1px)}50%{transform:translate(-2px,2px)}75%{transform:translate(-1px,1px)}}
+.a-explore.run .it{transform-origin:0 100%;animation:sweep 1s ease-in-out infinite}
+@keyframes sweep{50%{transform:rotate(-14deg)}}
+.a-web.run{transform-origin:50% 100%;animation:sway 1s ease-in-out infinite}
+.a-web.run .la,.a-web.run .lb,.a-web.run .bd{animation:none}
+.a-web.run .wv{animation:wave 1s steps(2) infinite}
+@keyframes sway{25%{transform:rotate(-3deg)}75%{transform:rotate(3deg)}}@keyframes wave{50%{transform:translateX(-2px)}}
+.a-plan.run .it{animation:scribble .5s steps(1) infinite}
+@keyframes scribble{25%{transform:translate(-1px,1px)}50%{transform:translate(1px,0)}75%{transform:translate(0,1px)}}
+.a-think.run .la,.a-think.run .lb{animation:none}
+.a-think.run .d1{animation:blink 1s steps(1) infinite}.a-think.run .d2{animation:blink 1s steps(1) infinite -.66s}.a-think.run .d3{animation:blink 1s steps(1) infinite -.33s}
+.a-cook.run .pan{transform-origin:0 50%;animation:tilt 1s ease-in-out infinite}
+.a-cook.run .egg{animation:flip 1s ease-in-out infinite}
+@keyframes tilt{20%,40%{transform:rotate(-12deg)}}@keyframes flip{30%{transform:translateY(-5px) scaleY(-1)}60%{transform:translateY(0)}}
+.a-build.run .it{transform-origin:50% 100%;animation:hammer .5s ease-in infinite}
+@keyframes hammer{50%{transform:rotate(-35deg)}}
+.a-paint.run .it,.a-paint.run .tip{transform-origin:50% 100%;animation:brush .5s ease-in-out infinite}
+.a-paint.run .tip rect{animation:hue 1s steps(1) infinite}
+@keyframes brush{50%{transform:rotate(18deg)}}@keyframes hue{0%{fill:#7F77DD}33%{fill:#D0453F}66%{fill:#1D9E75}}
+.a-quill.run .it{transform-origin:0 100%;animation:write .5s ease-in-out infinite}
+@keyframes write{50%{transform:rotate(10deg) translateX(1px)}}
+.a-tinker.run .it{transform-origin:100% 100%;animation:twist .5s ease-in-out infinite}
+.a-tinker.run .gr{transform-origin:50% 50%;animation:spin 1s linear infinite}
+@keyframes twist{50%{transform:rotate(-35deg)}}@keyframes spin{to{transform:rotate(90deg)}}
+.a-test.run .it{transform-origin:50% 100%;animation:swirl .5s ease-in-out infinite}
+.a-test.run .b1{animation:rise 1s linear infinite}.a-test.run .b2{animation:rise 1s linear infinite -.5s}
+@keyframes swirl{25%{transform:rotate(-8deg)}75%{transform:rotate(8deg)}}@keyframes rise{0%{transform:translateY(2px);opacity:1}100%{transform:translateY(-3px);opacity:0}}
+.a-terminal.run .la,.a-terminal.run .lb,.a-terminal.run .bd{animation:none}
+.a-terminal.run .ta{animation:st .25s steps(1) infinite}.a-terminal.run .tb{animation:st .25s steps(1) infinite -.125s}
+.a-terminal.run .cur{animation:blink .5s steps(1) infinite}
+.a-install.run .la{animation-duration:.25s}.a-install.run .lb{animation-duration:.25s;animation-delay:-.125s}
+.a-install.run .bx{animation:bob .25s steps(1) infinite}
+.a-git.run .it{animation:bob .5s steps(1) infinite}
+.a-juggle.run .la,.a-juggle.run .lb{animation:none}
+.a-juggle.run .ta{animation:st .5s steps(1) infinite}.a-juggle.run .tb{animation:st .5s steps(1) infinite -.25s}
+.a-juggle.run .j1{animation:hop 1s ease-in-out infinite}.a-juggle.run .j2{animation:hop 1s ease-in-out infinite -.33s}.a-juggle.run .j3{animation:hop 1s ease-in-out infinite -.66s}
+@keyframes hop{50%{transform:translateY(-4px)}}
+.a-wait.run .la,.a-wait.run .lb{animation:none}
+.a-wait.run .sg{transform-origin:50% 100%;animation:sway 1s ease-in-out infinite}
+.a-deliver.run .la{animation-duration:.25s}.a-deliver.run .lb{animation-duration:.25s;animation-delay:-.125s}
+.a-deliver.run .c1,.a-deliver.run .c2,.a-deliver.run .c3,.a-deliver.run .c4{animation:fall 1s linear infinite}
+.a-deliver.run .c2{animation-delay:-.25s}.a-deliver.run .c3{animation-delay:-.5s}.a-deliver.run .c4{animation-delay:-.75s}
+@keyframes fall{0%{transform:translateY(0);opacity:1}100%{transform:translateY(8px);opacity:0}}
+.a-oops.run .la,.a-oops.run .lb,.a-oops.run .bd{animation:none}
+.a-oops.run .dr{animation:fall 1s linear infinite}
+@media (prefers-reduced-motion: reduce){.run,.run g,.run rect{animation:none!important}}
+</style>
+<g transform="translate(0,5) scale(2)" shape-rendering="crispEdges"><g class="a-wait run"><g class="bd"><rect x="7" y="10" width="16" height="12" fill="#D97757"/><rect x="3" y="8" width="4" height="4" fill="#D97757"/><rect x="23" y="8" width="4" height="4" fill="#D97757"/><rect x="9" y="12" width="2" height="2" fill="#1F1E1D"/><rect x="19" y="12" width="2" height="2" fill="#1F1E1D"/><g class="sg"><rect x="7" y="0" width="16" height="9" fill="#F4F3EE"/><rect x="7" y="8" width="16" height="1" fill="#C9C7BE"/><rect x="14" y="1" width="1" height="1" fill="#B45F43"/><rect x="15" y="1" width="1" height="1" fill="#B45F43"/><rect x="16" y="1" width="1" height="1" fill="#B45F43"/><rect x="13" y="2" width="1" height="1" fill="#B45F43"/><rect x="17" y="2" width="1" height="1" fill="#B45F43"/><rect x="16" y="3" width="1" height="1" fill="#B45F43"/><rect x="15" y="4" width="1" height="1" fill="#B45F43"/><rect x="15" y="6" width="1" height="1" fill="#B45F43"/></g></g><g class="la"><rect x="7" y="22" width="2" height="4" fill="#D97757"/><rect x="17" y="22" width="2" height="4" fill="#D97757"/></g><g class="lb"><rect x="11" y="22" width="2" height="4" fill="#D97757"/><rect x="21" y="22" width="2" height="4" fill="#D97757"/></g></g></g>
+<text class="t" x="72" y="15" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="13" font-weight="600">Swap the old logo for the new one everywhere</text>
+
+<text x="816" y="15" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="12" fill="#E0A33B" font-weight="600" class="now">Waiting on you · 0:09</text>
+<clipPath id="fc4"><rect class="cf4" x="72" y="20" width="744" height="15"/></clipPath><rect class="k" x="72" y="24" width="144.8" height="7" rx="3.5"/><rect class="k" x="221.8" y="24" width="144.8" height="7" rx="3.5"/><rect class="k now" x="371.6" y="24" width="144.8" height="7" rx="3.5"/><rect class="k" x="521.4000000000001" y="24" width="144.8" height="7" rx="3.5"/><rect class="k" x="671.2" y="24" width="144.8" height="7" rx="3.5"/><g clip-path="url(#fc4)"><rect class="" x="72" y="24" width="144.8" height="7" rx="3.5" fill="#D97757"/><rect class="" x="221.8" y="24" width="144.8" height="7" rx="3.5" fill="#D97757"/><rect class="now" x="371.6" y="24" width="144.8" height="7" rx="3.5" fill="#D97757"/><rect class="" x="521.4000000000001" y="24" width="144.8" height="7" rx="3.5" fill="#D97757"/><rect class="" x="671.2" y="24" width="144.8" height="7" rx="3.5" fill="#D97757"/></g><text class="s" x="72" y="44" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="10.5">Reading</text><text class="s" x="221.8" y="44" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="10.5">Prepping</text><text class="t" x="371.6" y="44" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="10.5" font-weight="600">Cooking</text><text class="m" x="521.4000000000001" y="44" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="10.5">Taste test</text><text class="m" x="671.2" y="44" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="10.5">Delivered</text>
+<text class="t" x="72" y="61" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="12">Needs your OK on Bash</text>
+<text class="m" x="816" y="61" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="11.5" font-variant-numeric="tabular-nums">2/4 tasks · 1:49 · 131k tok · ctx 6% · ≈$0.28 · 5h 42% · wk 18%</text>
+</g><g class="fr5"><style>
+.t{fill:#1f1f1f}.s{fill:#6b6b68}.m{fill:#9a9a96}.k{fill:#e7e5e0}
+@media (prefers-color-scheme: dark){.t{fill:#ececec}.s{fill:#a8a8a4}.m{fill:#7d7d79}.k{fill:#30302e}}
+.now{animation:pulse 1s ease-in-out infinite}@keyframes pulse{50%{opacity:.45}}
+@media (prefers-reduced-motion: reduce){.now{animation:none}}
+</style><style>.cf5{transform-origin:72px 0;transform:scaleX(0.60403)}@keyframes fill5{from{transform:scaleX(0.60403)}to{transform:scaleX(0.60403)}}@media (prefers-reduced-motion: reduce){.cf5{animation:none}}</style><style>
+.run,.run g{transform-box:fill-box}
+.run .la{animation:st .5s steps(1) infinite}.run .lb{animation:st .5s steps(1) infinite -.25s}
+.run .bd{animation:bob .5s steps(1) infinite -.125s}
+@keyframes st{50%{transform:translateY(-1px)}}@keyframes bob{50%{transform:translateY(1px)}}
+@keyframes blink{50%{opacity:.15}}
+.a-order.run .it{animation:bob .5s steps(1) infinite}
+.a-read.run .la,.a-read.run .lb,.a-read.run .bd{animation:none}
+.a-read.run .pg{transform-origin:0 50%;animation:page 1s ease-in-out infinite}
+@keyframes page{0%,30%{transform:scaleX(1)}60%,100%{transform:scaleX(-1)}}
+.a-search.run .it{animation:scan 1s steps(1) infinite}.a-search.run .gl{animation:blink 1s steps(1) infinite -.5s}
+@keyframes scan{25%{transform:translate(-1px,1px)}50%{transform:translate(-2px,2px)}75%{transform:translate(-1px,1px)}}
+.a-explore.run .it{transform-origin:0 100%;animation:sweep 1s ease-in-out infinite}
+@keyframes sweep{50%{transform:rotate(-14deg)}}
+.a-web.run{transform-origin:50% 100%;animation:sway 1s ease-in-out infinite}
+.a-web.run .la,.a-web.run .lb,.a-web.run .bd{animation:none}
+.a-web.run .wv{animation:wave 1s steps(2) infinite}
+@keyframes sway{25%{transform:rotate(-3deg)}75%{transform:rotate(3deg)}}@keyframes wave{50%{transform:translateX(-2px)}}
+.a-plan.run .it{animation:scribble .5s steps(1) infinite}
+@keyframes scribble{25%{transform:translate(-1px,1px)}50%{transform:translate(1px,0)}75%{transform:translate(0,1px)}}
+.a-think.run .la,.a-think.run .lb{animation:none}
+.a-think.run .d1{animation:blink 1s steps(1) infinite}.a-think.run .d2{animation:blink 1s steps(1) infinite -.66s}.a-think.run .d3{animation:blink 1s steps(1) infinite -.33s}
+.a-cook.run .pan{transform-origin:0 50%;animation:tilt 1s ease-in-out infinite}
+.a-cook.run .egg{animation:flip 1s ease-in-out infinite}
+@keyframes tilt{20%,40%{transform:rotate(-12deg)}}@keyframes flip{30%{transform:translateY(-5px) scaleY(-1)}60%{transform:translateY(0)}}
+.a-build.run .it{transform-origin:50% 100%;animation:hammer .5s ease-in infinite}
+@keyframes hammer{50%{transform:rotate(-35deg)}}
+.a-paint.run .it,.a-paint.run .tip{transform-origin:50% 100%;animation:brush .5s ease-in-out infinite}
+.a-paint.run .tip rect{animation:hue 1s steps(1) infinite}
+@keyframes brush{50%{transform:rotate(18deg)}}@keyframes hue{0%{fill:#7F77DD}33%{fill:#D0453F}66%{fill:#1D9E75}}
+.a-quill.run .it{transform-origin:0 100%;animation:write .5s ease-in-out infinite}
+@keyframes write{50%{transform:rotate(10deg) translateX(1px)}}
+.a-tinker.run .it{transform-origin:100% 100%;animation:twist .5s ease-in-out infinite}
+.a-tinker.run .gr{transform-origin:50% 50%;animation:spin 1s linear infinite}
+@keyframes twist{50%{transform:rotate(-35deg)}}@keyframes spin{to{transform:rotate(90deg)}}
+.a-test.run .it{transform-origin:50% 100%;animation:swirl .5s ease-in-out infinite}
+.a-test.run .b1{animation:rise 1s linear infinite}.a-test.run .b2{animation:rise 1s linear infinite -.5s}
+@keyframes swirl{25%{transform:rotate(-8deg)}75%{transform:rotate(8deg)}}@keyframes rise{0%{transform:translateY(2px);opacity:1}100%{transform:translateY(-3px);opacity:0}}
+.a-terminal.run .la,.a-terminal.run .lb,.a-terminal.run .bd{animation:none}
+.a-terminal.run .ta{animation:st .25s steps(1) infinite}.a-terminal.run .tb{animation:st .25s steps(1) infinite -.125s}
+.a-terminal.run .cur{animation:blink .5s steps(1) infinite}
+.a-install.run .la{animation-duration:.25s}.a-install.run .lb{animation-duration:.25s;animation-delay:-.125s}
+.a-install.run .bx{animation:bob .25s steps(1) infinite}
+.a-git.run .it{animation:bob .5s steps(1) infinite}
+.a-juggle.run .la,.a-juggle.run .lb{animation:none}
+.a-juggle.run .ta{animation:st .5s steps(1) infinite}.a-juggle.run .tb{animation:st .5s steps(1) infinite -.25s}
+.a-juggle.run .j1{animation:hop 1s ease-in-out infinite}.a-juggle.run .j2{animation:hop 1s ease-in-out infinite -.33s}.a-juggle.run .j3{animation:hop 1s ease-in-out infinite -.66s}
+@keyframes hop{50%{transform:translateY(-4px)}}
+.a-wait.run .la,.a-wait.run .lb{animation:none}
+.a-wait.run .sg{transform-origin:50% 100%;animation:sway 1s ease-in-out infinite}
+.a-deliver.run .la{animation-duration:.25s}.a-deliver.run .lb{animation-duration:.25s;animation-delay:-.125s}
+.a-deliver.run .c1,.a-deliver.run .c2,.a-deliver.run .c3,.a-deliver.run .c4{animation:fall 1s linear infinite}
+.a-deliver.run .c2{animation-delay:-.25s}.a-deliver.run .c3{animation-delay:-.5s}.a-deliver.run .c4{animation-delay:-.75s}
+@keyframes fall{0%{transform:translateY(0);opacity:1}100%{transform:translateY(8px);opacity:0}}
+.a-oops.run .la,.a-oops.run .lb,.a-oops.run .bd{animation:none}
+.a-oops.run .dr{animation:fall 1s linear infinite}
+@media (prefers-reduced-motion: reduce){.run,.run g,.run rect{animation:none!important}}
+</style>
+<g transform="translate(0,5) scale(2)" shape-rendering="crispEdges"><g class="a-test run"><g class="bd"><rect x="7" y="10" width="16" height="12" fill="#D97757"/><rect x="3" y="14" width="4" height="4" fill="#D97757"/><rect x="9" y="12" width="2" height="2" fill="#1F1E1D"/><rect x="19" y="12" width="2" height="2" fill="#1F1E1D"/><rect x="8" y="11" width="4" height="4" fill="rgba(120,190,235,.45)"/><rect x="18" y="11" width="4" height="4" fill="rgba(120,190,235,.45)"/><rect x="12" y="12" width="6" height="1" fill="#55514C"/><rect x="7" y="12" width="1" height="1" fill="#55514C"/><rect x="22" y="12" width="1" height="1" fill="#55514C"/><g class="it"><rect x="23" y="10" width="4" height="4" fill="#D97757"/><rect x="25" y="3" width="1" height="1" fill="#CDE7F5"/><rect x="26" y="3" width="1" height="1" fill="#CDE7F5"/><rect x="25" y="4" width="1" height="1" fill="#CDE7F5"/><rect x="26" y="4" width="1" height="1" fill="#CDE7F5"/><rect x="25" y="5" width="1" height="1" fill="#CDE7F5"/><rect x="26" y="5" width="1" height="1" fill="#CDE7F5"/><rect x="24" y="6" width="1" height="1" fill="#CDE7F5"/><rect x="25" y="6" width="1" height="1" fill="#CDE7F5"/><rect x="26" y="6" width="1" height="1" fill="#CDE7F5"/><rect x="27" y="6" width="1" height="1" fill="#CDE7F5"/><rect x="23" y="7" width="1" height="1" fill="#CDE7F5"/><rect x="24" y="7" width="1" height="1" fill="#5FCB8A"/><rect x="25" y="7" width="1" height="1" fill="#5FCB8A"/><rect x="26" y="7" width="1" height="1" fill="#5FCB8A"/><rect x="27" y="7" width="1" height="1" fill="#5FCB8A"/><rect x="28" y="7" width="1" height="1" fill="#CDE7F5"/><rect x="23" y="8" width="1" height="1" fill="#CDE7F5"/><rect x="24" y="8" width="1" height="1" fill="#5FCB8A"/><rect x="25" y="8" width="1" height="1" fill="#5FCB8A"/><rect x="26" y="8" width="1" height="1" fill="#5FCB8A"/><rect x="27" y="8" width="1" height="1" fill="#5FCB8A"/><rect x="28" y="8" width="1" height="1" fill="#CDE7F5"/><rect x="24" y="9" width="1" height="1" fill="#CDE7F5"/><rect x="25" y="9" width="1" height="1" fill="#CDE7F5"/><rect x="26" y="9" width="1" height="1" fill="#CDE7F5"/><rect x="27" y="9" width="1" height="1" fill="#CDE7F5"/></g><g class="b1"><rect x="25" y="1" width="1" height="1" fill="#5FCB8A"/></g><g class="b2"><rect x="24" y="0" width="1" height="1" fill="#5FCB8A"/></g></g><g class="la"><rect x="7" y="22" width="2" height="4" fill="#D97757"/><rect x="17" y="22" width="2" height="4" fill="#D97757"/></g><g class="lb"><rect x="11" y="22" width="2" height="4" fill="#D97757"/><rect x="21" y="22" width="2" height="4" fill="#D97757"/></g></g></g>
+<text class="t" x="72" y="15" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="13" font-weight="600">Swap the old logo for the new one everywhere</text>
+
+<text x="816" y="15" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="12" fill="#D97757" font-weight="500">Medium job · under a minute left</text>
+<clipPath id="fc5"><rect class="cf5" x="72" y="20" width="744" height="15"/></clipPath><rect class="k" x="72" y="24" width="144.8" height="7" rx="3.5"/><rect class="k" x="221.8" y="24" width="144.8" height="7" rx="3.5"/><rect class="k" x="371.6" y="24" width="144.8" height="7" rx="3.5"/><rect class="k now" x="521.4000000000001" y="24" width="144.8" height="7" rx="3.5"/><rect class="k" x="671.2" y="24" width="144.8" height="7" rx="3.5"/><g clip-path="url(#fc5)"><rect class="" x="72" y="24" width="144.8" height="7" rx="3.5" fill="#D97757"/><rect class="" x="221.8" y="24" width="144.8" height="7" rx="3.5" fill="#D97757"/><rect class="" x="371.6" y="24" width="144.8" height="7" rx="3.5" fill="#D97757"/><rect class="now" x="521.4000000000001" y="24" width="144.8" height="7" rx="3.5" fill="#D97757"/><rect class="" x="671.2" y="24" width="144.8" height="7" rx="3.5" fill="#D97757"/></g><text class="s" x="72" y="44" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="10.5">Reading</text><text class="s" x="221.8" y="44" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="10.5">Prepping</text><text class="s" x="371.6" y="44" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="10.5">Cooking</text><text class="t" x="521.4000000000001" y="44" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="10.5" font-weight="600">Taste test</text><text class="m" x="671.2" y="44" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="10.5">Delivered</text>
+<text class="t" x="72" y="61" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="12">Swapping the logo</text>
+<text class="m" x="816" y="61" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="11.5" font-variant-numeric="tabular-nums">3/4 tasks · 2:50 · 244k tok · ctx 7% · ≈$0.52 · 5h 42% · wk 18%</text>
+</g><g class="fr6"><style>
+.t{fill:#1f1f1f}.s{fill:#6b6b68}.m{fill:#9a9a96}.k{fill:#e7e5e0}
+@media (prefers-color-scheme: dark){.t{fill:#ececec}.s{fill:#a8a8a4}.m{fill:#7d7d79}.k{fill:#30302e}}
+.now{animation:pulse 1s ease-in-out infinite}@keyframes pulse{50%{opacity:.45}}
+@media (prefers-reduced-motion: reduce){.now{animation:none}}
+</style><style>.cf6{transform-origin:72px 0;transform:scaleX(1.00000)}@keyframes fill6{from{transform:scaleX(1.00000)}to{transform:scaleX(1.00000)}}@media (prefers-reduced-motion: reduce){.cf6{animation:none}}</style><style>
+.run,.run g{transform-box:fill-box}
+.run .la{animation:st .5s steps(1) infinite}.run .lb{animation:st .5s steps(1) infinite -.25s}
+.run .bd{animation:bob .5s steps(1) infinite -.125s}
+@keyframes st{50%{transform:translateY(-1px)}}@keyframes bob{50%{transform:translateY(1px)}}
+@keyframes blink{50%{opacity:.15}}
+.a-order.run .it{animation:bob .5s steps(1) infinite}
+.a-read.run .la,.a-read.run .lb,.a-read.run .bd{animation:none}
+.a-read.run .pg{transform-origin:0 50%;animation:page 1s ease-in-out infinite}
+@keyframes page{0%,30%{transform:scaleX(1)}60%,100%{transform:scaleX(-1)}}
+.a-search.run .it{animation:scan 1s steps(1) infinite}.a-search.run .gl{animation:blink 1s steps(1) infinite -.5s}
+@keyframes scan{25%{transform:translate(-1px,1px)}50%{transform:translate(-2px,2px)}75%{transform:translate(-1px,1px)}}
+.a-explore.run .it{transform-origin:0 100%;animation:sweep 1s ease-in-out infinite}
+@keyframes sweep{50%{transform:rotate(-14deg)}}
+.a-web.run{transform-origin:50% 100%;animation:sway 1s ease-in-out infinite}
+.a-web.run .la,.a-web.run .lb,.a-web.run .bd{animation:none}
+.a-web.run .wv{animation:wave 1s steps(2) infinite}
+@keyframes sway{25%{transform:rotate(-3deg)}75%{transform:rotate(3deg)}}@keyframes wave{50%{transform:translateX(-2px)}}
+.a-plan.run .it{animation:scribble .5s steps(1) infinite}
+@keyframes scribble{25%{transform:translate(-1px,1px)}50%{transform:translate(1px,0)}75%{transform:translate(0,1px)}}
+.a-think.run .la,.a-think.run .lb{animation:none}
+.a-think.run .d1{animation:blink 1s steps(1) infinite}.a-think.run .d2{animation:blink 1s steps(1) infinite -.66s}.a-think.run .d3{animation:blink 1s steps(1) infinite -.33s}
+.a-cook.run .pan{transform-origin:0 50%;animation:tilt 1s ease-in-out infinite}
+.a-cook.run .egg{animation:flip 1s ease-in-out infinite}
+@keyframes tilt{20%,40%{transform:rotate(-12deg)}}@keyframes flip{30%{transform:translateY(-5px) scaleY(-1)}60%{transform:translateY(0)}}
+.a-build.run .it{transform-origin:50% 100%;animation:hammer .5s ease-in infinite}
+@keyframes hammer{50%{transform:rotate(-35deg)}}
+.a-paint.run .it,.a-paint.run .tip{transform-origin:50% 100%;animation:brush .5s ease-in-out infinite}
+.a-paint.run .tip rect{animation:hue 1s steps(1) infinite}
+@keyframes brush{50%{transform:rotate(18deg)}}@keyframes hue{0%{fill:#7F77DD}33%{fill:#D0453F}66%{fill:#1D9E75}}
+.a-quill.run .it{transform-origin:0 100%;animation:write .5s ease-in-out infinite}
+@keyframes write{50%{transform:rotate(10deg) translateX(1px)}}
+.a-tinker.run .it{transform-origin:100% 100%;animation:twist .5s ease-in-out infinite}
+.a-tinker.run .gr{transform-origin:50% 50%;animation:spin 1s linear infinite}
+@keyframes twist{50%{transform:rotate(-35deg)}}@keyframes spin{to{transform:rotate(90deg)}}
+.a-test.run .it{transform-origin:50% 100%;animation:swirl .5s ease-in-out infinite}
+.a-test.run .b1{animation:rise 1s linear infinite}.a-test.run .b2{animation:rise 1s linear infinite -.5s}
+@keyframes swirl{25%{transform:rotate(-8deg)}75%{transform:rotate(8deg)}}@keyframes rise{0%{transform:translateY(2px);opacity:1}100%{transform:translateY(-3px);opacity:0}}
+.a-terminal.run .la,.a-terminal.run .lb,.a-terminal.run .bd{animation:none}
+.a-terminal.run .ta{animation:st .25s steps(1) infinite}.a-terminal.run .tb{animation:st .25s steps(1) infinite -.125s}
+.a-terminal.run .cur{animation:blink .5s steps(1) infinite}
+.a-install.run .la{animation-duration:.25s}.a-install.run .lb{animation-duration:.25s;animation-delay:-.125s}
+.a-install.run .bx{animation:bob .25s steps(1) infinite}
+.a-git.run .it{animation:bob .5s steps(1) infinite}
+.a-juggle.run .la,.a-juggle.run .lb{animation:none}
+.a-juggle.run .ta{animation:st .5s steps(1) infinite}.a-juggle.run .tb{animation:st .5s steps(1) infinite -.25s}
+.a-juggle.run .j1{animation:hop 1s ease-in-out infinite}.a-juggle.run .j2{animation:hop 1s ease-in-out infinite -.33s}.a-juggle.run .j3{animation:hop 1s ease-in-out infinite -.66s}
+@keyframes hop{50%{transform:translateY(-4px)}}
+.a-wait.run .la,.a-wait.run .lb{animation:none}
+.a-wait.run .sg{transform-origin:50% 100%;animation:sway 1s ease-in-out infinite}
+.a-deliver.run .la{animation-duration:.25s}.a-deliver.run .lb{animation-duration:.25s;animation-delay:-.125s}
+.a-deliver.run .c1,.a-deliver.run .c2,.a-deliver.run .c3,.a-deliver.run .c4{animation:fall 1s linear infinite}
+.a-deliver.run .c2{animation-delay:-.25s}.a-deliver.run .c3{animation-delay:-.5s}.a-deliver.run .c4{animation-delay:-.75s}
+@keyframes fall{0%{transform:translateY(0);opacity:1}100%{transform:translateY(8px);opacity:0}}
+.a-oops.run .la,.a-oops.run .lb,.a-oops.run .bd{animation:none}
+.a-oops.run .dr{animation:fall 1s linear infinite}
+@media (prefers-reduced-motion: reduce){.run,.run g,.run rect{animation:none!important}}
+</style>
+<g transform="translate(0,5) scale(2)" shape-rendering="crispEdges"><g class="a-deliver run"><g class="bd"><rect x="7" y="10" width="16" height="12" fill="#D97757"/><rect x="3" y="14" width="4" height="4" fill="#D97757"/><rect x="23" y="14" width="4" height="4" fill="#D97757"/><rect x="9" y="12" width="2" height="2" fill="#1F1E1D"/><rect x="19" y="12" width="2" height="2" fill="#1F1E1D"/><rect x="15" y="3" width="1" height="1" fill="#D0453F"/><rect x="15" y="4" width="1" height="1" fill="#7F77DD"/><rect x="14" y="5" width="1" height="1" fill="#7F77DD"/><rect x="15" y="5" width="1" height="1" fill="#F5C542"/><rect x="16" y="5" width="1" height="1" fill="#7F77DD"/><rect x="14" y="6" width="1" height="1" fill="#F5C542"/><rect x="15" y="6" width="1" height="1" fill="#7F77DD"/><rect x="16" y="6" width="1" height="1" fill="#F5C542"/><rect x="13" y="7" width="1" height="1" fill="#7F77DD"/><rect x="14" y="7" width="1" height="1" fill="#F5C542"/><rect x="15" y="7" width="1" height="1" fill="#7F77DD"/><rect x="16" y="7" width="1" height="1" fill="#F5C542"/><rect x="17" y="7" width="1" height="1" fill="#7F77DD"/><rect x="13" y="8" width="1" height="1" fill="#F5C542"/><rect x="14" y="8" width="1" height="1" fill="#7F77DD"/><rect x="15" y="8" width="1" height="1" fill="#F5C542"/><rect x="16" y="8" width="1" height="1" fill="#7F77DD"/><rect x="17" y="8" width="1" height="1" fill="#F5C542"/><rect x="5" y="17" width="20" height="4" fill="#C8935A"/><rect x="5" y="17" width="20" height="1" fill="#E8C48A"/><rect x="13" y="18" width="4" height="2" fill="#D0453F"/><rect x="14" y="18" width="2" height="1" fill="#F4F3EE"/><g class="c1"><rect x="2" y="0" width="1" height="1" fill="#7F77DD"/></g><g class="c2"><rect x="27" y="2" width="1" height="1" fill="#1D9E75"/></g><g class="c3"><rect x="5" y="5" width="1" height="1" fill="#F5C542"/></g><g class="c4"><rect x="24" y="0" width="1" height="1" fill="#D0453F"/></g></g><g class="la"><rect x="7" y="22" width="2" height="4" fill="#D97757"/><rect x="17" y="22" width="2" height="4" fill="#D97757"/></g><g class="lb"><rect x="11" y="22" width="2" height="4" fill="#D97757"/><rect x="21" y="22" width="2" height="4" fill="#D97757"/></g></g></g>
+<text class="t" x="72" y="15" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="13" font-weight="600">Swap the old logo for the new one everywhere</text>
+
+<text x="816" y="15" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="12" fill="#3B9C5F" font-weight="500">Delivered in 4:12</text>
+<clipPath id="fc6"><rect class="cf6" x="72" y="20" width="744" height="15"/></clipPath><rect class="k" x="72" y="24" width="144.8" height="7" rx="3.5"/><rect class="k" x="221.8" y="24" width="144.8" height="7" rx="3.5"/><rect class="k" x="371.6" y="24" width="144.8" height="7" rx="3.5"/><rect class="k" x="521.4000000000001" y="24" width="144.8" height="7" rx="3.5"/><rect class="k" x="671.2" y="24" width="144.8" height="7" rx="3.5"/><g clip-path="url(#fc6)"><rect class="" x="72" y="24" width="144.8" height="7" rx="3.5" fill="#3B9C5F"/><rect class="" x="221.8" y="24" width="144.8" height="7" rx="3.5" fill="#3B9C5F"/><rect class="" x="371.6" y="24" width="144.8" height="7" rx="3.5" fill="#3B9C5F"/><rect class="" x="521.4000000000001" y="24" width="144.8" height="7" rx="3.5" fill="#3B9C5F"/><rect class="" x="671.2" y="24" width="144.8" height="7" rx="3.5" fill="#3B9C5F"/></g><text class="s" x="72" y="44" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="10.5">Reading</text><text class="s" x="221.8" y="44" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="10.5">Prepping</text><text class="s" x="371.6" y="44" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="10.5">Cooking</text><text class="s" x="521.4000000000001" y="44" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="10.5">Taste test</text><text class="t" x="671.2" y="44" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="10.5" font-weight="600">Delivered</text>
+<text class="t" x="72" y="61" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="12">Delivered: 3 files · +42 −10 · checks ✓ · 23 steps · order #3 tod…</text>
+<text class="m" x="816" y="61" text-anchor="end" font-family="-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif" font-size="11.5" font-variant-numeric="tabular-nums">4/4 tasks · 4:12 · 412k tok · ctx 7% · ≈$0.88 · 5h 42% · wk 18%</text>
+</g></g></svg>
