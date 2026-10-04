@@ -8,6 +8,10 @@ Claude Code mods, starring Clawd.
 | --- | --- | --- |
 | [clawd-tracker](plugins/clawd-tracker) | mod | A Domino's-style order tracker above the prompt. Clawd acts out whatever Claude is doing (reading, cooking up edits, taste-testing, juggling subagents) next to an honest progress bar, a learned ETA, a delivery receipt and ding, helper Clawds for subagents, plan usage and four themes. |
 
+Four shops to pick from:
+
+![The four themes: pizza, coffee, rocket and construction](docs/themes.png)
+
 ## Setup
 
 Mods use Claude Code's **function hooks**, an early-access feature that is off by default. Turn it on once by adding this to `~/.claude/settings.json`:

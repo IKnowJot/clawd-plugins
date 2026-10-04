@@ -24,6 +24,7 @@
   .cmd span { color: var(--clay); }
   .url { font-size: 34px; color: var(--clay); font-weight: 600; }
   .fine { font-size: 22px; color: var(--muted); margin-top: 6px; }
+  .themes-shot svg { width: 1640px; height: auto; display: block; }
 
   /* The demo */
   .caption { position: absolute; top: 54px; width: 100%; text-align: center; font-size: 50px; font-weight: 700; letter-spacing: -0.5px; }
@@ -67,6 +68,12 @@
     </div>
   </div>
 
+  <div class="layer card-screen" id="themes">
+    <div class="name" style="font-size:64px">Pick your shop</div>
+    <div class="themes-shot" id="themesShot"></div>
+    <div class="fine" style="font-size:26px">One setting: <span style="color:#e8e6df;font-family:ui-monospace,'SF Mono',Menlo,monospace">theme</span></div>
+  </div>
+
   <div class="layer card-screen" id="end">
     <div class="big-crab" id="endCrab"></div>
     <div class="name">clawd<b>-tracker</b></div>
@@ -84,6 +91,7 @@
     story = s
     $('titleCrab').innerHTML = s.titleCrab
     $('endCrab').innerHTML = s.endCrab
+    $('themesShot').innerHTML = s.themes
   }
 
   // Draws frame i: which screen shows, the chat so far, the band, and every
@@ -98,7 +106,8 @@
     const fade = 0.45
     $('title').style.opacity = ease((story.start - t) / fade)
     $('demo').style.opacity = Math.min(ease((t - story.start + fade) / fade), ease((story.end + fade - t) / fade))
-    $('end').style.opacity = ease((t - story.end) / fade)
+    $('themes').style.opacity = Math.min(ease((t - story.end) / fade), ease((story.themesEnd + fade - t) / fade))
+    $('end').style.opacity = ease((t - story.themesEnd) / fade)
 
     if (f.caption !== lastCaption) { lastCaption = f.caption; captionSince = t }
     const cap = $('caption')

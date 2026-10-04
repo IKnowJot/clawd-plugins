@@ -54,7 +54,9 @@ const events: Ev[] = [
 ]
 const DELIVER = START + 19.6 * K
 const END = DELIVER + 2.8
-const TOTAL = END + 3.4
+// The four themes, then the end card.
+const THEMES_END = END + 3.2
+const TOTAL = THEMES_END + 3.4
 
 // Token and context figures grow with the work, for the stats line.
 const usageAt = (vt: number) => {
@@ -103,6 +105,9 @@ const bigCrab = (activity: string) => `<svg xmlns="http://www.w3.org/2000/svg" v
 
 fs.writeFileSync(
   process.argv[2],
-  JSON.stringify({ fps: FPS, start: START, end: END, total: TOTAL, dingAt, titleCrab: bigCrab('cook'), endCrab: bigCrab('deliver'), frames }),
+  JSON.stringify({
+    fps: FPS, start: START, end: END, themesEnd: THEMES_END, total: TOTAL, dingAt,
+    titleCrab: bigCrab('cook'), endCrab: bigCrab('deliver'), themes: fs.readFileSync(process.argv[3], 'utf8'), frames,
+  }),
 )
 console.log(`frames ${frames.length}, ding at ${dingAt.toFixed(2)}s`)

@@ -16,7 +16,8 @@ cut=$(grep -n "^// Terminal: the same tracker" "$mod" | cut -d: -f1)
   sed -n "3,$((cut - 1))p" "$mod" | grep -v "^import type"
   cat "$here/story.ts"
 } > "$work/story.ts"
-node --experimental-strip-types --no-warnings "$work/story.ts" "$work/story.json"
+[ -f "$repo/docs/themes.svg" ] || "$here/gallery.sh" themes
+node --experimental-strip-types --no-warnings "$work/story.ts" "$work/story.json" "$repo/docs/themes.svg"
 
 cp "$here/page.html" "$work/page.html"
 NODE_PATH="${PLAYWRIGHT_DIR}" node "$here/render.mjs" "$work"

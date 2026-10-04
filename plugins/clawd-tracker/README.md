@@ -69,7 +69,7 @@ Same Clawd, different shop. Pick one in settings:
 | `rocket` | Fueling → Countdown → Liftoff → Systems check → In orbit |
 | `construction` | Surveying → Blueprints → Building → Inspection → Handed over |
 
-![The coffee theme](../../docs/coffee.svg)
+![The four themes: pizza, coffee, rocket and construction](../../docs/themes.png)
 
 ## Usage numbers
 
