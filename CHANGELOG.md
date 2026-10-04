@@ -1,5 +1,13 @@
 # Changelog
 
+## clawd-tracker 0.3.2
+
+- Fixed: with a task list, the bold stage label could sit one stage ahead of the fill. It now always matches the track the fill is in.
+
+## clawd-tracker 0.3.1
+
+- Plan usage is drawn as two rings stacked on the right (5h and weekly), blue, then amber from 75% and red from 90%. Time, tokens, context and cost stay on the stats line. The terminal keeps the text version.
+
 ## clawd-tracker 0.3.0
 
 - **Receipt**: the delivery line sums up the job: files touched, lines in and out, how the last check went, steps and today's order number.

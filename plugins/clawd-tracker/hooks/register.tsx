@@ -234,7 +234,7 @@ type Piece = { text: string; tone?: 'warn' | 'hot' }
 
 const LIMIT_LABEL: Record<string, string> = { five_hour: '5h', seven_day: 'wk', spend_limit: 'spend' }
 
-const statsPieces = (r: Run, at: number, lims: Limit[]): Piece[] => {
+const statsPieces = (r: Run, at: number, lims: Limit[], withLimits = true): Piece[] => {
   const parts: Piece[] = []
   if (r.tasksTotal) parts.push({ text: `${r.tasksDone}/${r.tasksTotal} tasks` })
   parts.push({ text: fmtTime((r.endedAt ?? at) - r.startedAt) })
@@ -244,7 +244,7 @@ const statsPieces = (r: Run, at: number, lims: Limit[]): Piece[] => {
     parts.push({ text: `ctx ${ctx}%`, tone: ctx >= 90 ? 'hot' : ctx >= 80 ? 'warn' : undefined })
   }
   if (opts.showCost) parts.push({ text: `≈${fmtCost(r.cost)}` })
-  if (opts.showPlanUsage) {
+  if (opts.showPlanUsage && withLimits) {
     for (const l of lims) {
       const pct = Math.round(l.percentUsed)
       parts.push({ text: `${LIMIT_LABEL[l.kind] ?? l.kind} ${pct}%`, tone: pct >= 90 ? 'hot' : pct >= 75 ? 'warn' : undefined })
@@ -324,7 +324,8 @@ const settle = (r: Run, at: number): Run => {
 // The stage being worked on, the one that pulses.
 const stageOf = (r: Run): number => {
   if (r.status === 'done') return DELIVERED
-  if (r.tasksTotal > 0) return Math.min(3, Math.floor(((r.tasksDone + 0.5) / r.tasksTotal) * 4))
+  // The track the fill's edge is in, so the bold label always sits under it.
+  if (r.tasksTotal > 0) return Math.min(3, Math.floor((r.tasksDone / r.tasksTotal) * 4))
   return Math.min(3, r.reached)
 }
 
@@ -794,6 +795,20 @@ const crab = (x: number, y: number, activity: Activity, isMoving: boolean, scale
 // The tracker row: one SVG, since the desktop wraps sibling elements.
 
 const H = 66
+const RINGS_W = 92
+const RING_R = 9
+const RING_OK = '#5B8DEF'
+
+// One plan-usage ring: the share used, colored by how close the limit is.
+const ring = (l: Limit, cx: number, cy: number): string => {
+  const pct = Math.max(0, Math.min(100, l.percentUsed))
+  const c = 2 * Math.PI * RING_R
+  const tone = pct >= 90 ? HOT : pct >= 75 ? WARN : RING_OK
+  const label = `${LIMIT_LABEL[l.kind] ?? l.kind} ${Math.round(l.percentUsed)}%`
+  return `<circle class="kr" cx="${cx}" cy="${cy}" r="${RING_R}" fill="none" stroke-width="3.2"/>` +
+    `<circle cx="${cx}" cy="${cy}" r="${RING_R}" fill="none" stroke="${tone}" stroke-width="3.2" stroke-linecap="round" stroke-dasharray="${((c * pct) / 100).toFixed(2)} ${c.toFixed(2)}" transform="rotate(-90 ${cx} ${cy})"/>` +
+    `<text x="${cx + RING_R + 7}" y="${cy + 4}" font-family="${FONT}" font-size="11.5" font-variant-numeric="tabular-nums"${pct >= 75 ? ` fill="${tone}" font-weight="600"` : ' class="s"'}>${xml(label)}</text>`
+}
 const MINI_MAX = 4
 const MINI_SCALE = 0.45
 const MINI_STEP = 17
@@ -836,15 +851,18 @@ const fitText = (s: string, size: number, maxW: number): string => {
 }
 
 const TRACK_CSS = `<style>
-.t{fill:#1f1f1f}.s{fill:#6b6b68}.m{fill:#9a9a96}.k{fill:#e7e5e0}
-@media (prefers-color-scheme: dark){.t{fill:#ececec}.s{fill:#a8a8a4}.m{fill:#7d7d79}.k{fill:#30302e}}
+.t{fill:#1f1f1f}.s{fill:#6b6b68}.m{fill:#9a9a96}.k{fill:#e7e5e0}.kr{stroke:#e7e5e0}
+@media (prefers-color-scheme: dark){.t{fill:#ececec}.s{fill:#a8a8a4}.m{fill:#7d7d79}.k{fill:#30302e}.kr{stroke:#3a3a37}}
 .now{animation:pulse 1s ease-in-out infinite}@keyframes pulse{50%{opacity:.45}}
 @media (prefers-reduced-motion: reduce){.now{animation:none}}
 </style>`
 
 const trackerSvg = (r: Run, W: number, at: number, past: Past[], lims: Limit[]): string => {
   const x0 = 72
-  const barW = Math.max(160, W - x0 - 4)
+  // Plan usage: a ring per window, stacked in a column on the right.
+  const rings = opts.showPlanUsage ? lims.filter(l => l.kind in LIMIT_LABEL).slice(0, 2) : []
+  const ringsW = rings.length ? RINGS_W : 0
+  const barW = Math.max(160, W - x0 - 4 - ringsW)
   const gap = 5
   const segW = (barW - gap * 4) / 5
   const isDone = r.status === 'done'
@@ -862,7 +880,7 @@ const trackerSvg = (r: Run, W: number, at: number, past: Past[], lims: Limit[]):
   const minis = helpers.map((a, i) => crab(minisX + i * MINI_STEP, 1, a, true, MINI_SCALE)).join('') +
     (extra > 0 ? `<text class="m" x="${minisX + helpers.length * MINI_STEP + 2}" y="14" font-family="${FONT}" font-size="10.5">+${extra}</text>` : '')
   const title = fitText(r.title, 13, Math.max(60, barW - etaW - minisW - 10))
-  const pieces = statsPieces(r, at, lims)
+  const pieces = statsPieces(r, at, lims, false)
   const stats = pieces.map(p => p.text).join(' · ')
   const statsW = textWidth(stats, 11.5)
   const note = fitText(waiting ? `Needs ${r.waitingFor ?? 'you'}` : r.note, 12, Math.max(40, barW - statsW - 14))
@@ -906,6 +924,7 @@ ${segs}
 <text class="m" x="${x0 + barW}" y="61" text-anchor="end" font-family="${FONT}" font-size="11.5" font-variant-numeric="tabular-nums">${pieces
     .map((p, i) => `${i ? ' · ' : ''}${p.tone ? `<tspan fill="${p.tone === 'hot' ? HOT : WARN}" font-weight="600">${xml(p.text)}</tspan>` : xml(p.text)}`)
     .join('')}</text>
+${rings.map((l, k) => ring(l, x0 + barW + 16 + RING_R, rings.length === 1 ? 33 : 17 + k * 32)).join('')}
 </svg>`
 }
 

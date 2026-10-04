@@ -62,7 +62,8 @@ plugins/<name>/
   types/index.d.ts                its state contract
   sounds/                         the delivery ding (synthesized, rights-free)
   tests/*.test.ts                 run with `claude plugin test`
-docs/                             preview images
+docs/                             preview images and the demo video
+scripts/video/                    renders the demo video and gallery from the tracker's own code
 CHANGELOG.md                      what changed in each version
 ```
 

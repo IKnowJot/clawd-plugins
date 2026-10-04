@@ -1,0 +1,120 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  :root { color-scheme: dark; --clay: #D97757; --ink: #ececec; --muted: #8f8f8a; --card: #1c1c1b; --line: #2e2e2c; }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { width: 1920px; height: 1080px; overflow: hidden; }
+  body {
+    background: radial-gradient(1200px 700px at 50% 115%, #3a2219 0%, #171615 55%, #121211 100%);
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+    color: var(--ink);
+  }
+  .layer { position: absolute; inset: 0; }
+
+  /* Title and end cards */
+  .card-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px; }
+  .big-crab { width: 300px; height: 286px; }
+  .big-crab svg { width: 100%; height: 100%; }
+  .name { font-size: 92px; font-weight: 750; letter-spacing: -2px; }
+  .name b { color: var(--clay); }
+  .tag { font-size: 40px; color: #c9c7c1; font-weight: 500; }
+  .cmd { margin-top: 14px; font: 500 34px ui-monospace, 'SF Mono', Menlo, monospace; background: #0d0d0c; border: 1px solid var(--line); border-radius: 16px; padding: 22px 34px; color: #e8e6df; }
+  .cmd span { color: var(--clay); }
+  .url { font-size: 34px; color: var(--clay); font-weight: 600; }
+  .fine { font-size: 22px; color: var(--muted); margin-top: 6px; }
+
+  /* The demo */
+  .caption { position: absolute; top: 54px; width: 100%; text-align: center; font-size: 50px; font-weight: 700; letter-spacing: -0.5px; }
+  .window {
+    position: absolute; left: 50px; top: 160px; width: 1820px; height: 880px;
+    background: var(--card); border: 1px solid var(--line); border-radius: 22px;
+    box-shadow: 0 40px 120px rgba(0,0,0,.55); overflow: hidden;
+  }
+  .bar { height: 54px; display: flex; align-items: center; gap: 10px; padding: 0 22px; border-bottom: 1px solid var(--line); }
+  .dot { width: 14px; height: 14px; border-radius: 50%; background: #3a3a38; }
+  .bar .where { margin-left: 18px; font-size: 19px; color: var(--muted); font-family: ui-monospace, 'SF Mono', Menlo, monospace; }
+  .chat { position: absolute; top: 76px; left: 60px; right: 60px; bottom: 300px; display: flex; flex-direction: column; gap: 18px; overflow: hidden; }
+  .you { align-self: flex-end; background: #2a2a28; border-radius: 18px; padding: 18px 26px; font-size: 27px; max-width: 70%; }
+  .lines { display: flex; flex-direction: column; gap: 14px; margin-top: 6px; }
+  .ln { font-size: 25px; color: #cfcdc6; display: flex; gap: 14px; align-items: baseline; }
+  .ln::before { content: ''; width: 11px; height: 11px; border-radius: 50%; background: var(--clay); flex: none; transform: translateY(-2px); }
+  .ln.old { color: var(--muted); }
+  .ln.old::before { background: #4a4a47; }
+  .band { position: absolute; left: 30px; right: 30px; bottom: 112px; height: 172px; border: 1px solid var(--line); border-radius: 18px; background: #232321; display: flex; align-items: center; justify-content: center; }
+  .band svg { width: 1720px; height: auto; display: block; }
+  .input { position: absolute; left: 30px; right: 30px; bottom: 30px; height: 66px; border: 1px solid #3a3a37; border-radius: 16px; display: flex; align-items: center; padding: 0 26px; font-size: 23px; color: #6f6f6b; }
+</style>
+</head>
+<body>
+  <div class="layer card-screen" id="title">
+    <div class="big-crab" id="titleCrab"></div>
+    <div class="name">clawd<b>-tracker</b></div>
+    <div class="tag">A pizza tracker for Claude Code</div>
+  </div>
+
+  <div class="layer" id="demo">
+    <div class="caption" id="caption"></div>
+    <div class="window">
+      <div class="bar"><i class="dot"></i><i class="dot"></i><i class="dot"></i><span class="where">~/my-app</span></div>
+      <div class="chat">
+        <div class="you">Swap the old logo for the new one everywhere</div>
+        <div class="lines" id="lines"></div>
+      </div>
+      <div class="band" id="band"></div>
+      <div class="input">Ask for anything…</div>
+    </div>
+  </div>
+
+  <div class="layer card-screen" id="end">
+    <div class="big-crab" id="endCrab"></div>
+    <div class="name">clawd<b>-tracker</b></div>
+    <div class="cmd"><span>/plugin</span> marketplace add ikjot23/clawd-plugins</div>
+    <div class="url">github.com/ikjot23/clawd-plugins</div>
+    <div class="fine">Free &amp; open source · an unofficial fan project</div>
+  </div>
+
+<script>
+  let story = null
+  const $ = id => document.getElementById(id)
+  const ease = x => Math.max(0, Math.min(1, x))
+
+  window.load = s => {
+    story = s
+    $('titleCrab').innerHTML = s.titleCrab
+    $('endCrab').innerHTML = s.endCrab
+  }
+
+  // Draws frame i: which screen shows, the chat so far, the band, and every
+  // CSS animation set to this moment (loops to the video clock, one-shots to
+  // their own start, which the band's markup already offsets).
+  let lastSvg = null
+  let captionSince = 0
+  let lastCaption = ''
+  window.frame = i => {
+    const f = story.frames[i]
+    const t = f.t
+    const fade = 0.45
+    $('title').style.opacity = ease((story.start - t) / fade)
+    $('demo').style.opacity = Math.min(ease((t - story.start + fade) / fade), ease((story.end + fade - t) / fade))
+    $('end').style.opacity = ease((t - story.end) / fade)
+
+    if (f.caption !== lastCaption) { lastCaption = f.caption; captionSince = t }
+    const cap = $('caption')
+    cap.textContent = f.caption
+    cap.style.opacity = ease((t - captionSince) / 0.3)
+    cap.style.transform = `translateY(${(1 - ease((t - captionSince) / 0.3)) * 14}px)`
+
+    const shown = f.lines.slice(-7)
+    $('lines').innerHTML = shown.map((l, k) => `<div class="ln${k < shown.length - 1 ? ' old' : ''}">${l.replace(/&/g, '&amp;').replace(/</g, '&lt;')}</div>`).join('')
+
+    if (f.svg !== lastSvg) { $('band').innerHTML = f.svg ?? ''; lastSvg = f.svg }
+    for (const a of document.getAnimations()) {
+      a.pause()
+      a.currentTime = a.effect.getTiming().iterations === Infinity ? t * 1000 : 0
+    }
+  }
+</script>
+</body>
+</html>

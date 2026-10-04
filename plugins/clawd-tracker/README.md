@@ -8,6 +8,8 @@ A bar above the prompt walks through five stages, **Reading → Prepping → Coo
 
 ## Clawd's 20 costumes
 
+![Nine jobs mid-flight, each with its own Clawd](../../docs/gallery.png)
+
 | Claude is… | Clawd… | Stage |
 | --- | --- | --- |
 | Starting your request | holds up the order ticket | Reading |
@@ -74,7 +76,7 @@ Same Clawd, different shop. Pick one in settings:
 - **tok**: tokens used this run, including subagents.
 - **ctx**: how full Claude's context window (its working memory for the conversation) is. Amber from 80%, red from 90%, and a one-time tip at 85% to start a fresh conversation for the next task.
 - **≈$**: an estimate at API list prices. On a Pro or Max plan you aren't billed per token, so treat it as a sense of scale.
-- **5h / wk**: how much of your plan's 5-hour and weekly limits you've used, as reported by the last API response. Amber from 75%, red from 90%, and a one-time heads-up at 90%. Only shown on a subscription.
+- **5h / wk rings**: how much of your plan's 5-hour and weekly limits you've used, as reported by the last API response, drawn as two rings on the right. Blue, then amber from 75% and red from 90%, with a one-time heads-up at 90%. Only shown on a subscription; the terminal shows them as text.
 
 ## Settings
 
