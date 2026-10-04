@@ -1,8 +1,8 @@
 {
   "name": "clawd-plugins",
   "owner": {
-    "name": "ikjot23",
-    "url": "https://github.com/ikjot23"
+    "name": "IKnowJot",
+    "url": "https://github.com/IKnowJot"
   },
   "metadata": {
     "description": "Claude Code mods and skills: a Domino's-style order tracker for Claude, starring Clawd."

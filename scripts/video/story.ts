@@ -21,41 +21,44 @@ const todos = (done: number) =>
 const tool = (name: string, e: Record<string, unknown>, ok = true) => (r: any, at: number) =>
   settle(trackTasks(tally(apply(r, classify(name, e)), name, e, !ok), name, e, at), at)
 
-const START = 3.2
+// Pace: story beats run at K of their written spacing.
+const K = 0.7
+const START = 2.2
 const events: Ev[] = [
   { t: START, run: (_r, at) => fresh('Swap the old logo for the new one everywhere', at, null), caption: 'Your Claude Code task, tracked like a pizza order' },
-  { t: START + 1.2, run: r => ({ ...r, activity: 'think', note: 'Connecting the dots' }) },
-  { t: START + 2.2, run: tool('Read', { file_path: 'src/Header.tsx' }), line: 'Read src/Header.tsx' },
-  { t: START + 3.4, run: tool('Grep', { pattern: 'logo-old' }), line: 'Search "logo-old" · 7 matches' },
-  { t: START + 4.6, run: tool('TodoWrite', { todos: todos(0) }), line: 'Plan · 4 tasks', caption: 'The bar only moves on real progress' },
-  { t: START + 6.4, run: tool('TodoWrite', { todos: todos(1) }) },
-  { t: START + 6.5, run: tool('Edit', { file_path: 'src/Header.tsx', old_string: 'a\nb\nc', new_string: 'a\nb\nc\nd\ne' }), line: 'Edit src/Header.tsx · +5 −3' },
-  { t: START + 7.8, run: tool('Agent', { description: 'Find logo assets' }), line: 'Agent · 2 helpers searching', caption: 'A mini Clawd for every helper' },
-  { t: START + 7.9, run: r => ({ ...r, agents: { a: 'search', b: 'explore' } }) },
-  { t: START + 9.2, run: r => ({ ...r, agents: { a: 'read', b: 'search' } }) },
-  { t: START + 10.4, run: r => ({ ...r, agents: {} }) },
-  { t: START + 10.5, run: tool('TodoWrite', { todos: todos(2) }) },
-  { t: START + 10.6, run: tool('Write', { file_path: 'public/favicon.svg', content: 'x\n'.repeat(18) }), line: 'Write public/favicon.svg · +19' },
-  { t: START + 11.6, run: tool('Edit', { file_path: 'src/Footer.tsx', old_string: 'a\nb\nc\nd\ne\nf\ng', new_string: 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj\nk\nl\nm\nn\no\np\nq\nr' }), line: 'Edit src/Footer.tsx · +18 −7' },
-  { t: START + 12.6, run: (r, at) => ({ ...apply(r, classify('Bash', { command: 'npm run build' })), waitingSince: at - WAIT_SHOW_MS, waitingFor: 'your OK on Bash' }), line: 'Bash npm run build · needs approval', caption: 'It tells you when it needs you' },
-  { t: START + 16.4, run: r => ({ ...r, waitingSince: undefined, waitingFor: undefined }), line: 'You approved · building…' },
-  { t: START + 16.5, run: tool('Bash', { command: 'npm run build' }) },
-  { t: START + 17.6, run: tool('TodoWrite', { todos: todos(3) }) },
-  { t: START + 17.7, run: tool('Bash', { command: 'npm test' }), line: 'Bash npm test · 46 passed' },
+  { t: START + 1.2 * K, run: r => ({ ...r, activity: 'think', note: 'Connecting the dots' }) },
+  { t: START + 2.2 * K, run: tool('Read', { file_path: 'src/Header.tsx' }), line: 'Read src/Header.tsx' },
+  { t: START + 3.4 * K, run: tool('Grep', { pattern: 'logo-old' }), line: 'Search "logo-old" · 7 matches' },
+  { t: START + 4.6 * K, run: tool('TodoWrite', { todos: todos(0) }), line: 'Plan · 4 tasks', caption: 'The bar only moves on real progress' },
+  { t: START + 6.4 * K, run: tool('TodoWrite', { todos: todos(1) }) },
+  { t: START + 6.5 * K, run: tool('Edit', { file_path: 'src/Header.tsx', old_string: 'a\nb\nc', new_string: 'a\nb\nc\nd\ne' }), line: 'Edit src/Header.tsx · +5 −3' },
+  { t: START + 7.8 * K, run: tool('Agent', { description: 'Find logo assets' }), line: 'Agent · 2 helpers searching', caption: 'A mini Clawd for every helper' },
+  { t: START + 7.9 * K, run: r => ({ ...r, agents: { a: 'search', b: 'explore' } }) },
+  { t: START + 9.2 * K, run: r => ({ ...r, agents: { a: 'read', b: 'search' } }) },
+  { t: START + 10.4 * K, run: r => ({ ...r, agents: {} }) },
+  { t: START + 10.5 * K, run: tool('TodoWrite', { todos: todos(2) }) },
+  { t: START + 10.6 * K, run: tool('Write', { file_path: 'public/favicon.svg', content: 'x\n'.repeat(18) }), line: 'Write public/favicon.svg · +19', caption: 'Clawd acts out every step' },
+  { t: START + 11.6 * K, run: tool('Edit', { file_path: 'src/Footer.tsx', old_string: 'a\nb\nc\nd\ne\nf\ng', new_string: 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj\nk\nl\nm\nn\no\np\nq\nr' }), line: 'Edit src/Footer.tsx · +18 −7' },
+  { t: START + 12.6 * K, run: (r, at) => ({ ...apply(r, classify('Bash', { command: 'npm run build' })), waitingSince: at - WAIT_SHOW_MS, waitingFor: 'your OK on Bash' }), line: 'Bash npm run build · needs approval', caption: 'It tells you when it needs you' },
+  { t: START + 16.4 * K, run: r => ({ ...r, waitingSince: undefined, waitingFor: undefined }), line: 'You approved · building…' },
+  { t: START + 16.5 * K, run: tool('Bash', { command: 'npm run build' }) },
+  { t: START + 17.6 * K, run: tool('TodoWrite', { todos: todos(3) }) },
+  { t: START + 17.7 * K, run: tool('Bash', { command: 'npm test' }), line: 'Bash npm test · 46 passed' },
   {
-    t: START + 19.6,
+    t: START + 19.6 * K,
     run: (r, at) =>
       settle({ ...r, status: 'done', endedAt: at, stage: DELIVERED, reached: DELIVERED, tasksDone: r.tasksTotal, activity: 'deliver', waitingSince: undefined, agents: {}, note: `Delivered: ${receipt(r)} · order #3 today` }, at),
     line: 'Done · logo swapped in 3 files',
     caption: 'A receipt (and a ding) when it lands',
   },
 ]
-const END = START + 24.5
-const TOTAL = END + 4.5
+const DELIVER = START + 19.6 * K
+const END = DELIVER + 2.8
+const TOTAL = END + 3.4
 
 // Token and context figures grow with the work, for the stats line.
 const usageAt = (vt: number) => {
-  const k = Math.max(0, Math.min(1, (vt - START) / (END - 4.9 - START)))
+  const k = Math.max(0, Math.min(1, (vt - START) / (DELIVER - START)))
   return { tokens: Math.round(12_000 + k * 398_000), ctxTokens: Math.round(36_000 + k * 38_000), cost: 0.02 + k * 0.84 }
 }
 

@@ -27,14 +27,14 @@ If the file already has content, add the `"env"` block next to what's there rath
 In Claude Code:
 
 ```
-/plugin marketplace add ikjot23/clawd-plugins
+/plugin marketplace add IKnowJot/clawd-plugins
 /plugin install clawd-tracker@clawd-plugins
 ```
 
 Or from a terminal:
 
 ```bash
-claude plugin marketplace add ikjot23/clawd-plugins
+claude plugin marketplace add IKnowJot/clawd-plugins
 ```
 
 ```bash

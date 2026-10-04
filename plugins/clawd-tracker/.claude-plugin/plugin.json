@@ -11,11 +11,11 @@
     "clawd"
   ],
   "author": {
-    "name": "ikjot23",
-    "url": "https://github.com/ikjot23"
+    "name": "IKnowJot",
+    "url": "https://github.com/IKnowJot"
   },
-  "homepage": "https://github.com/ikjot23/clawd-plugins",
-  "repository": "https://github.com/ikjot23/clawd-plugins",
+  "homepage": "https://github.com/IKnowJot/clawd-plugins",
+  "repository": "https://github.com/IKnowJot/clawd-plugins",
   "userConfig": {
     "showCost": {
       "type": "boolean",
