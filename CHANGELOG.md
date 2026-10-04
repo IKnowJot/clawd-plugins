@@ -1,5 +1,9 @@
 # Changelog
 
+## clawd-tracker 0.3.4
+
+- Directory review: no local names that shadow the JSX factory `h`, and the token-count helpers are named for what they do (`fmtCount`, `sumUsage`). No change in behavior.
+
 ## clawd-tracker 0.3.3
 
 - "Waiting on you" now comes from a read-only question to Claude Code's permission rules instead of a `tool.check` hook, so the tracker never sits in the permission path.

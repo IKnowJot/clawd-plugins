@@ -88,9 +88,9 @@ const VERBS: Record<Activity, string[]> = {
 }
 
 const hash = (s: string): number => {
-  let h = 0
-  for (const ch of s) h = (h * 31 + ch.charCodeAt(0)) | 0
-  return Math.abs(h)
+  let acc = 0
+  for (const ch of s) acc = (acc * 31 + ch.charCodeAt(0)) | 0
+  return Math.abs(acc)
 }
 
 const pick = (activity: Activity, seed: string): string => {
@@ -209,7 +209,7 @@ const costOf = (model: string, u: Usage): number => {
   )
 }
 
-const sumTokens = (u: Usage): number =>
+const sumUsage = (u: Usage): number =>
   (u.input_tokens || 0) + (u.output_tokens || 0) + (u.cache_read_input_tokens || 0) + (u.cache_creation_input_tokens || 0)
 
 const windowOf = (model: string): number => (/\[1m\]|1m/i.test(model) || /fable|opus-5|sonnet-5/i.test(model) ? 1_000_000 : 200_000)
@@ -217,14 +217,14 @@ const windowOf = (model: string): number => (/\[1m\]|1m/i.test(model) || /fable|
 // ---------------------------------------------------------------------------
 // Formatting.
 
-const fmtTokens = (n: number): string => (n >= 1e6 ? `${(n / 1e6).toFixed(1)}M` : n >= 1e3 ? `${Math.round(n / 1e3)}k` : `${Math.round(n)}`)
+const fmtCount = (n: number): string => (n >= 1e6 ? `${(n / 1e6).toFixed(1)}M` : n >= 1e3 ? `${Math.round(n / 1e3)}k` : `${Math.round(n)}`)
 const fmtCost = (usd: number): string => `$${usd < 10 ? usd.toFixed(2) : usd.toFixed(1)}`
 const fmtTime = (ms: number): string => {
   const s = Math.max(0, Math.round(ms / 1000))
-  const h = Math.floor(s / 3600)
+  const hrs = Math.floor(s / 3600)
   const m = Math.floor((s % 3600) / 60)
   const ss = String(s % 60).padStart(2, '0')
-  return h ? `${h}:${String(m).padStart(2, '0')}:${ss}` : `${m}:${ss}`
+  return hrs ? `${hrs}:${String(m).padStart(2, '0')}:${ss}` : `${m}:${ss}`
 }
 
 const isWaiting = (r: Run, at: number): boolean => r.status === 'running' && r.waitingSince !== undefined && at - r.waitingSince >= WAIT_SHOW_MS
@@ -244,7 +244,7 @@ const statsPieces = (r: Run, at: number, lims: Limit[], withLimits = true): Piec
   const parts: Piece[] = []
   if (r.tasksTotal) parts.push({ text: `${r.tasksDone}/${r.tasksTotal} tasks` })
   parts.push({ text: fmtTime((r.endedAt ?? at) - r.startedAt) })
-  parts.push({ text: `${fmtTokens(r.tokens)} tok` })
+  parts.push({ text: `${fmtCount(r.tokens)} tok` })
   if (r.ctxTokens) {
     const ctx = Math.min(100, Math.round((r.ctxTokens / r.ctxMax) * 100))
     parts.push({ text: `ctx ${ctx}%`, tone: ctx >= 90 ? 'hot' : ctx >= 80 ? 'warn' : undefined })
@@ -415,7 +415,7 @@ const statsReport = (past: Past[], at: number): string => {
     `  Time cooking: ${fmtTime(time)} (longest ${fmtTime(longest)})`,
     `  Steps: ${steps}`,
   ]
-  if (tokens) lines.push(`  Tokens: ${fmtTokens(tokens)}`)
+  if (tokens) lines.push(`  Tokens: ${fmtCount(tokens)}`)
   return lines.join('\n')
 }
 
@@ -538,7 +538,7 @@ const trackTasks = (r: Run | null, tool: string, e: Record<string, unknown>, at:
 // Clawd: the Claude Code crab on a 30×28 pixel grid, one costume per activity.
 // Body and crab drawing adapted from johnnyvizz/claude-kit (MIT).
 
-type Fill = (x: number, y: number, w: number, h: number, c: string, cls?: string) => void
+type Fill = (x: number, y: number, w: number, tall: number, c: string, cls?: string) => void
 
 const stamp = (f: Fill, x: number, y: number, rows: string[], map: Record<string, string>, cls?: string): void =>
   rows.forEach((row, dy) => [...row].forEach((ch, dx) => map[ch] && f(x + dx, y + dy, 1, 1, map[ch] ?? '', cls)))
@@ -568,7 +568,7 @@ const glasses = (f: Fill, c = INK): void => {
 }
 
 const CHEF_HAT = ['........lll.......', '.......lllll......', '.wwwwgwwwwwwgwwwww', 'wwwwwwwwwwwwwwwwww', 'wwwwwwwwwwwwwwwwww', 'wwwwwgwwwwwggwwwww', '.wwwwgwwwwwggwwwww', '.dddbbbbbbbbbbbbb.', '.dddbbbbbbbbbbbbb.']
-const HARD_HAT = ['.....yyyyyyyy.....', '...yyyyyhhyyyyy...', '..yyyyyyhhyyyyyy..', '..yyyyyyhhyyyyyy..', '.yyyyyyyhhyyyyyyy.', 'dddddddddddddddddd']
+const HARD_HAT = ['.....yyyyyyyy.....', '...yyyyyvvyyyyy...', '..yyyyyyvvyyyyyy..', '..yyyyyyvvyyyyyy..', '.yyyyyyyvvyyyyyyy.', 'dddddddddddddddddd']
 
 const COSTUMES: Record<Activity, (f: Fill) => void> = {
   // Holds up the order ticket.
@@ -659,7 +659,7 @@ const COSTUMES: Record<Activity, (f: Fill) => void> = {
   // Hard hat and hammer: writing a new file.
   build: f => {
     body(f, { front: -4, frontCls: 'it' })
-    stamp(f, 6, 4, HARD_HAT, { y: '#F5C542', h: '#FBE08A', d: '#C99A1E' })
+    stamp(f, 6, 4, HARD_HAT, { y: '#F5C542', v: '#FBE08A', d: '#C99A1E' })
     stamp(f, 23, 2, ['sssss', 'sssss', '..w..', '..w..', '..w..', '..w..', '..w..', '..w..'], { s: '#8E929A', w: '#7A4A26' }, 'it')
   },
   // Beret, palette and a brush that changes color: styles.
@@ -836,9 +836,9 @@ const CRAB_CSS = `<style>
 // Props nest inside `bd` so they ride the bob; the legs step on their own.
 const crab = (x: number, y: number, activity: Activity, isMoving: boolean, scale: number): string => {
   const groups = new Map<string, string[]>([['bd', []]])
-  const f: Fill = (cx, cy, w, h, c, cls = 'bd') => {
+  const f: Fill = (cx, cy, w, tall, c, cls = 'bd') => {
     if (!groups.has(cls)) groups.set(cls, [])
-    groups.get(cls)?.push(`<rect x="${cx}" y="${cy}" width="${w}" height="${h}" fill="${c}"/>`)
+    groups.get(cls)?.push(`<rect x="${cx}" y="${cy}" width="${w}" height="${tall}" fill="${c}"/>`)
   }
   ;(COSTUMES[activity] ?? body)(f)
   const group = (cls: string) => `<g class="${cls}">${(groups.get(cls) ?? []).join('')}</g>`
@@ -1152,13 +1152,13 @@ export const register: Register = (on, options) => {
     const model = usage.model || str(ev.model)
     await update($, run, r => {
       if (!live(r)) return r
-      const base = { ...r, tokens: r.tokens + sumTokens(usage), cost: r.cost + costOf(model, usage) }
+      const base = { ...r, tokens: r.tokens + sumUsage(usage), cost: r.cost + costOf(model, usage) }
       if (ev.agentId) return base
       const isFirstThought = r.activity === 'order' && r.tools === 0
       return {
         ...base,
         model,
-        ctxTokens: sumTokens(usage),
+        ctxTokens: sumUsage(usage),
         ctxMax: windowOf(model),
         ...(isFirstThought ? { activity: 'think' as Activity, note: pick('think', r.title) } : {}),
       }
@@ -1227,7 +1227,7 @@ export const register: Register = (on, options) => {
       const done = await read($, run)
       if (done?.status === 'done' && done.endedAt === at && done.tools > 0) {
         const entry: Past = { ms: at - done.startedAt, tools: done.tools, tasks: done.tasksTotal, when: at, tokens: done.tokens, project: currentProject }
-        const past = await update($, history, h => [...h, entry].slice(-HISTORY_MAX))
+        const past = await update($, history, list => [...list, entry].slice(-HISTORY_MAX))
         await $.store.set('history', past)
         // A ding for work long enough that you may have looked away.
         if (opts.sound && entry.ms >= SOUND_AFTER_MS) void $.audio.play({ base64: chime(), mime: 'audio/wav' }, { gain: 0.6 }).catch(() => undefined)
