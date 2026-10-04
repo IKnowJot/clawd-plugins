@@ -5,10 +5,12 @@
   "types": "./types/index.d.ts",
   "license": "MIT",
   "keywords": [
+    "progress-bar",
+    "eta",
+    "tracker",
     "mod",
-    "progress",
-    "statusline",
-    "clawd"
+    "clawd",
+    "themes"
   ],
   "author": {
     "name": "IKnowJot",
@@ -41,5 +43,8 @@
       "description": "Stage names: pizza (Reading → Delivered), coffee (Grinding → Served), rocket (Fueling → In orbit) or construction (Surveying → Handed over).",
       "default": "pizza"
     }
-  }
+  },
+  "supportUrl": "https://github.com/IKnowJot/clawd-plugins/issues",
+  "documentationUrl": "https://github.com/IKnowJot/clawd-plugins/tree/main/plugins/clawd-tracker#readme",
+  "privacyPolicyUrl": "https://github.com/IKnowJot/clawd-plugins/blob/main/PRIVACY.md"
 }
