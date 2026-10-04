@@ -43,6 +43,6 @@ Claude Code doesn't know how long a task will take, so nothing can count down ex
 
 ## Commands
 
-- `/tracker`: show or hide the tracker. The ✕ on the bar hides it until the next prompt.
+- `/tracker`: show or hide the tracker. The ✕ on the bar hides it too; `/tracker` brings it back.
 
 Works in the desktop app (animated SVG) and in the terminal (text version with an emoji per activity).
