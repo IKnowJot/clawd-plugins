@@ -45,6 +45,31 @@ export type Run = {
   ctxMax: number
   model: string
   status: RunStatus
+  /** Where the fill lands, 0..1 across all five tracks. */
+  pos: number
+  /** Where the fill was drawn when it last started sliding toward `pos`. */
+  prevPos: number
+  /** When that slide started. */
+  posAt: number
+  /** The furthest stage celebrated so far. */
+  lastStage: number
+  /** When Clawd last celebrated a stage up. */
+  cheerAt?: number
+}
+
+/** A delivered run, kept across sessions to estimate how long work takes. */
+export type Past = {
+  ms: number
+  tools: number
+  tasks: number
+  /** When it was delivered; counts today's orders. */
+  when?: number
+}
+
+/** A plan usage window: `five_hour`, `seven_day`, or a gateway's `spend_limit`. */
+export type Limit = {
+  kind: string
+  percentUsed: number
 }
 
 declare module 'claude-code' {
@@ -53,6 +78,8 @@ declare module 'claude-code' {
       run: Run | null
       now: number
       view: { isHidden: boolean }
+      history: Past[]
+      limits: Limit[]
     }
   }
 }

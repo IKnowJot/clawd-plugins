@@ -1,12 +1,18 @@
 import { atom, read, update } from 'claude-code'
 import type { EngineInterface, Register } from 'claude-code'
 
-import type { Activity, Run } from '../types'
+import type { Activity, Limit, Past, Run } from '../types'
 
 // One run per prompt: it starts on the main turn's start and is delivered on its completion.
 const run = atom({ plugin: 'clawd-tracker', key: 'run' } as const, null)
 const now = atom({ plugin: 'clawd-tracker', key: 'now' } as const, 0)
 const view = atom({ plugin: 'clawd-tracker', key: 'view' } as const, { isHidden: false })
+const history = atom({ plugin: 'clawd-tracker', key: 'history' } as const, [] as Past[])
+const limits = atom({ plugin: 'clawd-tracker', key: 'limits' } as const, [] as Limit[])
+
+// The manifest's userConfig, set by register; a change reloads the module.
+type Options = { showCost: boolean; showPlanUsage: boolean }
+let opts: Options = { showCost: true, showPlanUsage: true }
 
 const STAGES = ['Reading', 'Prepping', 'Cooking', 'Taste test', 'Delivered'] as const
 const DELIVERED = 4
@@ -39,8 +45,8 @@ const STAGE_OF: Record<Activity, number | null> = {
   install: 2,
   juggle: 2,
   test: 3,
-  terminal: 3,
-  git: 3,
+  terminal: null,
+  git: null,
   wait: null,
   deliver: DELIVERED,
   oops: null,
@@ -204,27 +210,37 @@ const fmtTime = (ms: number): string => {
   return h ? `${h}:${String(m).padStart(2, '0')}:${ss}` : `${m}:${ss}`
 }
 
-const etaText = (r: Run, at: number): string => {
+const etaText = (r: Run, at: number, past: Past[]): string => {
   if (r.status === 'done') return `Delivered in ${fmtTime((r.endedAt ?? at) - r.startedAt)}`
   if (r.status === 'stopped') return `Stopped at ${fmtTime((r.endedAt ?? at) - r.startedAt)}`
-  if (!r.tasksTotal || !r.tasksDone || r.tasksSince === undefined) return 'Estimating…'
-  if (r.tasksDone >= r.tasksTotal) return 'Wrapping up…'
-  const left = ((at - r.tasksSince) / r.tasksDone) * (r.tasksTotal - r.tasksDone)
-  return left < 60_000 ? 'Under a minute left' : `About ${Math.round(left / 60_000)} min left`
+  return `${sizeOf(r)} · ${estimate(r, at, past)}`
 }
 
-const statsText = (r: Run, at: number): string => {
-  const parts: string[] = []
-  if (r.tasksTotal) parts.push(`${r.tasksDone}/${r.tasksTotal} tasks`)
-  parts.push(fmtTime((r.endedAt ?? at) - r.startedAt))
-  parts.push(`${fmtTokens(r.tokens)} tok`)
-  if (r.ctxTokens) parts.push(`ctx ${Math.min(100, Math.round((r.ctxTokens / r.ctxMax) * 100))}%`)
-  parts.push(`≈${fmtCost(r.cost)}`)
-  return parts.join(' · ')
+type Piece = { text: string; tone?: 'warn' | 'hot' }
+
+const LIMIT_LABEL: Record<string, string> = { five_hour: '5h', seven_day: 'wk', spend_limit: 'spend' }
+
+const statsPieces = (r: Run, at: number, lims: Limit[]): Piece[] => {
+  const parts: Piece[] = []
+  if (r.tasksTotal) parts.push({ text: `${r.tasksDone}/${r.tasksTotal} tasks` })
+  parts.push({ text: fmtTime((r.endedAt ?? at) - r.startedAt) })
+  parts.push({ text: `${fmtTokens(r.tokens)} tok` })
+  if (r.ctxTokens) parts.push({ text: `ctx ${Math.min(100, Math.round((r.ctxTokens / r.ctxMax) * 100))}%` })
+  if (opts.showCost) parts.push({ text: `≈${fmtCost(r.cost)}` })
+  if (opts.showPlanUsage) {
+    for (const l of lims) {
+      const pct = Math.round(l.percentUsed)
+      parts.push({ text: `${LIMIT_LABEL[l.kind] ?? l.kind} ${pct}%`, tone: pct >= 90 ? 'hot' : pct >= 75 ? 'warn' : undefined })
+    }
+  }
+  return parts
 }
+
+const statsText = (r: Run, at: number, lims: Limit[]): string => statsPieces(r, at, lims).map(p => p.text).join(' · ')
 
 const titleOf = (text: string): string => {
-  const line = text.trim().split('\n')[0] ?? ''
+  const plain = text.replace(/<\/?[A-Za-z_][^>]*>/g, ' ')
+  const line = plain.split('\n').map(l => l.trim()).find(Boolean) ?? ''
   if (!line) return 'Your order'
   const words = line.split(/\s+/)
   return clip(words.slice(0, 8).join(' ') + (words.length > 8 ? '…' : ''), 60)
@@ -251,7 +267,83 @@ const fresh = (title: string, at: number, prev: Run | null): Run => ({
   ctxMax: prev?.ctxMax ?? 200_000,
   model: prev?.model ?? '',
   status: 'running',
+  pos: 0,
+  prevPos: 0,
+  posAt: at,
+  lastStage: 0,
 })
+
+// ---------------------------------------------------------------------------
+// Progress moves only on real events. With a task list the fill is the share
+// of tasks done; without one it fills through the furthest stage reached.
+// Delivered fills on delivery alone. A change slides over SLIDE_MS.
+
+const SLIDE_MS = 700
+
+const posOf = (r: Run): number => {
+  if (r.status === 'done') return 1
+  if (r.tasksTotal > 0) return (r.tasksDone / r.tasksTotal) * 0.8
+  return (Math.min(3, r.reached) + 1) / 5
+}
+
+// Where the fill is drawn at `at`, partway through a slide.
+const posNow = (r: Run, at: number): number => {
+  const t = Math.min(1, Math.max(0, (at - r.posAt) / SLIDE_MS))
+  return r.prevPos + (r.pos - r.prevPos) * t
+}
+
+// Call after any change to a run: starts a slide when the fill should move.
+const settle = (r: Run, at: number): Run => {
+  const pos = posOf(r)
+  const moved = pos === r.pos ? r : { ...r, prevPos: posNow(r, at), pos, posAt: at }
+  const stage = stageOf(moved)
+  return stage > moved.lastStage ? { ...moved, lastStage: stage, cheerAt: at } : moved
+}
+
+// The stage being worked on, the one that pulses.
+const stageOf = (r: Run): number => {
+  if (r.status === 'done') return DELIVERED
+  if (r.tasksTotal > 0) return Math.min(3, Math.floor(((r.tasksDone + 0.5) / r.tasksTotal) * 4))
+  return Math.min(3, r.reached)
+}
+
+// ---------------------------------------------------------------------------
+// ETA. With a task list: this run's pace per task, or the learned pace before
+// the first task lands. Without one: of past runs that took at least as many
+// steps as this one has, how long they usually ran. Both sharpen as work goes.
+
+const HISTORY_MAX = 60
+
+const median = (xs: number[]): number => {
+  const v = [...xs].sort((x, y) => x - y)
+  const m = v.length >> 1
+  return v.length % 2 ? v[m] : (v[m - 1] + v[m]) / 2
+}
+
+const sizeOf = (r: Run): string => {
+  if (r.tasksTotal > 0) return r.tasksTotal <= 2 ? 'Small job' : r.tasksTotal <= 5 ? 'Medium job' : 'Large job'
+  if (r.tools < 6) return 'Small job'
+  return r.tools < 25 ? 'Medium job' : 'Large job'
+}
+
+const fmtLeft = (ms: number): string => (ms < 60_000 ? 'under a minute left' : `about ${Math.round(ms / 60_000)} min left`)
+
+const estimate = (r: Run, at: number, past: Past[]): string => {
+  const elapsed = at - r.startedAt
+  if (r.tasksTotal > 0) {
+    if (r.tasksDone >= r.tasksTotal) return 'wrapping up'
+    if (r.tasksDone > 0 && r.tasksSince !== undefined) {
+      return fmtLeft(((at - r.tasksSince) / r.tasksDone) * (r.tasksTotal - r.tasksDone))
+    }
+    const paces = past.filter(p => p.tasks > 0).map(p => p.ms / p.tasks)
+    if (paces.length >= 3) return `~${Math.max(1, Math.round((median(paces) * r.tasksTotal) / 60_000))} min job`
+    return 'sizing up…'
+  }
+  const peers = past.filter(p => p.tasks === 0 && p.tools >= Math.max(1, r.tools)).map(p => p.ms)
+  if (peers.length < 3) return 'sizing up…'
+  const left = median(peers) - elapsed
+  return left > 0 ? `usually ${fmtLeft(left)}` : 'running longer than usual'
+}
 
 const live = (r: Run | null): r is Run => r !== null && r.status === 'running'
 
@@ -616,6 +708,29 @@ const crab = (x: number, y: number, activity: Activity, isMoving: boolean, scale
 // The tracker row: one SVG, since the desktop wraps sibling elements.
 
 const H = 66
+const WARN = '#E0A33B'
+const HOT = '#D9534F'
+
+// A stage up: Clawd hops and sparkles for CHEER_MS. Each redraw restarts CSS,
+// so the animation starts that far back in and picks up where it was.
+const CHEER_MS = 1200
+const CHEER_CSS = `<style>
+.hop{animation:hop2 ${CHEER_MS}ms ease-out 1 both}
+@keyframes hop2{0%{transform:translateY(0)}20%{transform:translateY(-8px)}40%{transform:translateY(0)}55%{transform:translateY(-3px)}70%,100%{transform:translateY(0)}}
+.sp{transform-box:fill-box;transform-origin:50% 50%;opacity:0;animation:spark ${CHEER_MS}ms ease-out 1 both}
+@keyframes spark{0%{opacity:0;transform:scale(.3)}25%{opacity:1;transform:scale(1.15)}100%{opacity:0;transform:translateY(-6px) scale(.6)}}
+@media (prefers-reduced-motion: reduce){.hop,.sp{animation:none}}
+</style>`
+const SPARKS: [number, number][] = [[4, 10], [56, 6], [2, 40], [62, 34]]
+const spark = ([x, y]: [number, number], delay: string): string =>
+  `<g class="sp" style="${delay}"><rect x="${x + 2}" y="${y}" width="2" height="6" fill="#F2C94C"/><rect x="${x}" y="${y + 2}" width="6" height="2" fill="#F2C94C"/></g>`
+
+const cheer = (r: Run, at: number, drawn: string): string => {
+  const since = r.cheerAt === undefined ? Infinity : at - r.cheerAt
+  if (since >= CHEER_MS) return drawn
+  const delay = `animation-delay:-${Math.round(since)}ms`
+  return `${CHEER_CSS}<g class="hop" style="${delay}">${drawn}</g>${SPARKS.map(p => spark(p, delay)).join('')}`
+}
 
 const xml = (s: string): string => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c] ?? c)
 
@@ -638,7 +753,7 @@ const TRACK_CSS = `<style>
 @media (prefers-reduced-motion: reduce){.now{animation:none}}
 </style>`
 
-const trackerSvg = (r: Run, W: number, at: number): string => {
+const trackerSvg = (r: Run, W: number, at: number, past: Past[], lims: Limit[]): string => {
   const x0 = 72
   const barW = Math.max(160, W - x0 - 4)
   const gap = 5
@@ -646,33 +761,52 @@ const trackerSvg = (r: Run, W: number, at: number): string => {
   const isDone = r.status === 'done'
   const color = r.status === 'stopped' ? '#9A9A96' : isDone ? DONE : CLAY
 
-  const eta = etaText(r, at)
+  const eta = etaText(r, at, past)
   const etaW = textWidth(eta, 12) + 6
   const title = fitText(r.title, 13, Math.max(60, barW - etaW - 10))
-  const stats = statsText(r, at)
+  const pieces = statsPieces(r, at, lims)
+  const stats = pieces.map(p => p.text).join(' · ')
   const statsW = textWidth(stats, 11.5)
   const note = fitText(r.note, 12, Math.max(40, barW - statsW - 14))
 
-  const segs = STAGES.map((name, i) => {
-    const x = x0 + i * (segW + gap)
-    const isCurrent = !isDone && r.status === 'running' && i === r.stage
-    const isFilled = isDone || i <= r.reached
-    const bar = isFilled
-      ? `<rect x="${x}" y="24" width="${segW}" height="7" rx="3.5" fill="${color}"${isCurrent ? ' class="now"' : ''}/>`
-      : `<rect class="k" x="${x}" y="24" width="${segW}" height="7" rx="3.5"/>`
-    const label = fitText(name, 10.5, segW)
-    const weight = isCurrent || (isDone && i === DELIVERED) ? ' font-weight="600"' : ''
-    const cls = isCurrent || (isDone && i === DELIVERED) ? 't' : isFilled ? 's' : 'm'
-    return `${bar}<text class="${cls}" x="${x}" y="44" font-family="${FONT}" font-size="10.5"${weight}>${xml(label)}</text>`
-  }).join('')
+  // Where the fill's edge sits, in px, for a progress value over all five tracks.
+  const edge = (p: number): number => {
+    const i = Math.min(4, Math.floor(p * 5))
+    return x0 + i * (segW + gap) + Math.min(1, p * 5 - i) * segW
+  }
+  const from = edge(posNow(r, at))
+  const to = edge(r.pos)
+  const ms = Math.max(0, SLIDE_MS - (at - r.posAt))
+  const sx = (px: number): string => ((px - x0) / barW).toFixed(5)
+  // A slide in flight animates the clip from where the fill is drawn now to
+  // where it lands, so a redraw mid-slide carries on from the same spot. The
+  // resting transform is the end state, which is what reduced motion shows.
+  const fillCss = `<style>.cf{transform-origin:${x0}px 0;transform:scaleX(${sx(to)})${
+    ms > 0 && from !== to ? `;animation:fill ${Math.round(ms)}ms ease-out forwards` : ''
+  }}@keyframes fill{from{transform:scaleX(${sx(from)})}to{transform:scaleX(${sx(to)})}}@media (prefers-reduced-motion: reduce){.cf{animation:none}}</style>`
 
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">${TRACK_CSS}${CRAB_CSS}
-${crab(0, 5, r.activity, r.status !== 'stopped' || r.activity === 'oops', 2)}
+  // The stage being worked on pulses, filled or not.
+  const stage = stageOf(r)
+  const pulse = (i: number): string => (r.status === 'running' && i === stage ? ' now' : '')
+  const tracks = STAGES.map((_, i) => `<rect class="k${pulse(i)}" x="${x0 + i * (segW + gap)}" y="24" width="${segW}" height="7" rx="3.5"/>`).join('')
+  const fills = STAGES.map((_, i) => `<rect class="${pulse(i).trim()}" x="${x0 + i * (segW + gap)}" y="24" width="${segW}" height="7" rx="3.5" fill="${color}"/>`).join('')
+  const labels = STAGES.map((name, i) => {
+    const x = x0 + i * (segW + gap)
+    const isCurrent = i === stage
+    const cls = isCurrent ? 't' : i < stage ? 's' : 'm'
+    return `<text class="${cls}" x="${x}" y="44" font-family="${FONT}" font-size="10.5"${isCurrent ? ' font-weight="600"' : ''}>${xml(fitText(name, 10.5, segW))}</text>`
+  }).join('')
+  const segs = `<clipPath id="fc"><rect class="cf" x="${x0}" y="20" width="${barW}" height="15"/></clipPath>${tracks}<g clip-path="url(#fc)">${fills}</g>${labels}`
+
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">${TRACK_CSS}${fillCss}${CRAB_CSS}
+${cheer(r, at, crab(0, 5, r.activity, r.status !== 'stopped' || r.activity === 'oops', 2))}
 <text class="t" x="${x0}" y="15" font-family="${FONT}" font-size="13" font-weight="600">${xml(title)}</text>
 <text x="${x0 + barW}" y="15" text-anchor="end" font-family="${FONT}" font-size="12" fill="${color}" font-weight="500">${xml(eta)}</text>
 ${segs}
 <text class="t" x="${x0}" y="61" font-family="${FONT}" font-size="12">${xml(note)}</text>
-<text class="m" x="${x0 + barW}" y="61" text-anchor="end" font-family="${FONT}" font-size="11.5" font-variant-numeric="tabular-nums">${xml(stats)}</text>
+<text class="m" x="${x0 + barW}" y="61" text-anchor="end" font-family="${FONT}" font-size="11.5" font-variant-numeric="tabular-nums">${pieces
+    .map((p, i) => `${i ? ' · ' : ''}${p.tone ? `<tspan fill="${p.tone === 'hot' ? HOT : WARN}" font-weight="600">${xml(p.text)}</tspan>` : xml(p.text)}`)
+    .join('')}</text>
 </svg>`
 }
 
@@ -700,11 +834,10 @@ const GLYPH: Record<Activity, string> = {
   oops: '💦',
 }
 
-const segText = (r: Run, width: number): string =>
-  STAGES.map((_, i) => {
-    const ch = r.status === 'done' || i < r.reached ? '█' : i === r.stage && r.status === 'running' ? '▓' : i <= r.reached ? '█' : '░'
-    return ch.repeat(width)
-  }).join(' ')
+const segText = (r: Run, width: number, at: number): string => {
+  const filled = Math.round(posNow(r, at) * 5 * width)
+  return STAGES.map((_, i) => '█'.repeat(Math.max(0, Math.min(width, filled - i * width))).padEnd(width, '░')).join(' ')
+}
 
 // ---------------------------------------------------------------------------
 
@@ -713,8 +846,12 @@ const toggle = async ($: EngineInterface): Promise<boolean> => {
   return !next.isHidden
 }
 
-export const register: Register = on => {
+export const register: Register = (on, options) => {
+  const o = (options ?? {}) as Partial<Options>
+  opts = { showCost: o.showCost !== false, showPlanUsage: o.showPlanUsage !== false }
   let pendingTitle = ''
+  // Limit windows already warned about, keyed by kind and reset time.
+  const warned = new Set<string>()
 
   on('session.start', async ($, e, next) => {
     const started = await next(e)
@@ -722,6 +859,8 @@ export const register: Register = on => {
       name: 'tracker',
       description: 'Show or hide the Clawd order tracker above the prompt',
     })
+    const saved = await $.store.get('history')
+    if (Array.isArray(saved)) await update($, history, () => saved as Past[])
     // Keeps the clock moving while a run is live; quiet otherwise.
     $.clock.every(1000, () => {
       void (async () => {
@@ -761,9 +900,11 @@ export const register: Register = on => {
     const isMain = !ev.agentId
 
     if (isMain) {
+      const at = await $.clock.now()
       await update($, run, r => {
         const stepped = apply(r, classify(tool, ev))
-        return live(stepped) && (tool === 'Agent' || tool === 'Task') ? { ...stepped, helpers: stepped.helpers + 1 } : stepped
+        if (!live(stepped)) return stepped
+        return settle(tool === 'Agent' || tool === 'Task' ? { ...stepped, helpers: stepped.helpers + 1 } : stepped, at)
       })
     } else {
       await update($, run, r => (live(r) ? { ...r, tools: r.tools + 1 } : r))
@@ -775,8 +916,13 @@ export const register: Register = on => {
       const at = await $.clock.now()
       await update($, run, r => {
         const tracked = trackTasks(r, tool, ev, at)
+        if (!live(tracked)) return tracked
+        // A failed step: Clawd reacts, and keeps the look while Claude regroups.
+        if ((ran as { isError?: boolean } | undefined)?.isError) {
+          return settle({ ...tracked, activity: 'oops', note: `Oops, ${clip(tool.replace(/^mcp__/, '').split('__').pop() || tool, 24)} hit a snag. Regrouping…` }, at)
+        }
         // An answered question hands the floor back to Claude.
-        return live(tracked) && tool === 'AskUserQuestion' ? { ...tracked, activity: 'think', note: pick('think', String(at)) } : tracked
+        return settle(tool === 'AskUserQuestion' ? { ...tracked, activity: 'think', note: pick('think', String(at)) } : tracked, at)
       })
     }
     return ran
@@ -784,8 +930,17 @@ export const register: Register = on => {
 
   // Every model request: tokens and cost for the run, context for the main loop.
   on('turn.step', async function* ($, e, next) {
-    const result = yield* next(e)
     const ev = e as unknown as Record<string, unknown>
+    // Back to the model between actions: Clawd thinks, unless it's still
+    // reacting to a snag or waiting on you.
+    if (!ev.agentId) {
+      await update($, run, r =>
+        live(r) && r.tools > 0 && r.activity !== 'oops' && r.activity !== 'wait'
+          ? { ...r, activity: 'think', note: pick('think', `${r.title}${r.tools}`) }
+          : r,
+      )
+    }
+    const result = yield* next(e)
     const usage = (result as { usage?: Usage } | undefined)?.usage
     if (!usage) return result
 
@@ -806,17 +961,36 @@ export const register: Register = on => {
     return result
   })
 
+  // Plan usage: the 5-hour and weekly windows, from the last API response.
+  on('session.measure', async ($, e, next) => {
+    const ran = await next(e)
+    if (!e.changed.includes('rateLimits')) return ran
+    const lims = e.rateLimits.map(l => ({ kind: l.kind, percentUsed: l.percentUsed }))
+    await update($, limits, () => lims)
+    if (opts.showPlanUsage) {
+      for (const l of e.rateLimits) {
+        const key = `${l.kind}@${l.resetsAt ?? ''}`
+        if (l.percentUsed < 90 || warned.has(key)) continue
+        warned.add(key)
+        await $.ui.toast(`Clawd: your ${LIMIT_LABEL[l.kind] ?? l.kind} limit is at ${Math.round(l.percentUsed)}%`)
+      }
+    }
+    return ran
+  })
+
   on('turn.complete', async ($, e, next) => {
     const ev = e as unknown as Record<string, unknown>
     if (!ev.agentId) {
       const at = await $.clock.now()
       const reason = str(ev.reason)
       const isStopped = reason !== '' && reason !== 'answer'
+      const today = new Date(at).toDateString()
+      const orderNo = (await read($, history)).filter(p => p.when !== undefined && new Date(p.when).toDateString() === today).length + 1
       await update($, run, r => {
         if (!live(r)) return r
         return isStopped
           ? { ...r, status: 'stopped', endedAt: at, activity: 'oops', note: pick('oops', r.title) }
-          : {
+          : settle({
               ...r,
               status: 'done',
               endedAt: at,
@@ -824,10 +998,16 @@ export const register: Register = on => {
               reached: DELIVERED,
               tasksDone: r.tasksTotal,
               activity: 'deliver',
-              note: `${pick('deliver', r.title)}: ${r.tools} steps${r.helpers ? `, ${r.helpers} helper${r.helpers > 1 ? 's' : ''}` : ''}`,
-            }
+              note: `${pick('deliver', r.title)}: ${r.tools} steps${r.helpers ? `, ${r.helpers} helper${r.helpers > 1 ? 's' : ''}` : ''}${r.tools > 0 ? ` · order #${orderNo} today` : ''}`,
+            }, at)
       })
       await update($, now, () => at)
+      // Delivered runs that did real work teach the ETA.
+      const done = await read($, run)
+      if (done?.status === 'done' && done.endedAt === at && done.tools > 0) {
+        const past = await update($, history, h => [...h, { ms: at - done.startedAt, tools: done.tools, tasks: done.tasksTotal, when: at }].slice(-HISTORY_MAX))
+        await $.store.set('history', past)
+      }
     }
     return next(e)
   })
@@ -839,17 +1019,23 @@ export const register: Register = on => {
 
     const ui = $.ui.resolve(e)
     const { Box, Text, Button } = ui
-    const at = r.endedAt ?? Math.max(await read($, now), r.startedAt)
+    // Reading `now` redraws this every tick; the clock places the fill exactly.
+    await read($, now)
+    const at = Math.max(await $.clock.now(), r.startedAt)
+    const past = await read($, history)
+    const lims = await read($, limits)
     const hide = <Button key="clawd-hide" label="✕" plain role="dismiss" onPress={() => update($, view, x => ({ ...x, isHidden: true }))} />
 
-    if ('Svg' in ui) {
+    // Every surface's table names Svg, the terminal's with a stand-in that
+    // draws nothing, so pick by surface: the terminal gets the text version.
+    if (e.surface !== 'terminal' && 'Svg' in ui) {
       const { Svg } = ui
       const width = Math.max(260, Math.min(1400, (e.props.bodyColumns || 100) * 8 - 56))
       return (
         <Box flexDirection="row" alignItems="center" gap={1}>
           <Svg
-            source={trackerSvg(r, width, at)}
-            alt={`${r.title}: ${STAGES[r.stage]}, ${r.note}. ${etaText(r, at)}. ${statsText(r, at)}`}
+            source={trackerSvg(r, width, at, past, lims)}
+            alt={`${r.title}: ${STAGES[stageOf(r)]}, ${r.note}. ${etaText(r, at, past)}. ${statsText(r, at, lims)}`}
             width={width}
             height={H}
           />
@@ -868,19 +1054,19 @@ export const register: Register = on => {
           <Text bold wrap="truncate-end">
             {r.title}
           </Text>
-          <Text color={color}>{etaText(r, at)}</Text>
+          <Text color={color}>{etaText(r, at, past)}</Text>
           {hide}
         </Box>
         <Text wrap="truncate-end">
-          <Text color={color}>{segText(r, seg)}</Text>
+          <Text color={color}>{segText(r, seg, at)}</Text>
           <Text dimColor>
             {'  '}
-            {STAGES.map((s, i) => (i === r.stage && r.status === 'running' ? `[${s}]` : s)).join(' › ')}
+            {STAGES.map((s, i) => (r.status === 'running' && i === stageOf(r) ? `[${s}]` : s)).join(' › ')}
           </Text>
         </Text>
         <Text wrap="truncate-end">
           {r.note}
-          <Text dimColor> · {statsText(r, at)}</Text>
+          <Text dimColor> · {statsText(r, at, lims)}</Text>
         </Text>
       </Box>
     )

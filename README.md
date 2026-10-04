@@ -2,42 +2,54 @@
 
 Claude Code mods, starring Clawd.
 
+![Clawd cooking up an edit while the tracker shows the order's progress](docs/working.svg)
+
 | Plugin | Type | What it does |
 | --- | --- | --- |
-| [clawd-tracker](plugins/clawd-tracker) | mod | A Domino's-style order tracker above the prompt. Clawd acts out whatever Claude is doing (reading, cooking up edits, taste-testing, juggling subagents) next to a live ETA, tokens, context and cost. |
+| [clawd-tracker](plugins/clawd-tracker) | mod | A Domino's-style order tracker above the prompt. Clawd acts out whatever Claude is doing (reading, cooking up edits, taste-testing, juggling subagents) next to an honest progress bar, a learned ETA, tokens, context, cost and your plan usage. |
+
+## Setup
+
+Mods use Claude Code's **function hooks**, an early-access feature that is off by default. Turn it on once by adding this to `~/.claude/settings.json`:
+
+```json
+{
+  "env": {
+    "CLAUDE_CODE_ENABLE_FUNCTION_HOOKS": "1"
+  }
+}
+```
+
+If the file already has content, add the `"env"` block next to what's there rather than replacing it.
 
 ## Install
 
 In Claude Code:
 
 ```
-/plugin marketplace add <github-user>/clawd-plugins
+/plugin marketplace add ikjot23/clawd-plugins
 /plugin install clawd-tracker@clawd-plugins
 ```
 
-Then start a new session. Toggle the tracker any time with `/tracker`.
-
-### From a local clone
+Or from a terminal:
 
 ```bash
-git clone https://github.com/<github-user>/clawd-plugins.git ~/clawd-plugins
-```
-
-```bash
-claude plugin marketplace add ~/clawd-plugins
+claude plugin marketplace add ikjot23/clawd-plugins
 ```
 
 ```bash
 claude plugin install clawd-tracker@clawd-plugins
 ```
 
-Or load it for one session without installing:
+Then restart Claude Code (in the desktop app, quit with Cmd+Q and reopen) and send any prompt. Toggle the tracker any time with `/tracker`.
+
+To try it for one session without installing, from a clone:
 
 ```bash
-claude --plugin-dir ~/clawd-plugins/plugins/clawd-tracker
+claude --plugin-dir ./plugins/clawd-tracker
 ```
 
-Mods use Claude Code's function hooks (`hooks/register.tsx`), an early-access API. Tested on Claude Code 2.1.284; a later release may change it.
+Works in the Claude desktop app's Code tab and in the terminal. Tested on Claude Code 2.1.284 and 2.1.286; function hooks are early-access, so a later release may change them.
 
 ## Layout
 
@@ -48,9 +60,19 @@ plugins/<name>/
   hooks/hooks.json                points at the hooks module
   hooks/register.tsx              the mod itself
   types/index.d.ts                its state contract
+  tests/*.test.ts                 run with `claude plugin test`
+docs/                             preview images
 ```
 
-Check before publishing: `claude plugin validate plugins/<name>` and `claude plugin validate .`.
+Check before publishing:
+
+```bash
+claude plugin validate plugins/clawd-tracker
+```
+
+```bash
+claude plugin test plugins/clawd-tracker
+```
 
 ## License
 
