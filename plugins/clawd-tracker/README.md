@@ -98,6 +98,23 @@ Works in the desktop app (animated SVG) and in the terminal (text version with a
 
 ![A delivered order](../../docs/delivered.svg)
 
+## What it hooks
+
+The tracker only watches; it never blocks, rewrites or answers anything for Claude Code. Every hook passes the event on unchanged.
+
+| Event | What the tracker does with it |
+| --- | --- |
+| `session.start` | Registers `/tracker`, loads your past job times (for the ETA) and starts a 1-second clock while a job runs |
+| `prompt.submit` | Keeps the first line of your prompt as the order's title |
+| `turn.start` / `turn.complete` | Opens and delivers the order; a subagent's turn adds or removes its mini Clawd |
+| `tool.call` | Picks Clawd's costume and the stage from the tool and its arguments, and counts lines for the receipt. Before a step runs it asks Claude Code's permission rules, read-only, whether the step will stop for your OK, so the band can say "Waiting on you". It never makes or changes that decision |
+| `turn.step` | Adds up tokens and the estimated cost, reads how full the context is, and shows the thought bubble between steps |
+| `session.measure` | Reads your 5-hour and weekly plan usage for the rings |
+| `command.run` (`/tracker`) | Shows or hides the band, or prints `/tracker stats` |
+| `ui.render` (`AbovePrompt`) | Draws the band |
+
+It stores two things: whether the band is hidden (this session only) and your last 60 job times (to learn the ETA). It reads no files, makes no network calls and keeps no credentials. The delivery ding is synthesized in code, so the plugin ships no audio files.
+
 ## Development
 
 ```bash

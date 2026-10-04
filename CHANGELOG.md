@@ -1,5 +1,12 @@
 # Changelog
 
+## clawd-tracker 0.3.3
+
+- "Waiting on you" now comes from a read-only question to Claude Code's permission rules instead of a `tool.check` hook, so the tracker never sits in the permission path.
+- The delivery ding is synthesized in code; the plugin ships no audio file.
+- The `theme` setting is a plain string (an unknown value falls back to pizza).
+- A listing icon, and a README section on what each hook does.
+
 ## clawd-tracker 0.3.2
 
 - Fixed: with a task list, the bold stage label could sit one stage ahead of the fill. It now always matches the track the fill is in.

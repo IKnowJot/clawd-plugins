@@ -103,6 +103,12 @@ const extOf = (p: string): string => (/\.([a-z0-9]+)$/i.exec(p)?.[1] ?? '').toLo
 const baseOf = (p: string): string => p.split(/[\\/]/).filter(Boolean).pop() ?? p
 const str = (v: unknown): string => (typeof v === 'string' ? v : '')
 
+// A tool call's own arguments: the event minus the keys the engine adds.
+const argsOf = (e: Record<string, unknown>): Record<string, unknown> => {
+  const { tool: _t, tool_use_id: _id, agentId: _a, ...args } = e
+  return args
+}
+
 const PAINT = new Set(['css', 'scss', 'sass', 'less', 'styl', 'svg'])
 const QUILL = new Set(['md', 'mdx', 'txt', 'rst', 'adoc'])
 const TINKER = new Set(['json', 'yml', 'yaml', 'toml', 'ini', 'env', 'lock', 'xml', 'plist', 'conf', 'cfg'])
@@ -336,6 +342,56 @@ const stageOf = (r: Run): number => {
 
 const HISTORY_MAX = 60
 const SOUND_AFTER_MS = 20_000
+
+// The delivery ding, made in code: two bell tones (E6, then B6) with a soft
+// overtone each, fading out over a second, as 16-bit mono WAV in base64.
+const CHIME_RATE = 22_050
+const CHIME_NOTES: [number, number, number][] = [
+  [0, 1318.5, 0.5],
+  [0.12, 1975.5, 0.42],
+]
+const B64 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+const base64 = (bytes: Uint8Array): string => {
+  let out = ''
+  for (let i = 0; i < bytes.length; i += 3) {
+    const n = (bytes[i] << 16) | ((bytes[i + 1] ?? 0) << 8) | (bytes[i + 2] ?? 0)
+    out += B64[(n >> 18) & 63] + B64[(n >> 12) & 63] + (i + 1 < bytes.length ? B64[(n >> 6) & 63] : '=') + (i + 2 < bytes.length ? B64[n & 63] : '=')
+  }
+  return out
+}
+let chimeCache = ''
+const chime = (): string => {
+  if (chimeCache) return chimeCache
+  const n = Math.round(CHIME_RATE * 1.15)
+  const wave = new Float64Array(n)
+  for (const [start, freq, amp] of CHIME_NOTES) {
+    const from = Math.round(start * CHIME_RATE)
+    for (let i = 0; from + i < n; i++) {
+      const t = i / CHIME_RATE
+      const env = Math.exp(-t * 5.5) * Math.min(1, t * 400)
+      wave[from + i] += amp * env * (Math.sin(2 * Math.PI * freq * t) + 0.25 * Math.sin(2 * Math.PI * freq * 2.01 * t) + 0.1 * Math.sin(2 * Math.PI * freq * 3.02 * t))
+    }
+  }
+  const peak = wave.reduce((m, x) => Math.max(m, Math.abs(x)), 0) || 1
+  const bytes = new Uint8Array(44 + n * 2)
+  const view = new DataView(bytes.buffer)
+  const text = (at: number, s: string) => [...s].forEach((ch, i) => view.setUint8(at + i, ch.charCodeAt(0)))
+  text(0, 'RIFF')
+  view.setUint32(4, 36 + n * 2, true)
+  text(8, 'WAVEfmt ')
+  view.setUint32(16, 16, true)
+  view.setUint16(20, 1, true)
+  view.setUint16(22, 1, true)
+  view.setUint32(24, CHIME_RATE, true)
+  view.setUint32(28, CHIME_RATE * 2, true)
+  view.setUint16(32, 2, true)
+  view.setUint16(34, 16, true)
+  text(36, 'data')
+  view.setUint32(40, n * 2, true)
+  for (let i = 0; i < n; i++) view.setInt16(44 + i * 2, Math.round((wave[i] / peak) * 0.8 * 32767), true)
+  chimeCache = base64(bytes)
+  return chimeCache
+}
 const WAIT_SHOW_MS = 2_500
 const CTX_WARN = 0.85
 
@@ -1033,10 +1089,21 @@ export const register: Register = (on, options) => {
 
     if (isMain) {
       const at = await $.clock.now()
+      // Will this step stop for your OK? A read-only question to the permission
+      // rules: the decision stays with Claude Code and you. In auto mode a
+      // reviewer answers in a moment, so the band only calls for you once the
+      // wait passes WAIT_SHOW_MS.
+      const asks = tool !== 'AskUserQuestion' && (await $.tool.check({ tool, input: argsOf(ev) })).decision === 'ask'
+      const what = clip(tool.replace(/^mcp__/, '').split('__').pop() || tool, 24)
       await update($, run, r => {
         const stepped = apply(r, classify(tool, ev))
         if (!live(stepped)) return stepped
-        const asked = tool === 'AskUserQuestion' ? { ...stepped, waitingSince: at, waitingFor: 'your answer' } : stepped
+        const asked =
+          tool === 'AskUserQuestion'
+            ? { ...stepped, waitingSince: at, waitingFor: 'your answer' }
+            : asks
+              ? { ...stepped, waitingSince: at, waitingFor: `your OK on ${what}` }
+              : stepped
         return settle(tool === 'Agent' || tool === 'Task' ? { ...asked, helpers: asked.helpers + 1 } : asked, at)
       })
     } else {
@@ -1065,17 +1132,6 @@ export const register: Register = (on, options) => {
     return ran
   })
 
-  // A step that needs your OK. In auto mode a reviewer answers in a moment,
-  // so the band only calls for you once the wait passes WAIT_SHOW_MS.
-  on('tool.check', async ($, e, next) => {
-    const verdict = await next(e)
-    if (verdict.decision === 'ask' && e.tool_use_id) {
-      const at = await $.clock.now()
-      const what = clip(e.tool.replace(/^mcp__/, '').split('__').pop() || e.tool, 24)
-      await update($, run, r => (live(r) ? { ...r, waitingSince: at, waitingFor: `your OK on ${what}` } : r))
-    }
-    return verdict
-  })
 
   // Every model request: tokens and cost for the run, context for the main loop.
   on('turn.step', async function* ($, e, next) {
@@ -1174,7 +1230,7 @@ export const register: Register = (on, options) => {
         const past = await update($, history, h => [...h, entry].slice(-HISTORY_MAX))
         await $.store.set('history', past)
         // A ding for work long enough that you may have looked away.
-        if (opts.sound && entry.ms >= SOUND_AFTER_MS) void $.audio.play({ asset: 'sounds/ding.wav' }, { gain: 0.6 }).catch(() => undefined)
+        if (opts.sound && entry.ms >= SOUND_AFTER_MS) void $.audio.play({ base64: chime(), mime: 'audio/wav' }, { gain: 0.6 }).catch(() => undefined)
       }
     }
     return next(e)

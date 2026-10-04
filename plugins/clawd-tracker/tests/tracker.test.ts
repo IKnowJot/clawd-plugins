@@ -4,20 +4,23 @@ const BAND = { component: 'AbovePrompt', props: { bodyColumns: 120 } } as const
 
 // Stands in for Claude Code beneath the plugin: every event answers plainly.
 // Returns the mock clock, and the clips the plugin asked to play.
-const engine = (on: any, { failTools = false, ask = false } = {}) => {
+const engine = (on: any, { failTools = false, ask = false, hold = null as Promise<void> | null } = {}) => {
   const clock = mock.clock(on)
   mock.store(on)
   const played: string[] = []
   on('ui.render', async () => null)
   on('ui.toast', async () => undefined)
   on('audio.play', async (_$: any, e: any) => {
-    played.push(String(e.clip?.asset ?? e.asset ?? ''))
+    played.push(String(e.clip?.mime ?? e.mime ?? ''))
     return {}
   })
   on('prompt.submit', async (_$: any, e: any) => ({ text: e.text }))
   on('turn.start', async (_$: any, e: any) => ({ turnId: e.turnId }))
   on('turn.complete', async (_$: any, e: any) => ({ text: e.answer }))
-  on('tool.call', async () => ({ result: {}, text: failTools ? 'exit 1' : 'ok', isError: failTools }))
+  on('tool.call', async () => {
+    if (hold) await hold
+    return { result: {}, text: failTools ? 'exit 1' : 'ok', isError: failTools }
+  })
   on('tool.check', async () => ({ decision: ask ? 'ask' : 'allow' }))
   on('command.run', async () => ({ text: '' }))
   on('session.measure', async (_$: any, e: any) => ({ changed: e.changed }))
@@ -125,7 +128,7 @@ describe('clawd-tracker', () => {
     const ui = await terminal($)
     expect(await has(ui, /2 files · \+5 −2 · checks ✓ · 3 steps · order #1 today/)).toBe(true)
     await ui.unmount()
-    expect(played).toEqual(['sounds/ding.wav'])
+    expect(played).toEqual(['audio/wav'])
   })
 
   test('a quick job delivers without a ding', async ($, on) => {
@@ -137,10 +140,13 @@ describe('clawd-tracker', () => {
     expect(played).toEqual([])
   })
 
-  test('a permission prompt shows "waiting on you" once it lasts', async ($, on) => {
-    const { clock } = engine(on, { ask: true })
+  test('a step that needs your OK shows "waiting on you" once it lasts', async ($, on) => {
+    let approve = () => {}
+    const hold = new Promise<void>(done => (approve = done))
+    const { clock } = engine(on, { ask: true, hold })
     await order($, 'deploy it')
-    await $.tool.check({ tool: 'Bash', input: { command: 'npm publish' }, tool_use_id: 'tu1' } as any)
+    const call = $.tool.call({ tool: 'Bash', command: 'npm publish' } as any)
+    await clock.settle()
     let ui = await terminal($)
     expect(await has(ui, /Waiting on you/)).toBe(false)
     await ui.unmount()
@@ -148,6 +154,11 @@ describe('clawd-tracker', () => {
     ui = await terminal($)
     expect(await has(ui, /Waiting on you · 0:05/)).toBe(true)
     expect(await has(ui, /Needs your OK on Bash/)).toBe(true)
+    await ui.unmount()
+    approve()
+    await call
+    ui = await terminal($)
+    expect(await has(ui, /Waiting on you/)).toBe(false)
     await ui.unmount()
   })
 
