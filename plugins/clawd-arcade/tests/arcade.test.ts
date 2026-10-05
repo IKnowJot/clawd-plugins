@@ -76,15 +76,15 @@ describe('clawd-arcade', () => {
     await ui.unmount()
   })
 
-  test('the order-up banner shows when Claude finishes', async ($, on) => {
+  test('the done banner shows when Claude finishes', async ($, on) => {
     engine(on)
     await $.turn.start({ text: 'do it', turnId: 't1' })
     const ui = await pane($)
     await $.turn.complete({ answer: 'done', durationMs: 0, isAborted: false, turnId: 't1', reason: 'answer' } as any)
     await ui.advance(100)
-    expect(await has(ui, /Order's up! Claude is done/, { in: 'conga' })).toBe(true)
+    expect(await has(ui, /Claude is done!/, { in: 'conga' })).toBe(true)
     await ui.advance(7000)
-    expect(await has(ui, /Order's up!/, { in: 'conga' })).toBe(false)
+    expect(await has(ui, /Claude is done!/, { in: 'conga' })).toBe(false)
     await ui.unmount()
   })
 

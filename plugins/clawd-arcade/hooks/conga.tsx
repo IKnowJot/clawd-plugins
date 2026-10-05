@@ -3,7 +3,7 @@ import type { ClientKeyEvent, ClientModule } from 'claude-code'
 import type { GameProps } from '../types'
 
 // Clawd Conga: Clawd leads a conga line of mini Clawds around the board,
-// gobbling pizza. Each slice adds a dancer and speeds the beat up a little.
+// squashing bugs. Each bug adds a dancer and speeds the beat up a little.
 // Hit a wall or the line and the conga trips.
 
 type Cell = [number, number]
@@ -14,7 +14,7 @@ type Game = {
   line: Cell[]
   dir: Cell
   queued: Cell[]
-  pizza: Cell
+  bug: Cell
   score: number
   phase: Phase
   pausedFor: string
@@ -48,7 +48,7 @@ const DIRS: Record<string, Cell> = {
 const clamp = (v: number, lo: number, hi: number): number => Math.max(lo, Math.min(hi, v))
 const same = (a: Cell, b: Cell): boolean => a[0] === b[0] && a[1] === b[1]
 
-const placePizza = (g: Game): Cell => {
+const placeBug = (g: Game): Cell => {
   const free: Cell[] = []
   for (let y = 0; y < g.rows; y++) for (let x = 0; x < g.cols; x++) if (!g.line.some(c => c[0] === x && c[1] === y)) free.push([x, y])
   return free[Math.floor(Math.random() * free.length)] ?? [0, 0]
@@ -62,7 +62,7 @@ const fresh = (cols: number, rows: number, props: GameProps): Game => {
     line: [[x, y], [x - 1, y], [x - 2, y]],
     dir: [1, 0],
     queued: [],
-    pizza: [0, 0],
+    bug: [0, 0],
     score: 0,
     phase: 'ready',
     pausedFor: '',
@@ -72,7 +72,7 @@ const fresh = (cols: number, rows: number, props: GameProps): Game => {
     bannerTicks: 0,
     isNewBest: false,
   }
-  g.pizza = placePizza(g)
+  g.bug = placeBug(g)
   return g
 }
 
@@ -82,7 +82,7 @@ const step = (g: Game, post: (data: { type: 'score'; game: 'conga'; score: numbe
   if (next && !(next[0] === -g.dir[0] && next[1] === -g.dir[1])) g.dir = next
   const head = g.line[0]
   const to: Cell = [head[0] + g.dir[0], head[1] + g.dir[1]]
-  const eats = same(to, g.pizza)
+  const eats = same(to, g.bug)
   const body = eats ? g.line : g.line.slice(0, -1)
   if (to[0] < 0 || to[1] < 0 || to[0] >= g.cols || to[1] >= g.rows || body.some(c => same(c, to))) {
     g.phase = 'over'
@@ -94,7 +94,7 @@ const step = (g: Game, post: (data: { type: 'score'; game: 'conga'; score: numbe
   if (eats) {
     g.score += 1
     g.every = Math.max(FASTEST, START_EVERY - Math.floor(g.score / 4))
-    g.pizza = placePizza(g)
+    g.bug = placeBug(g)
   }
 }
 
@@ -126,8 +126,8 @@ const rowRuns = (g: Game, y: number): Run[] => {
         ? { text: '••', bg: CLAY, fg: INK, bold: true } // Clawd, eyes forward
         : at > 0
           ? { text: '▘▝', bg: at % 2 ? CLAY_DARK : CLAY, fg: INK } // the conga line: mini Clawds, little legs
-          : same([x, y], g.pizza)
-            ? { text: '🍕', bg: (x + y) % 2 ? BOARD : BOARD_ALT }
+          : same([x, y], g.bug)
+            ? { text: '🐛', bg: (x + y) % 2 ? BOARD : BOARD_ALT }
             : { text: '  ', bg: (x + y) % 2 ? BOARD : BOARD_ALT }
     const last = runs[runs.length - 1]
     if (last && last.bg === cell.bg && last.fg === cell.fg && last.bold === cell.bold && cell.text === '  ' && last.text.trim() === '') last.text += cell.text
@@ -170,7 +170,7 @@ const Conga: ClientModule<GameProps, State> = (props, surface) => {
     g.phase = 'paused'
     g.pausedFor = 'Claude needs you'
   }
-  // A new delivery shows the "order's up" banner for a few seconds.
+  // Claude finishing shows the "Claude is done" banner for a few seconds.
   if (props.status.doneAt !== undefined && props.status.doneAt !== g.doneSeen) {
     g.doneSeen = props.status.doneAt
     g.bannerTicks = BANNER_TICKS
@@ -180,7 +180,7 @@ const Conga: ClientModule<GameProps, State> = (props, surface) => {
     g.phase === 'paused' && g.pausedFor
       ? { text: `✋ ${g.pausedFor}: Esc to answer, then click back and press space`, color: '#E0A33B' }
       : g.bannerTicks > 0
-        ? { text: "🍕 Order's up! Claude is done.", color: '#3B9C5F' }
+        ? { text: '🎉 Claude is done! Hop back whenever you like.', color: '#3B9C5F' }
         : null
 
   const status =
@@ -189,8 +189,8 @@ const Conga: ClientModule<GameProps, State> = (props, surface) => {
       : g.phase === 'paused'
         ? 'Paused · space to dance on'
         : g.phase === 'over'
-          ? `The conga tripped! ${g.score} slice${g.score === 1 ? '' : 's'}${g.isNewBest ? ' · new best! 🎉' : ''} · space to go again`
-          : `🍕 ${g.score} · line of ${g.line.length} · best ${Math.max(props.best, g.score)}`
+          ? `The conga tripped! ${g.score} bug${g.score === 1 ? '' : 's'} squashed${g.isNewBest ? ' · new best! 🎉' : ''} · space to go again`
+          : `🐛 ${g.score} squashed · line of ${g.line.length} · best ${Math.max(props.best, g.score)}`
 
   return (
     <Box flexDirection="column">

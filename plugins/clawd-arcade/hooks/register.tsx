@@ -24,7 +24,7 @@ const CLAUDE_LINE: Record<Status['claude'], string> = {
   idle: 'Claude is free. Play away.',
   working: 'Claude is cooking. Play away.',
   needs: 'Claude needs you',
-  done: "Order's up! Claude is done.",
+  done: 'Claude is done!',
 }
 
 export const register: Register = on => {

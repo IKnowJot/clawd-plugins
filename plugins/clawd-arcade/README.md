@@ -4,7 +4,7 @@ Clawd-themed games in a side pane, to play while Claude works.
 
 ## Games
 
-- **🍕 Clawd Conga** — Clawd leads a conga line of mini Clawds around the board, gobbling pizza. Every slice adds a dancer and quickens the beat. Hit a wall or the line and the conga trips.
+- **🐛 Clawd Conga** — Clawd leads a conga line of mini Clawds around the board, squashing bugs. Every bug adds a dancer and quickens the beat. Hit a wall or the line and the conga trips.
 - More on the way: **Clawd Stacks** and **Flappy Clawd**.
 
 ## Playing
@@ -16,7 +16,7 @@ Clawd-themed games in a side pane, to play while Claude works.
 ## It keeps an eye on Claude
 
 - **Claude needs you** (a question, or a step waiting for your OK): the round pauses straight away and says so. Answer, click back into the game and press space.
-- **Claude finishes**: an "Order's up!" banner slides in. Finish your round or hop back.
+- **Claude finishes**: a "Claude is done!" banner slides in. Finish your round or hop back.
 - The line above the game always says what Claude is up to.
 
 Works in the Claude desktop app's Code tab and in the terminal (not in VS Code or on mobile, which can't host interactive panes).

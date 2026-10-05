@@ -9,7 +9,7 @@ Claude Code mods, starring Clawd.
 | Plugin | Type | What it does |
 | --- | --- | --- |
 | [clawd-tracker](plugins/clawd-tracker) | mod | A Domino's-style order tracker above the prompt. Clawd acts out whatever Claude is doing (reading, cooking up edits, taste-testing, juggling subagents) next to an honest progress bar, a learned ETA, a delivery receipt and ding, helper Clawds for subagents, plan usage and four themes. |
-| [clawd-arcade](plugins/clawd-arcade) | mod | Clawd-themed games in a side pane while Claude works, starting with Clawd Conga. Pauses when Claude needs you and tells you when the order's up. |
+| [clawd-arcade](plugins/clawd-arcade) | mod | Clawd-themed games in a side pane while Claude works, starting with Clawd Conga. Pauses when Claude needs you and tells you when Claude is done. |
 
 Four shops to pick from:
 

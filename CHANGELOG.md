@@ -1,5 +1,9 @@
 # Changelog
 
+## clawd-arcade 0.1.1
+
+- Clawd Conga squashes 🐛 bugs instead of eating pizza; the finish banner says "Claude is done!"
+
 ## clawd-arcade 0.1.0
 
 - New plugin: Clawd Conga in a side pane (`/arcade`). Pauses when Claude needs you, shows an "Order's up!" banner when Claude finishes, keeps your best score.

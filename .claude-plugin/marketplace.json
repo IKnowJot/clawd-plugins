@@ -18,8 +18,8 @@
     {
       "name": "clawd-arcade",
       "source": "./plugins/clawd-arcade",
-      "description": "Mod: Clawd-themed games in a side pane while Claude works. Pauses when Claude needs you and tells you when the order's up.",
-      "version": "0.1.0",
+      "description": "Mod: Clawd-themed games in a side pane while Claude works. Pauses when Claude needs you and tells you when Claude is done.",
+      "version": "0.1.1",
       "category": "mod"
     }
   ]
