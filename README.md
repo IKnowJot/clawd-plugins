@@ -1,5 +1,7 @@
 # clawd-plugins
 
+[![Plugin Security Scan](https://github.com/IKnowJot/clawd-plugins/actions/workflows/scan.yml/badge.svg)](https://github.com/IKnowJot/clawd-plugins/actions/workflows/scan.yml) [![HOL Guard Scanner](https://img.shields.io/badge/HOL%20Guard-passing-00a67e)](https://github.com/hashgraph-online/hol-guard)
+
 Claude Code mods, starring Clawd.
 
 ![Clawd tracking a whole order, from ticket to delivery](docs/demo.svg)
