@@ -1,5 +1,12 @@
 # Changelog
 
+## clawd-arcade 0.2.0
+
+- A game menu: `/arcade` opens it, **← Games** goes back.
+- New game: **Hat Trick**. Find Clawd under his shuffling chef hats; faster and more hats each round. Pick with the keyboard or a click.
+- Square, fixed-width cells, so the board is a true grid in the desktop app's font and moves at the same speed in every direction. The board fills the pane.
+- Keys and clicks redraw at once; text in sentence case throughout.
+
 ## clawd-arcade 0.1.1
 
 - Clawd Conga squashes 🐛 bugs instead of eating pizza; the finish banner says "Claude is done!"

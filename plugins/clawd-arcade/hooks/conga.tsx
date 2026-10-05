@@ -1,4 +1,4 @@
-import type { ClientKeyEvent, ClientModule } from 'claude-code'
+import type { ClientElements, ClientKeyEvent, ClientModule, RenderElement } from 'claude-code'
 
 import type { GameProps } from '../types'
 
@@ -37,6 +37,7 @@ const CLAY_DARK = '#B45F43'
 const INK = '#1F1E1D'
 const BOARD = '#262624'
 const BOARD_ALT = '#2B2B29'
+const BUG = '#5FA35A'
 
 const DIRS: Record<string, Cell> = {
   up: [0, -1], w: [0, -1], k: [0, -1],
@@ -45,8 +46,43 @@ const DIRS: Record<string, Cell> = {
   right: [1, 0], d: [1, 0], l: [1, 0],
 }
 
-const clamp = (v: number, lo: number, hi: number): number => Math.max(lo, Math.min(hi, v))
 const same = (a: Cell, b: Cell): boolean => a[0] === b[0] && a[1] === b[1]
+
+// ---------------------------------------------------------------------------
+// The board: a grid of square cells, each a fixed-width box, so every row is
+// the same width whatever the font.
+
+type Px = { bg: string; glyph?: string; fg?: string }
+
+const paint = (el: ClientElements, grid: Px[][], cellW: number): RenderElement => {
+  const { Box, Text } = el
+  return Box({
+    flexDirection: 'column',
+    children: grid.map(row => {
+      const runs: { px: Px; n: number }[] = []
+      for (const px of row) {
+        const last = runs[runs.length - 1]
+        if (last && !px.glyph && !last.px.glyph && last.px.bg === px.bg) last.n += 1
+        else runs.push({ px, n: 1 })
+      }
+      return Box({
+        flexDirection: 'row',
+        children: runs.map(({ px, n }) =>
+          Box({
+            width: cellW * n,
+            height: 1,
+            backgroundColor: px.bg,
+            justifyContent: 'center',
+            overflow: 'hidden',
+            children: px.glyph ? Text({ color: px.fg, bold: true, children: px.glyph }) : undefined,
+          }),
+        ),
+      })
+    }),
+  })
+}
+
+// ---------------------------------------------------------------------------
 
 const placeBug = (g: Game): Cell => {
   const free: Cell[] = []
@@ -54,7 +90,8 @@ const placeBug = (g: Game): Cell => {
   return free[Math.floor(Math.random() * free.length)] ?? [0, 0]
 }
 
-const fresh = (cols: number, rows: number, props: GameProps): Game => {
+const fresh = (props: GameProps): Game => {
+  const { cols, rows } = props
   const y = Math.floor(rows / 2)
   const x = Math.floor(cols / 3)
   const g: Game = {
@@ -76,7 +113,7 @@ const fresh = (cols: number, rows: number, props: GameProps): Game => {
   return g
 }
 
-// One beat of the conga: move, eat, or trip.
+// One beat of the conga: move, squash a bug, or trip.
 const step = (g: Game, post: (data: { type: 'score'; game: 'conga'; score: number }) => void): void => {
   const next = g.queued.shift()
   if (next && !(next[0] === -g.dir[0] && next[1] === -g.dir[1])) g.dir = next
@@ -114,57 +151,45 @@ const onKeyFor = (g: Game, restart: () => void) => (ev: ClientKeyEvent): void =>
   if (!same(dir, last) && !(dir[0] === -last[0] && dir[1] === -last[1]) && g.queued.length < 3) g.queued.push(dir)
 }
 
-type Run = { text: string; bg: string; fg?: string; bold?: boolean }
-
-// One board row as runs of same-styled cells, two characters per cell.
-const rowRuns = (g: Game, y: number): Run[] => {
-  const runs: Run[] = []
-  for (let x = 0; x < g.cols; x++) {
-    const at = g.line.findIndex(c => c[0] === x && c[1] === y)
-    const cell: Run =
-      at === 0
-        ? { text: '••', bg: CLAY, fg: INK, bold: true } // Clawd, eyes forward
-        : at > 0
-          ? { text: '▘▝', bg: at % 2 ? CLAY_DARK : CLAY, fg: INK } // the conga line: mini Clawds, little legs
-          : same([x, y], g.bug)
-            ? { text: '🐛', bg: (x + y) % 2 ? BOARD : BOARD_ALT }
-            : { text: '  ', bg: (x + y) % 2 ? BOARD : BOARD_ALT }
-    const last = runs[runs.length - 1]
-    if (last && last.bg === cell.bg && last.fg === cell.fg && last.bold === cell.bold && cell.text === '  ' && last.text.trim() === '') last.text += cell.text
-    else runs.push(cell)
-  }
-  return runs
-}
+const board = (g: Game): Px[][] =>
+  Array.from({ length: g.rows }, (_, y) =>
+    Array.from({ length: g.cols }, (_, x): Px => {
+      const at = g.line.findIndex(c => c[0] === x && c[1] === y)
+      if (at === 0) return { bg: CLAY, glyph: '••', fg: INK } // Clawd, eyes forward
+      if (at > 0) return { bg: at % 2 ? CLAY_DARK : CLAY } // the conga line of mini Clawds
+      if (same([x, y], g.bug)) return { bg: (x + y) % 2 ? BOARD : BOARD_ALT, glyph: '🐛', fg: BUG }
+      return { bg: (x + y) % 2 ? BOARD : BOARD_ALT }
+    }),
+  )
 
 const Conga: ClientModule<GameProps, State> = (props, surface) => {
   const { Box, Text } = surface.elements
-  const cols = clamp(Math.floor((surface.columns || 40) / 2) - 1, 12, 30)
-  const rows = clamp((surface.rows || 18) - 4, 8, 18)
 
   if (!surface.state) {
-    const game = fresh(cols, rows, props)
+    const game = fresh(props)
     let frame = 0
     const restart = () => {
-      const g2 = fresh(game.cols, game.rows, game.props)
-      Object.assign(game, g2, { phase: 'playing' as Phase })
+      Object.assign(game, fresh(game.props), { phase: 'playing' as Phase })
     }
-    surface.onKey(onKeyFor(game, restart))
+    // Redraw on the key itself, not the next tick, so input feels instant.
+    const onKey = onKeyFor(game, restart)
+    surface.onKey(ev => {
+      onKey(ev)
+      surface.setState({ game, frame: (frame += 1) })
+    })
     surface.every(TICK_MS, () => {
       game.tick += 1
       if (game.bannerTicks > 0) game.bannerTicks -= 1
-      // Claude needs you: pause the round so nothing is lost while you answer.
-      if (game.props.status.claude === 'needs' && game.phase === 'playing') {
-        game.phase = 'paused'
-        game.pausedFor = 'Claude needs you'
-      }
       if (game.phase === 'playing' && game.tick % game.every === 0) step(game, d => surface.post(d))
       surface.setState({ game, frame: (frame += 1) })
     })
     surface.setState({ game, frame })
   }
 
-  const g = surface.state?.game ?? fresh(cols, rows, props)
+  const g = surface.state?.game ?? fresh(props)
   g.props = props
+  // The pane changed size before the first move: fit the board to it.
+  if (g.phase === 'ready' && (g.cols !== props.cols || g.rows !== props.rows)) Object.assign(g, fresh(props))
   // Claude needs you: pause the round the moment that news arrives.
   if (props.status.claude === 'needs' && g.phase === 'playing') {
     g.phase = 'paused'
@@ -178,38 +203,30 @@ const Conga: ClientModule<GameProps, State> = (props, surface) => {
 
   const banner =
     g.phase === 'paused' && g.pausedFor
-      ? { text: `✋ ${g.pausedFor}: Esc to answer, then click back and press space`, color: '#E0A33B' }
+      ? { text: `✋ ${g.pausedFor}: Esc to answer, then click back and press Space`, color: '#E0A33B' }
       : g.bannerTicks > 0
         ? { text: '🎉 Claude is done! Hop back whenever you like.', color: '#3B9C5F' }
         : null
 
   const status =
     g.phase === 'ready'
-      ? 'Click here, then press an arrow key to start'
+      ? 'Click the board, then press an arrow key to start'
       : g.phase === 'paused'
-        ? 'Paused · space to dance on'
+        ? 'Paused · Space to dance on'
         : g.phase === 'over'
-          ? `The conga tripped! ${g.score} bug${g.score === 1 ? '' : 's'} squashed${g.isNewBest ? ' · new best! 🎉' : ''} · space to go again`
-          : `🐛 ${g.score} squashed · line of ${g.line.length} · best ${Math.max(props.best, g.score)}`
+          ? `The conga tripped! ${g.score} bug${g.score === 1 ? '' : 's'} squashed${g.isNewBest ? ' · New best! 🎉' : ''} · Space to go again`
+          : `🐛 ${g.score} squashed · Line of ${g.line.length} · Best ${Math.max(props.best, g.score)}`
 
   return (
-    <Box flexDirection="column">
+    <Box flexDirection="column" gap={1}>
       {banner ? (
         <Text bold color={banner.color}>
           {banner.text}
         </Text>
       ) : (
-        <Text dimColor>arrows or WASD to steer · space pauses · r restarts</Text>
+        <Text dimColor>Arrows or WASD to steer · Space pauses · R restarts</Text>
       )}
-      {Array.from({ length: g.rows }, (_, y) => (
-        <Text>
-          {rowRuns(g, y).map(run => (
-            <Text backgroundColor={run.bg} color={run.fg} bold={run.bold}>
-              {run.text}
-            </Text>
-          ))}
-        </Text>
-      ))}
+      {paint(surface.elements, board(g), props.cellW)}
       <Text bold={g.phase !== 'playing'} color={g.phase === 'over' ? CLAY : undefined} dimColor={g.phase === 'playing'}>
         {status}
       </Text>

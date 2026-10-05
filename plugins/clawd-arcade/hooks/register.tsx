@@ -1,18 +1,29 @@
 import { atom, read, update } from 'claude-code'
 import type { Register } from 'claude-code'
 
-import type { Status } from '../types'
+import type { GameId, Screen, Status } from '../types'
 
-// The arcade pane, what Claude is up to, and each game's best score.
+// The arcade pane: a menu of games, the game being played, what Claude is up
+// to, and each game's best score.
 const PANE = 'clawd-arcade'
 const status = atom({ plugin: 'clawd-arcade', key: 'status' } as const, { claude: 'idle' } as Status)
 const best = atom({ plugin: 'clawd-arcade', key: 'best' } as const, {} as Record<string, number>)
 const now = atom({ plugin: 'clawd-arcade', key: 'now' } as const, 0)
+const screen = atom({ plugin: 'clawd-arcade', key: 'screen' } as const, 'menu' as Screen)
 
-const GAMES = ['conga'] as const
+type Listing = { id: GameId; name: string; blurb: string; score: string; isReady: boolean }
+const GAMES: Listing[] = [
+  { id: 'conga', name: 'Clawd Conga', blurb: 'Lead a conga line of mini Clawds and squash bugs.', score: 'bugs', isReady: true },
+  { id: 'hats', name: 'Hat Trick', blurb: 'Clawd hides under a hat. Watch the shuffle, then find him.', score: 'rounds', isReady: true },
+  { id: 'stacks', name: 'Clawd Stacks', blurb: 'Stack falling blocks into lines.', score: 'lines', isReady: false },
+  { id: 'flappy', name: 'Flappy Clawd', blurb: 'Hop through the gaps.', score: 'gaps', isReady: false },
+]
+const PLAYABLE = GAMES.filter(g => g.isReady).map(g => g.id as string)
+
 const str = (v: unknown): string => (typeof v === 'string' ? v : '')
 const clip = (s: string, max: number): string => (s.length > max ? s.slice(0, max - 1) + '…' : s)
 const toolName = (tool: string): string => clip(tool.replace(/^mcp__/, '').split('__').pop() || tool, 24)
+const clamp = (v: number, lo: number, hi: number): number => Math.max(lo, Math.min(hi, v))
 
 // A tool call's own arguments: the event minus the keys the engine adds.
 const argsOf = (e: Record<string, unknown>): Record<string, unknown> => {
@@ -37,8 +48,9 @@ export const register: Register = on => {
   })
 
   on('command.run', { command: 'arcade' }, async $ => {
+    await update($, screen, () => 'menu' as Screen)
     await $.ui.open({ id: PANE, title: 'Clawd Arcade' })
-    return { text: 'Clawd Arcade is open. Click the game, then use the arrow keys; Esc gives the keyboard back.' }
+    return { text: 'Clawd Arcade is open. Pick a game, click it, then play with the keyboard. Esc gives the keyboard back.' }
   })
 
   // What Claude is doing, for the games' banners: working, done, or waiting on you.
@@ -77,20 +89,20 @@ export const register: Register = on => {
     const data = e.data as { type?: unknown; game?: unknown; score?: unknown } | null
     const game = str(data?.game)
     const score = typeof data?.score === 'number' && Number.isFinite(data.score) ? Math.max(0, Math.floor(data.score)) : -1
-    if (data?.type !== 'score' || !(GAMES as readonly string[]).includes(game) || score < 0) return {}
+    if (data?.type !== 'score' || !PLAYABLE.includes(game) || score < 0) return {}
     const all = await update($, best, b => ((b[game] ?? 0) >= score ? b : { ...b, [game]: score }))
     await $.store.set('best', all)
-    return { props: { status: await read($, status), best: all[game] ?? 0, now: await $.clock.now() } }
+    return {}
   })
 
   on('ui.render', { component: 'Pane', requestId: PANE }, async ($, e) => {
     const ui = $.ui.resolve(e)
-    const { Box, Text } = ui
+    const { Box, Text, Button } = ui
     const st = await read($, status)
     const all = await read($, best)
+    const shown = await read($, screen)
     await read($, now)
     const at = await $.clock.now()
-    const tone = st.claude === 'needs' ? 'yellow' : st.claude === 'done' ? 'green' : 'gray'
 
     if (!('Client' in ui) || e.surface === 'vscode' || e.surface === 'mobile') {
       return (
@@ -101,18 +113,61 @@ export const register: Register = on => {
       )
     }
     const { Client } = ui
+    const tone = st.claude === 'needs' ? 'yellow' : st.claude === 'done' ? 'green' : 'gray'
+    const claudeLine = (
+      <Text color={tone} bold={st.claude === 'needs' || st.claude === 'done'}>
+        {st.claude === 'needs' ? `${CLAUDE_LINE.needs}: ${st.needs ?? 'you'}. Press Esc to answer.` : CLAUDE_LINE[st.claude]}
+      </Text>
+    )
+
+    if (shown === 'menu') {
+      return (
+        <Box flexDirection="column" gap={1}>
+          <Text bold color="#D97757">
+            Clawd Arcade
+          </Text>
+          {claudeLine}
+          {GAMES.map(game => (
+            <Box flexDirection="column">
+              <Box flexDirection="row" gap={1}>
+                <Button
+                  key={`play-${game.id}`}
+                  label={game.isReady ? `Play ${game.name}` : `${game.name} (coming soon)`}
+                  onPress={() => (game.isReady ? update($, screen, () => game.id as Screen) : undefined)}
+                />
+                {game.isReady && <Text dimColor>Best {all[game.id] ?? 0}</Text>}
+              </Box>
+              <Text dimColor>{game.blurb}</Text>
+            </Box>
+          ))}
+        </Box>
+      )
+    }
+
+    // Square cells: a desktop column is about a third as wide as a row is
+    // tall, a terminal one about half.
+    const cellW = e.surface === 'terminal' ? 2 : 3
+    const cols = clamp(Math.floor(((e.props as { bodyColumns?: number }).bodyColumns ?? 60) / cellW) - 1, 12, 28)
+    const rows = clamp((e.viewport?.rows ?? 30) - 12, 10, 20)
+    const game = GAMES.find(g => g.id === shown) ?? GAMES[0]
+    const props = { status: st, best: all[game.id] ?? 0, now: at, cellW, cols, rows }
     return (
       <Box flexDirection="column" gap={1}>
-        <Text>
-          <Text bold color="#D97757">
-            Clawd Conga
+        <Box flexDirection="row" gap={2} alignItems="center">
+          <Button key="back" label="← Games" onPress={() => update($, screen, () => 'menu' as Screen)} />
+          <Text>
+            <Text bold color="#D97757">
+              {game.name}
+            </Text>
+            <Text dimColor> · Best {all[game.id] ?? 0}</Text>
           </Text>
-          <Text dimColor> · best {all.conga ?? 0}</Text>
-        </Text>
-        <Text color={tone} bold={st.claude !== 'working' && st.claude !== 'idle'}>
-          {st.claude === 'needs' ? `${CLAUDE_LINE.needs}: ${st.needs ?? 'you'}. Press Esc to answer.` : CLAUDE_LINE[st.claude]}
-        </Text>
-        <Client key="conga" module="./conga.tsx" props={{ status: st, best: all.conga ?? 0, now: at }} />
+        </Box>
+        {claudeLine}
+        {game.id === 'hats' ? (
+          <Client key="hats" module="./hats.tsx" props={props} />
+        ) : (
+          <Client key="conga" module="./conga.tsx" props={props} />
+        )}
       </Box>
     )
   })
