@@ -1,0 +1,15 @@
+{
+  "name": "clawd-arcade",
+  "displayName": "Clawd Arcade",
+  "version": "0.1.0",
+  "description": "Clawd-themed games in a side pane while Claude works. Pauses when Claude needs you and tells you when the order's up.",
+  "types": "./types/index.d.ts",
+  "license": "MIT",
+  "author": { "name": "IKnowJot", "url": "https://github.com/IKnowJot" },
+  "homepage": "https://github.com/IKnowJot/clawd-plugins",
+  "repository": "https://github.com/IKnowJot/clawd-plugins",
+  "supportUrl": "https://github.com/IKnowJot/clawd-plugins/issues",
+  "documentationUrl": "https://github.com/IKnowJot/clawd-plugins/tree/main/plugins/clawd-arcade#readme",
+  "privacyPolicyUrl": "https://github.com/IKnowJot/clawd-plugins/blob/main/PRIVACY.md",
+  "keywords": ["games", "arcade", "snake", "clawd", "mod"]
+}
