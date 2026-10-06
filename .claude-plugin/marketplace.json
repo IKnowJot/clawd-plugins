@@ -12,7 +12,7 @@
       "name": "clawd-tracker",
       "source": "./plugins/clawd-tracker",
       "description": "Mod: a pizza-tracker progress bar above the prompt. Clawd acts out what Claude is doing, with an honest progress bar, a learned ETA, a delivery receipt and ding, plan usage and four themes.",
-      "version": "0.3.4",
+      "version": "0.4.0",
       "category": "mod"
     },
     {

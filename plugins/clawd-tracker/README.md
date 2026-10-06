@@ -60,7 +60,7 @@ The top right shows the job size (Small, Medium or Large, from the task count or
 
 ## Themes
 
-Same Clawd, different shop. Pick one in settings:
+Same Clawd, different shop. Switch any time with `/tracker theme <name>`, for example `/tracker theme rocket`; `/tracker theme` lists them:
 
 | Theme | Stages |
 | --- | --- |
@@ -80,7 +80,7 @@ Same Clawd, different shop. Pick one in settings:
 
 ## Settings
 
-Change them in Claude Code's `/config` menu, or in `settings.json` under `pluginConfigs`:
+Change the theme and sound with the commands above, or any setting in Claude Code's `/config` menu (terminal) or `settings.json` under `pluginConfigs`:
 
 | Setting | Default | What it does |
 | --- | --- | --- |
@@ -93,6 +93,8 @@ Change them in Claude Code's `/config` menu, or in `settings.json` under `plugin
 
 - `/tracker`: show or hide the tracker. The ✕ on the bar hides it too; `/tracker` brings it back.
 - `/tracker stats`: today's orders, time spent, steps, tokens and the longest job.
+- `/tracker theme <name>`: switch theme (`pizza`, `coffee`, `rocket`, `construction`); `/tracker theme` lists them.
+- `/tracker sound on|off`: turn the delivery ding on or off.
 
 Works in the desktop app (animated SVG) and in the terminal (text version with an emoji per activity).
 

@@ -1,5 +1,9 @@
 # Changelog
 
+## clawd-tracker 0.4.0
+
+- `/tracker theme <name>` switches theme right from the chat; `/tracker theme` lists them. `/tracker sound on|off` toggles the ding. Works in the desktop app, where `/config` isn't available.
+
 ## clawd-arcade 0.2.0
 
 - A game menu: `/arcade` opens it, **← Games** goes back.

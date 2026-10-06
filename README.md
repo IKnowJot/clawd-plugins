@@ -51,7 +51,7 @@ claude plugin install clawd-tracker@clawd-plugins
 
 Then restart Claude Code (in the desktop app, quit with Cmd+Q and reopen) and send any prompt. Toggle the tracker any time with `/tracker`.
 
-If the install says some options aren't set yet, that's fine: every setting has a default (pizza theme, ding on, cost and plan usage shown). Change them later with `/plugin configure clawd-tracker@clawd-plugins`.
+If the install says some options aren't set yet, that's fine: every setting has a default (pizza theme, ding on, cost and plan usage shown). Switch the theme any time with `/tracker theme coffee` (or `rocket`, `construction`, `pizza`).
 
 To try it for one session without installing, from a clone:
 

@@ -1,6 +1,6 @@
 {
   "name": "clawd-tracker",
-  "version": "0.3.4",
+  "version": "0.4.0",
   "description": "A Domino's-style order tracker above the prompt. Clawd acts out every step next to an honest progress bar, a learned ETA, a delivery receipt, plan usage and a delivery ding. Themes: pizza, coffee, rocket, construction.",
   "types": "./types/index.d.ts",
   "license": "MIT",

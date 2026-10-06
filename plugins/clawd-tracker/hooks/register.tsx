@@ -401,6 +401,13 @@ const peersOf = (past: Past[], project: string): Past[] => {
   return own.length >= 3 ? own : past
 }
 
+// `/tracker theme`: the themes, the one in use marked.
+const themesReport = (): string =>
+  [
+    'Clawd themes (switch with /tracker theme <name>):',
+    ...Object.entries(THEMES).map(([name, t]) => `  ${name === opts.theme ? '●' : '○'} ${name}: ${t.stages.join(' → ')}`),
+  ].join('\n')
+
 // `/tracker stats`: today's orders and a few records.
 const statsReport = (past: Past[], at: number): string => {
   const today = new Date(at).toDateString()
@@ -1041,7 +1048,7 @@ export const register: Register = (on, options) => {
     currentProject = e.cwd
     await $.command.register({
       name: 'tracker',
-      description: 'Show or hide the Clawd order tracker; `/tracker stats` for today\'s totals',
+      description: 'Show or hide the Clawd tracker · /tracker theme <pizza|coffee|rocket|construction> · /tracker sound on|off · /tracker stats',
     })
     const saved = await $.store.get('history')
     if (Array.isArray(saved)) await update($, history, () => saved as Past[])
@@ -1057,7 +1064,21 @@ export const register: Register = (on, options) => {
   })
 
   on('command.run', { command: 'tracker' }, async ($, e) => {
-    if (e.args.trim() === 'stats') return { text: statsReport(await read($, history), await $.clock.now()) }
+    const [word = '', value = ''] = e.args.trim().toLowerCase().split(/\s+/)
+    if (word === 'stats') return { text: statsReport(await read($, history), await $.clock.now()) }
+    // `/tracker theme <name>` and `/tracker sound on|off` change the plugin's
+    // own settings; the engine reloads the tracker with them.
+    if (word === 'theme') {
+      if (!value) return { text: themesReport() }
+      if (!(value in THEMES)) return { text: `Clawd: there's no "${value}" theme. ${themesReport()}` }
+      await $.config.set({ key: 'clawd-tracker.theme', value })
+      return { text: `Clawd: switched to the ${value} theme (${THEMES[value].stages.join(' → ')}).` }
+    }
+    if (word === 'sound') {
+      if (value !== 'on' && value !== 'off') return { text: `Clawd: the delivery ding is ${opts.sound ? 'on' : 'off'}. Use /tracker sound on or /tracker sound off.` }
+      await $.config.set({ key: 'clawd-tracker.sound', value: value === 'on' })
+      return { text: `Clawd: delivery ding ${value}.` }
+    }
     const isShown = await toggle($)
     return { text: isShown ? 'Clawd tracker shown.' : 'Clawd tracker hidden.' }
   })

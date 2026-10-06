@@ -187,6 +187,27 @@ describe('clawd-tracker', () => {
     expect(String(out?.text)).toContain('Time cooking: 1:00')
   })
 
+  test('/tracker theme lists the themes and switches one', async ($, on) => {
+    engine(on)
+    const set: unknown[] = []
+    on('config.set', async (_$: any, e: any) => {
+      set.push({ key: e.key, value: e.value })
+      return { value: e.value }
+    })
+    const list = await $.command.run({ command: 'tracker', args: 'theme' })
+    expect(String(list?.text)).toContain('● pizza')
+    expect(String(list?.text)).toContain('○ rocket')
+    const bad = await $.command.run({ command: 'tracker', args: 'theme disco' })
+    expect(String(bad?.text)).toContain('no "disco" theme')
+    const ok = await $.command.run({ command: 'tracker', args: 'theme Rocket' })
+    expect(String(ok?.text)).toContain('switched to the rocket theme')
+    await $.command.run({ command: 'tracker', args: 'sound off' })
+    expect(set).toEqual([
+      { key: 'clawd-tracker.theme', value: 'rocket' },
+      { key: 'clawd-tracker.sound', value: false },
+    ])
+  })
+
   test('the coffee theme renames the stages', { options: { theme: 'coffee' } }, async ($, on) => {
     engine(on)
     await order($, 'make a latte')
