@@ -32,6 +32,7 @@ It only watches; it never blocks, rewrites or answers anything.
 | `session.start` | Registers `/arcade` and loads your best scores |
 | `command.run` (`/arcade`) | Opens the pane |
 | `turn.start` / `turn.complete` | Notes that Claude is working, or done (for the banner) |
+| `classic.Stop` | Reads whether background work is still running as Claude stops, so it doesn't call Claude done too early |
 | `tool.call` | Notes when Claude is waiting on you: a question, or a step that will stop for your OK (asked read-only of Claude Code's permission rules; it never makes or changes that decision) |
 | `ui.message` | Receives a finished round's score from the game and keeps your best |
 | `ui.render` (`Pane`) | Draws the pane and the game |

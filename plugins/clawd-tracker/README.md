@@ -53,6 +53,7 @@ The top right shows the job size (Small, Medium or Large, from the task count or
 
 - **Stage up**: when the work reaches a new stage, Clawd hops and sparkles.
 - **Snags**: when a step fails, Clawd reacts and keeps that look while Claude works out a fix.
+- **Handed off**: if Claude stops but leaves work running in the background (subagents, background commands), the band says "Handed off · 2 background tasks still cooking" instead of Delivered, and the order carries on when Claude picks it back up. Only then does it deliver, with the receipt and the ding.
 - **Waiting on you**: when Claude needs your answer or your OK for a step, the top right turns amber and counts up ("Waiting on you · 1:12"), and the line underneath says what it needs. It shows after a couple of seconds, so an auto-mode check that answers itself doesn't flash it.
 - **Helpers**: each subagent gets a mini Clawd next to the ETA, in the costume of whatever it's doing; it leaves when its work is done.
 - **The receipt**: the delivery line sums up the job, "3 files · +42 −10 · checks ✓ · 23 steps · order #3 today". Lines are counted from Claude's edits; "checks" is the last test, build or lint run.
@@ -109,6 +110,7 @@ The tracker only watches; it never blocks, rewrites or answers anything for Clau
 | `session.start` | Registers `/tracker`, loads your past job times (for the ETA) and starts a 1-second clock while a job runs |
 | `prompt.submit` | Keeps the first line of your prompt as the order's title |
 | `turn.start` / `turn.complete` | Opens and delivers the order; a subagent's turn adds or removes its mini Clawd |
+| `classic.Stop` | Reads whether background work is still running as Claude stops, so the order is handed off rather than delivered |
 | `tool.call` | Picks Clawd's costume and the stage from the tool and its arguments, and counts lines for the receipt. Before a step runs it asks Claude Code's permission rules, read-only, whether the step will stop for your OK, so the band can say "Waiting on you". It never makes or changes that decision |
 | `turn.step` | Adds up tokens and the estimated cost, reads how full the context is, and shows the thought bubble between steps |
 | `session.measure` | Reads your 5-hour and weekly plan usage for the rings |

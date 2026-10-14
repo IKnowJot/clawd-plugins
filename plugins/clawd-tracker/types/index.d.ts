@@ -65,6 +65,8 @@ export type Run = {
   /** When Claude started waiting on you (a question or a permission prompt). */
   waitingSince?: number
   waitingFor?: string
+  /** Claude stopped, but background work is still running; the order carries on when Claude picks it up. */
+  handedOff?: { count: number; what: string }
   /** Subagents at work, by id, with what each is doing. */
   agents: Record<string, Activity>
 }

@@ -9,10 +9,10 @@ const engine = (on: any, { failTools = false, ask = false, hold = null as Promis
   mock.store(on)
   const played: string[] = []
   on('ui.render', async () => null)
-  on('ui.toast', async () => undefined)
+  on('ui.toast', async () => ({ value: undefined }))
   on('audio.play', async (_$: any, e: any) => {
     played.push(String(e.clip?.mime ?? e.mime ?? ''))
-    return {}
+    return { value: undefined }
   })
   on('prompt.submit', async (_$: any, e: any) => ({ text: e.text }))
   on('turn.start', async (_$: any, e: any) => ({ turnId: e.turnId }))
@@ -185,6 +185,38 @@ describe('clawd-tracker', () => {
     const out = await $.command.run({ command: 'tracker', args: 'stats' })
     expect(String(out?.text)).toContain('1 order delivered')
     expect(String(out?.text)).toContain('Time cooking: 1:00')
+  })
+
+  test('background work hands the order off; it delivers when Claude finishes for real', async ($, on) => {
+    const { clock, played } = engine(on)
+    on('classic.Stop', async () => ({}))
+    const running = [
+      { id: 'b1', type: 'local_agent', status: 'running', description: 'Build payroll access', session_id: 's', transcript_path: '', cwd: '' },
+      { id: 'b2', type: 'local_bash', status: 'running', description: 'npm run dev', session_id: 's', transcript_path: '', cwd: '' },
+    ]
+    await order($, 'build the payroll features')
+    await $.tool.call({ tool: 'Edit', file_path: 'src/pay.ts', old_string: 'a', new_string: 'a\nb' } as any)
+    await clock.advance(30_000)
+    await $.classic.Stop({ stop_hook_active: false, background_tasks: running } as any)
+    await $.turn.complete(done())
+
+    let ui = await terminal($)
+    expect(await has(ui, /Handed off · 2 background tasks still cooking/)).toBe(true)
+    expect(await has(ui, /Still cooking: Build payroll access/)).toBe(true)
+    expect(await has(ui, /Delivered in/)).toBe(false)
+    await ui.unmount()
+    expect(played).toEqual([])
+
+    // A background task finishes and wakes Claude: the same order carries on.
+    await $.turn.start({ text: '<task-notification>', turnId: 't2' })
+    await $.tool.call({ tool: 'Bash', command: 'npm test' } as any)
+    await $.classic.Stop({ stop_hook_active: false, background_tasks: [] } as any)
+    await $.turn.complete(done({ turnId: 't2' }))
+    ui = await terminal($)
+    expect(await has(ui, /build the payroll features/)).toBe(true)
+    expect(await has(ui, /1 file · \+2 −1 · checks ✓ · 2 steps · order #1 today/)).toBe(true)
+    await ui.unmount()
+    expect(played).toEqual(['audio/wav'])
   })
 
   test('/tracker theme lists the themes and switches one', async ($, on) => {

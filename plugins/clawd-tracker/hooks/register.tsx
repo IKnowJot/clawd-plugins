@@ -233,6 +233,7 @@ const etaText = (r: Run, at: number, past: Past[]): string => {
   if (r.status === 'done') return `${theme.doneIn} ${fmtTime((r.endedAt ?? at) - r.startedAt)}`
   if (r.status === 'stopped') return `Stopped at ${fmtTime((r.endedAt ?? at) - r.startedAt)}`
   if (isWaiting(r, at)) return `Waiting on you · ${fmtTime(at - (r.waitingSince ?? at))}`
+  if (r.handedOff) return `Handed off · ${r.handedOff.count} background task${r.handedOff.count === 1 ? '' : 's'} still cooking`
   return `${sizeOf(r)} · ${estimate(r, at, past)}`
 }
 
@@ -1089,15 +1090,32 @@ export const register: Register = (on, options) => {
   })
 
   // The main loop's turn opens a new order; subagents' turns don't.
+  // As Claude stops: is work still running in the background (subagents,
+  // background commands)? Then the order isn't delivered yet, only handed off.
+  let backgroundAtStop: { count: number; what: string } | null = null
+  on('classic.Stop', async ($, e, next) => {
+    const tasks = ((e as { background_tasks?: { status?: string; description?: string }[] }).background_tasks ?? []).filter(
+      t => t.status !== 'completed' && t.status !== 'failed' && t.status !== 'killed',
+    )
+    backgroundAtStop = tasks.length ? { count: tasks.length, what: clip(str(tasks[0]?.description), 48) } : null
+    return next(e)
+  })
+
   on('turn.start', async ($, e, next) => {
     const agent = str((e as Record<string, unknown>).agentId)
     if (agent) {
       await update($, run, r => (live(r) ? { ...r, agents: { ...r.agents, [agent]: 'think' } } : r))
     } else {
       const at = await $.clock.now()
-      const title = pendingTitle || 'Your order'
+      const title = pendingTitle
       pendingTitle = ''
-      await update($, run, prev => fresh(title, at, prev))
+      // Claude picking up a handed-off order on its own (a background task
+      // finished) carries on with it; a new message from you starts a new one.
+      await update($, run, prev =>
+        !title && live(prev) && prev.handedOff
+          ? { ...prev, handedOff: undefined, activity: 'think', note: pick('think', String(at)) }
+          : fresh(title || 'Your order', at, prev),
+      )
       await update($, now, () => at)
     }
     return next(e)
@@ -1224,6 +1242,15 @@ export const register: Register = (on, options) => {
       const at = await $.clock.now()
       const reason = str(ev.reason)
       const isStopped = reason !== '' && reason !== 'answer'
+      const handedOff = !isStopped && backgroundAtStop ? backgroundAtStop : null
+      backgroundAtStop = null
+      if (handedOff) {
+        await update($, run, r =>
+          live(r) ? { ...r, handedOff, activity: 'juggle', note: `Still cooking: ${handedOff.what || 'background work'}`, waitingSince: undefined } : r,
+        )
+        await update($, now, () => at)
+        return next(e)
+      }
       const today = new Date(at).toDateString()
       const orderNo = (await read($, history)).filter(p => p.when !== undefined && new Date(p.when).toDateString() === today).length + 1
       await update($, run, r => {

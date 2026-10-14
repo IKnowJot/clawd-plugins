@@ -1,7 +1,7 @@
 {
   "name": "clawd-arcade",
   "displayName": "Clawd Arcade",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Clawd-themed games in a side pane while Claude works. Pauses when Claude needs you and tells you when Claude is done.",
   "types": "./types/index.d.ts",
   "license": "MIT",

@@ -53,6 +53,15 @@ export const register: Register = on => {
     return { text: 'Clawd Arcade is open. Pick a game, click it, then play with the keyboard. Esc gives the keyboard back.' }
   })
 
+  // As Claude stops: is work still running in the background? Then Claude
+  // isn't done yet, just waiting on it.
+  let backgroundAtStop = 0
+  on('classic.Stop', async ($, e, next) => {
+    const tasks = (e as { background_tasks?: { status?: string }[] }).background_tasks ?? []
+    backgroundAtStop = tasks.filter(t => t.status !== 'completed' && t.status !== 'failed' && t.status !== 'killed').length
+    return next(e)
+  })
+
   // What Claude is doing, for the games' banners: working, done, or waiting on you.
   on('turn.start', async ($, e, next) => {
     if (!(e as Record<string, unknown>).agentId) await update($, status, () => ({ claude: 'working' }))
@@ -64,7 +73,11 @@ export const register: Register = on => {
     if (!ev.agentId) {
       const at = await $.clock.now()
       const isStopped = str(ev.reason) !== '' && str(ev.reason) !== 'answer'
-      await update($, status, () => (isStopped ? { claude: 'idle' } : { claude: 'done', doneAt: at }))
+      const background = backgroundAtStop
+      backgroundAtStop = 0
+      await update($, status, () =>
+        isStopped ? { claude: 'idle' } : background ? { claude: 'working', background } : { claude: 'done', doneAt: at },
+      )
       await update($, now, () => at)
     }
     return next(e)
@@ -116,7 +129,11 @@ export const register: Register = on => {
     const tone = st.claude === 'needs' ? 'yellow' : st.claude === 'done' ? 'green' : 'gray'
     const claudeLine = (
       <Text color={tone} bold={st.claude === 'needs' || st.claude === 'done'}>
-        {st.claude === 'needs' ? `${CLAUDE_LINE.needs}: ${st.needs ?? 'you'}. Press Esc to answer.` : CLAUDE_LINE[st.claude]}
+        {st.claude === 'needs'
+          ? `${CLAUDE_LINE.needs}: ${st.needs ?? 'you'}. Press Esc to answer.`
+          : st.background
+            ? `Claude has ${st.background} background task${st.background === 1 ? '' : 's'} still cooking. Play away.`
+            : CLAUDE_LINE[st.claude]}
       </Text>
     )
 

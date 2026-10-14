@@ -96,6 +96,19 @@ describe('clawd-arcade', () => {
     await ui.unmount()
   })
 
+  test('background work is not "done"', async ($, on) => {
+    engine(on)
+    on('classic.Stop', async () => ({}))
+    await $.turn.start({ text: 'do it', turnId: 't1' })
+    const ui = await play($, 'conga')
+    await $.classic.Stop({ stop_hook_active: false, background_tasks: [{ id: 'b1', type: 'local_agent', status: 'running', description: 'x', session_id: 's', transcript_path: '', cwd: '' }] } as any)
+    await $.turn.complete({ answer: 'done', durationMs: 0, isAborted: false, turnId: 't1', reason: 'answer' } as any)
+    await ui.advance(100)
+    expect(await has(ui, /1 background task still cooking/)).toBe(true)
+    expect(await has(ui, /Claude is done!/, { in: 'conga' })).toBe(false)
+    await ui.unmount()
+  })
+
   test('the menu lists the games and goes back', async ($, on) => {
     engine(on)
     const ui = await pane($)

@@ -5,6 +5,8 @@ export type Status = {
   claude: ClaudeStatus
   /** What Claude needs from you, when `claude` is `needs`. */
   needs?: string
+  /** Background tasks still running after Claude stopped; not done yet. */
+  background?: number
   /** When Claude last finished, for the "Claude is done" banner. */
   doneAt?: number
 }

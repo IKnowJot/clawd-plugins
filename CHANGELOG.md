@@ -1,5 +1,10 @@
 # Changelog
 
+## clawd-tracker 0.4.1 · clawd-arcade 0.2.1
+
+- Fixed: when Claude stops but leaves work running in the background (subagents, background commands), the tracker no longer says "Delivered". It shows "Handed off · N background tasks still cooking", plays no ding, and carries on with the same order when Claude picks the work back up. The arcade says the work is still cooking instead of "Claude is done!".
+- Tested on Claude Code 2.1.295.
+
 ## clawd-tracker 0.4.0
 
 - `/tracker theme <name>` switches theme right from the chat; `/tracker theme` lists them. `/tracker sound on|off` toggles the ding. Works in the desktop app, where `/config` isn't available.
