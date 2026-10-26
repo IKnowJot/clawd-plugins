@@ -97,7 +97,7 @@ Change the theme and sound with the commands above, or any setting in Claude Cod
 - `/tracker theme <name>`: switch theme (`pizza`, `coffee`, `rocket`, `construction`); `/tracker theme` lists them.
 - `/tracker sound on|off`: turn the delivery ding on or off.
 
-Works in the desktop app (animated SVG) and in the terminal (text version with an emoji per activity).
+Works in the desktop app (animated SVG) and in the terminal (text version with an emoji per activity). When the band is narrow, say with a side panel open, it switches to a compact two-line layout.
 
 ![A delivered order](../../docs/delivered.svg)
 

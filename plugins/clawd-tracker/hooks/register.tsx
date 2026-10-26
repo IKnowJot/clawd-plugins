@@ -943,11 +943,12 @@ const trackerSvg = (r: Run, W: number, at: number, past: Past[], lims: Limit[]):
   const minisX = x0 + barW - etaW - minisW
   const minis = helpers.map((a, i) => crab(minisX + i * MINI_STEP, 1, a, true, MINI_SCALE)).join('') +
     (extra > 0 ? `<text class="m" x="${minisX + helpers.length * MINI_STEP + 2}" y="14" font-family="${FONT}" font-size="10.5">+${extra}</text>` : '')
-  const title = fitText(r.title, 13, Math.max(60, barW - etaW - minisW - 10))
-  const pieces = statsPieces(r, at, lims, false)
+  const titleRoom = barW - etaW - minisW - 10
+  const title = titleRoom >= 48 ? fitText(r.title, 13, titleRoom) : ''
+  const pieces = fitPieces(statsPieces(r, at, lims, false), 11.5, barW * 0.55)
   const stats = pieces.map(p => p.text).join(' · ')
   const statsW = textWidth(stats, 11.5)
-  const note = fitText(waiting ? `Needs ${r.waitingFor ?? 'you'}` : r.note, 12, Math.max(40, barW - statsW - 14))
+  const note = fitText(waiting ? `Needs ${r.waitingFor ?? 'you'}` : r.note, 12, Math.max(0, barW - statsW - 14))
 
   // Where the fill's edge sits, in px, for a progress value over all five tracks.
   const edge = (p: number): number => {
@@ -989,6 +990,106 @@ ${segs}
     .map((p, i) => `${i ? ' · ' : ''}${p.tone ? `<tspan fill="${p.tone === 'hot' ? HOT : WARN}" font-weight="600">${xml(p.text)}</tspan>` : xml(p.text)}`)
     .join('')}</text>
 ${rings.map((l, k) => ring(l, x0 + barW + 16 + RING_R, rings.length === 1 ? 33 : 17 + k * 32)).join('')}
+</svg>`
+}
+
+// Below COMPACT_W the band switches to a compact layout: a smaller Clawd, two
+// lines instead of three, the current stage's name instead of all five, short
+// labels, and plan usage as small rings (or, when there's no room, as text when
+// a window runs high). Nothing overlaps: the title, then the stats, give way.
+const COMPACT_W = 720
+const HC = 46
+const RING_RC = 6.5
+
+// Drops stats from the end (cost, then context, …) until they fit.
+const fitPieces = (pieces: Piece[], size: number, maxW: number): Piece[] => {
+  const out = [...pieces]
+  const width = () => textWidth(out.map(p => p.text).join(' · '), size)
+  while (out.length > 1 && width() > maxW) {
+    const drop = out.map((p, i) => ({ p, i })).reverse().find(({ p }) => !p.tone)
+    out.splice(drop ? drop.i : out.length - 1, 1)
+  }
+  return width() > maxW ? [] : out
+}
+
+// The ETA without the job size: "~2 min left", "Delivered in 0:12".
+const etaShort = (r: Run, at: number, past: Past[]): string => {
+  if (r.status !== 'running' || isWaiting(r, at)) return etaText(r, at, past)
+  if (r.handedOff) return `Handed off · ${r.handedOff.count} in background`
+  const left = estimate(r, at, past)
+  return left === 'sizing up…' ? 'Sizing up…' : left.replace(/^(usually )?(about )?/, '~').replace(/^~under/, 'Under')
+}
+
+const ringSmall = (l: Limit, cx: number, cy: number): string => {
+  const pct = Math.max(0, Math.min(100, l.percentUsed))
+  const c = 2 * Math.PI * RING_RC
+  const tone = pct >= 90 ? HOT : pct >= 75 ? WARN : RING_OK
+  return `<circle class="kr" cx="${cx}" cy="${cy}" r="${RING_RC}" fill="none" stroke-width="2.6"/>` +
+    `<circle cx="${cx}" cy="${cy}" r="${RING_RC}" fill="none" stroke="${tone}" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="${((c * pct) / 100).toFixed(2)} ${c.toFixed(2)}" transform="rotate(-90 ${cx} ${cy})"/>` +
+    `<text x="${cx + RING_RC + 5}" y="${cy + 3.5}" font-family="${FONT}" font-size="10.5" font-variant-numeric="tabular-nums"${pct >= 75 ? ` fill="${tone}" font-weight="600"` : ' class="s"'}>${xml(`${LIMIT_LABEL[l.kind] ?? l.kind} ${Math.round(l.percentUsed)}%`)}</text>`
+}
+
+const trackerSvgCompact = (r: Run, W: number, at: number, past: Past[], lims: Limit[]): string => {
+  const x0 = 46
+  const all = opts.showPlanUsage ? lims.filter(l => l.kind in LIMIT_LABEL).slice(0, 2) : []
+  // Rings when there's room; else a high window rides in the stats as text.
+  const rings = W >= 460 ? all : []
+  const ringsW = rings.length ? 76 : 0
+  const barW = W - x0 - 4 - ringsW
+  const gap = 3
+  const segW = (barW - gap * 4) / 5
+  const isDone = r.status === 'done'
+  const waiting = isWaiting(r, at)
+  const color = r.status === 'stopped' ? '#9A9A96' : isDone ? DONE : CLAY
+  const etaColor = waiting ? WARN : r.handedOff ? '#5B8DEF' : color
+
+  const eta = fitText(etaShort(r, at, past), 11.5, barW * 0.6)
+  const etaW = textWidth(eta, 11.5) + 6
+  const helpers = r.status === 'running' ? Object.values(r.agents).slice(0, 3) : []
+  const minisW = helpers.length ? helpers.length * 13 + 4 : 0
+  const minisX = x0 + barW - etaW - minisW
+  const minis = helpers.map((a, i) => crab(minisX + i * 13, 2, a, true, 0.34)).join('')
+  const titleRoom = barW - etaW - minisW - 8
+  const title = titleRoom >= 40 ? fitText(r.title, 12, titleRoom) : ''
+
+  const stage = stageOf(r)
+  const stageName = STAGES[stage] ?? ''
+  const high = rings.length ? [] : all.filter(l => l.percentUsed >= 75).map(l => ({ text: `${LIMIT_LABEL[l.kind] ?? l.kind} ${Math.round(l.percentUsed)}%`, tone: l.percentUsed >= 90 ? 'hot' : 'warn' }) as Piece)
+  const base = statsPieces(r, at, lims, false).filter(p => !/^≈/.test(p.text) || W >= 560)
+  const pieces = fitPieces([...high, ...base.filter(p => !/tasks$/.test(p.text))], 10.5, barW * 0.5)
+  const stats = pieces.map(p => p.text).join(' · ')
+  const statsW = stats ? textWidth(stats, 10.5) + 10 : 0
+  const lead = `${stageName} · `
+  const leadW = textWidth(lead, 11.5) + 2
+  const noteRoom = barW - statsW - leadW
+  const note = noteRoom >= 30 ? fitText(waiting ? `Needs ${r.waitingFor ?? 'you'}` : r.note, 11.5, noteRoom) : ''
+
+  const edge = (pv: number): number => {
+    const i = Math.min(4, Math.floor(pv * 5))
+    return x0 + i * (segW + gap) + Math.min(1, pv * 5 - i) * segW
+  }
+  const from = edge(posNow(r, at))
+  const to = edge(r.pos)
+  const ms = Math.max(0, SLIDE_MS - (at - r.posAt))
+  const sx = (px: number): string => ((px - x0) / barW).toFixed(5)
+  const fillCss = `<style>.cf{transform-origin:${x0}px 0;transform:scaleX(${sx(to)})${
+    ms > 0 && from !== to ? `;animation:fill ${Math.round(ms)}ms ease-out forwards` : ''
+  }}@keyframes fill{from{transform:scaleX(${sx(from)})}to{transform:scaleX(${sx(to)})}}@media (prefers-reduced-motion: reduce){.cf{animation:none}}</style>`
+  const pulse = (i: number): string => (r.status === 'running' && i === stage ? ' now' : '')
+  const tracks = STAGES.map((_, i) => `<rect class="k${pulse(i)}" x="${x0 + i * (segW + gap)}" y="19" width="${segW}" height="5" rx="2.5"/>`).join('')
+  const fills = STAGES.map((_, i) => `<rect class="${pulse(i).trim()}" x="${x0 + i * (segW + gap)}" y="19" width="${segW}" height="5" rx="2.5" fill="${color}"/>`).join('')
+
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${HC}" viewBox="0 0 ${W} ${HC}">${TRACK_CSS}${fillCss}${CRAB_CSS}
+${cheer(r, at, crab(1, 4, waiting ? 'wait' : r.activity, r.status !== 'stopped' || r.activity === 'oops', 1.3))}
+${title ? `<text class="t" x="${x0}" y="12" font-family="${FONT}" font-size="12" font-weight="600">${xml(title)}</text>` : ''}
+${minis}
+<text x="${x0 + barW}" y="12" text-anchor="end" font-family="${FONT}" font-size="11.5" fill="${etaColor}" font-weight="${waiting ? 600 : 500}"${waiting ? ' class="now"' : ''}>${xml(eta)}</text>
+<clipPath id="fc"><rect class="cf" x="${x0}" y="16" width="${barW}" height="11"/></clipPath>${tracks}<g clip-path="url(#fc)">${fills}</g>
+<text x="${x0}" y="40" font-family="${FONT}" font-size="11.5"><tspan class="t" font-weight="600">${xml(isDone ? STAGES[DELIVERED] ?? '' : stageName)}</tspan>${note ? `<tspan class="s"> · ${xml(note)}</tspan>` : ''}</text>
+${stats ? `<text class="m" x="${x0 + barW}" y="40" text-anchor="end" font-family="${FONT}" font-size="10.5" font-variant-numeric="tabular-nums">${pieces
+    .map((pc, i) => `${i ? ' · ' : ''}${pc.tone ? `<tspan fill="${pc.tone === 'hot' ? HOT : WARN}" font-weight="600">${xml(pc.text)}</tspan>` : xml(pc.text)}`)
+    .join('')}</text>` : ''}
+${rings.map((l, k) => ringSmall(l, x0 + barW + 12 + RING_RC, rings.length === 1 ? 23 : 12 + k * 22)).join('')}
 </svg>`
 }
 
@@ -1302,14 +1403,15 @@ export const register: Register = (on, options) => {
     // draws nothing, so pick by surface: the terminal gets the text version.
     if (e.surface !== 'terminal' && 'Svg' in ui) {
       const { Svg } = ui
-      const width = Math.max(260, Math.min(1400, (e.props.bodyColumns || 100) * 8 - 56))
+      const width = Math.max(240, Math.min(1400, (e.props.bodyColumns || 100) * 8 - 56))
+      const isCompact = width < COMPACT_W
       return (
         <Box flexDirection="row" alignItems="center" gap={1}>
           <Svg
-            source={trackerSvg(r, width, at, past, lims)}
+            source={isCompact ? trackerSvgCompact(r, width, at, past, lims) : trackerSvg(r, width, at, past, lims)}
             alt={`${r.title}: ${STAGES[stageOf(r)]}, ${r.note}. ${etaText(r, at, past)}. ${statsText(r, at, lims)}`}
             width={width}
-            height={H}
+            height={isCompact ? HC : H}
           />
           {hide}
         </Box>

@@ -59,7 +59,7 @@ To try it for one session without installing, from a clone:
 claude --plugin-dir ./plugins/clawd-tracker
 ```
 
-Works in the Claude desktop app's Code tab and in the terminal. Tested on Claude Code 2.1.284 to 2.1.295; function hooks are early-access, so a later release may change them.
+Works in the Claude desktop app's Code tab and in the terminal. Tested on Claude Code 2.1.284 to 2.1.308; function hooks are early-access, so a later release may change them.
 
 ## Layout
 

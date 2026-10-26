@@ -1,5 +1,11 @@
 # Changelog
 
+## clawd-tracker 0.4.2
+
+- A compact layout when the band is narrow (a side panel open, a small window): a smaller Clawd, two lines instead of three, the current stage's name in place of all five, "~2 min left" in place of the job size, and small rings, or, when even those don't fit, a high usage window in the stats line.
+- No text overlaps at any width: the title, then the stats (cost first), give way.
+- Tests updated for Claude Code 2.1.308.
+
 ## clawd-tracker 0.4.1 · clawd-arcade 0.2.1
 
 - Fixed: when Claude stops but leaves work running in the background (subagents, background commands), the tracker no longer says "Delivered". It shows "Handed off · N background tasks still cooking", plays no ding, and carries on with the same order when Claude picks the work back up. The arcade says the work is still cooking instead of "Claude is done!".

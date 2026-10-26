@@ -21,7 +21,9 @@ const engine = (on: any, { failTools = false, ask = false, hold = null as Promis
     if (hold) await hold
     return { result: {}, text: failTools ? 'exit 1' : 'ok', isError: failTools }
   })
-  on('tool.check', async () => ({ decision: ask ? 'ask' : 'allow' }))
+  // The tracker asks the permission rules read-only (no tool_use_id); the
+  // engine's own check for the call itself gets an allow, as an approval would.
+  on('tool.check', async (_$: any, e: any) => ({ decision: ask && !e.tool_use_id ? 'ask' : 'allow' }))
   on('command.run', async () => ({ text: '' }))
   on('session.measure', async (_$: any, e: any) => ({ changed: e.changed }))
   return { clock, played }
